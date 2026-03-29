@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { products } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
 
@@ -11,17 +10,12 @@ export default function Home() {
         <div className="scanline-overlay" />
         <div className="relative z-20 text-center animate-scanline-in">
           <div className="mb-6 flex items-center justify-center">
-            <Image
-              src="/images/logo.svg"
-              alt="[sudo]"
-              width={400}
-              height={90}
-              className="invert w-[280px] sm:w-[360px] md:w-[440px]"
-              priority
-            />
+            <h1 className="font-pixel text-white text-5xl sm:text-7xl md:text-8xl tracking-tight">
+              [sudo]
+            </h1>
             <span className="text-accent text-4xl sm:text-6xl md:text-7xl animate-blink ml-1">&#9608;</span>
           </div>
-          <p className="font-pixel text-text-muted text-sm sm:text-base tracking-wider">
+          <p className="font-mono text-text-muted text-sm sm:text-base tracking-wider">
             approve. reject. repeat.
           </p>
           <div className="mt-12">
