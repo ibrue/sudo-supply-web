@@ -22,7 +22,7 @@ const pixel = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "sudo.supply — macro pads for the terminal-minded",
+  title: "sudo.supply \u2014 macro pads for the terminal-minded",
   description:
     "Mechanical keyboard macro pads. Approve AI agent actions across Claude, ChatGPT, and Grok.",
 };
@@ -44,7 +44,8 @@ const clerkAppearance = {
     footerActionLink: "text-[#00ff41] hover:text-[#00ff41]",
     headerTitle: "font-mono",
     headerSubtitle: "text-[#666666]",
-    socialButtonsBlockButton: "border-[#1e1e1e] rounded-none",
+    socialButtonsBlockButton: "border-[#1e1e1e] rounded-none text-white [&_.cl-socialButtonsBlockButtonText]:text-white",
+    socialButtonsProviderIcon: "brightness-0 invert",
     formFieldInput: "border-[#1e1e1e] rounded-none bg-[#111111]",
   },
 };
