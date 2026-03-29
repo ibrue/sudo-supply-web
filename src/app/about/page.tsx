@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "about — sudo.supply",
+  title: "about \u2014 sudo.supply",
 };
 
 export default function AboutPage() {
@@ -17,7 +17,7 @@ export default function AboutPage() {
             permission, and having no satisfying way to say yes. We build
             mechanical macro pads for developers who live in the terminal and
             work alongside AI every day. A tactile way to approve, reject, or
-            override — because critical decisions shouldn&apos;t be buried in a
+            override \u2014 because critical decisions shouldn&apos;t be buried in a
             terminal prompt.
           </p>
         </section>
@@ -62,7 +62,9 @@ export default function AboutPage() {
           </h2>
           <p className="text-text-muted">
             <span className="text-text">email:</span>{" "}
-            hello@sudo.supply
+            <a href="mailto:ianbrueggeman@gmail.com" className="hover-accent text-accent">
+              ianbrueggeman@gmail.com
+            </a>
           </p>
           <p className="text-text-muted">
             <span className="text-text">github:</span>{" "}
