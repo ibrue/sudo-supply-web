@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Product } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
+import { WaitlistButton } from "./WaitlistButton";
 
 export function AddToCartButton({ product }: { product: Product }) {
   const [quantity, setQuantity] = useState(1);
@@ -42,16 +43,11 @@ export function AddToCartButton({ product }: { product: Product }) {
             onClick={handleAdd}
             className="btn-terminal-accent w-full text-center"
           >
-            {added ? "[ ADDED ✓ ]" : "[ ADD TO CART ]"}
+            {added ? "[ ADDED \u2713 ]" : "[ ADD TO CART ]"}
           </button>
         </>
       ) : (
-        <button
-          disabled
-          className="w-full py-3 border border-border text-text-muted uppercase text-sm cursor-not-allowed"
-        >
-          [ COMING SOON ]
-        </button>
+        <WaitlistButton productSlug={product.slug} />
       )}
     </div>
   );

@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { products, getProduct } from "@/lib/products";
 import { AddToCartButton } from "./AddToCartButton";
+import { ReviewSection } from "./ReviewSection";
+import { QASection } from "./QASection";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -78,6 +80,10 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <AddToCartButton product={product} />
         </div>
       </div>
+
+      {/* Reviews & Q&A */}
+      <ReviewSection slug={product.slug} />
+      <QASection slug={product.slug} />
     </div>
   );
 }
