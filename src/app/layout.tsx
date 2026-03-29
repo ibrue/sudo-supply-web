@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import "./globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 import { CartProvider } from "@/context/CartContext";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -68,6 +70,8 @@ export default function RootLayout({
             <Nav />
             <main className="min-h-screen">{children}</main>
             <Footer />
+            <SpeedInsights />
+            <Analytics />
           </CartProvider>
         </body>
       </html>
