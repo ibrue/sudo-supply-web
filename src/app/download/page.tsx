@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "download [sudo] \u2014 sudo.supply",
-  description: "Download the [sudo] companion app for macOS. Translates macro pad button presses into AI agent actions.",
+  description: "Download the [sudo] companion app for macOS, Windows, and Linux. Control AI agents with a physical macro pad.",
 };
 
 export default function DownloadPage() {
   return (
-    <div className="pt-24 pb-16 px-6 max-w-3xl mx-auto">
+    <div className="pt-24 pb-16 px-6 max-w-4xl mx-auto">
       <p className="text-text-muted text-sm mb-8 animate-fade-in">~/download</p>
 
       <div className="space-y-10 animate-fade-in-delay">
@@ -17,42 +17,64 @@ export default function DownloadPage() {
             <h2 className="font-pixel text-white text-3xl">[sudo]</h2>
           </div>
           <p className="text-text-muted text-sm leading-relaxed max-w-md mx-auto">
-            The companion app for your sudo macro pad.
+            The cross-platform companion app for your sudo macro pad.
             Approve, reject, and control AI agents with a physical button press.
+          </p>
+          <p className="text-text-muted text-xs mt-2">
+            macOS &middot; Windows &middot; Linux
           </p>
         </section>
 
-        {/* Download card */}
-        <section className="border border-accent p-8">
-          <div className="flex items-start justify-between mb-6">
-            <div>
-              <h2 className="font-mono text-sm mb-2">macOS</h2>
-              <p className="text-text-muted text-xs">
-                ventura 13.0+ &middot; apple silicon + intel
-              </p>
+        {/* Downloads */}
+        <section>
+          <h2 className="font-mono text-xs text-accent mb-6">&gt; download</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* macOS */}
+            <div className="border border-accent p-6">
+              <h3 className="font-mono text-sm mb-1">macOS</h3>
+              <p className="text-text-muted text-xs mb-4">ventura 13.0+ &middot; apple silicon + intel</p>
+              <a
+                href="https://github.com/ibrue/sudo-app/releases/latest"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-terminal-accent block text-center text-xs mb-2"
+              >
+                [ DOWNLOAD .DMG ]
+              </a>
+              <p className="text-text-muted text-xs text-center">Swift / SwiftUI menu bar app</p>
             </div>
-            <div className="text-right">
-              <span className="text-accent text-sm font-mono">v1.0.0</span>
-              <p className="text-text-muted text-xs mt-1">latest</p>
+            {/* Windows */}
+            <div className="border border-accent p-6">
+              <h3 className="font-mono text-sm mb-1">Windows</h3>
+              <p className="text-text-muted text-xs mb-4">Windows 10+ &middot; x64</p>
+              <a
+                href="https://github.com/ibrue/sudo-app/releases/latest"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-terminal-accent block text-center text-xs mb-2"
+              >
+                [ DOWNLOAD .EXE ]
+              </a>
+              <p className="text-text-muted text-xs text-center">C# / .NET 8 system tray app</p>
             </div>
-          </div>
-
-          <a
-            href="https://github.com/ibrue/sudo-app/releases/latest"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-terminal-accent block text-center mb-4"
-          >
-            [ DOWNLOAD .DMG ]
-          </a>
-
-          <div className="flex items-center justify-between text-xs text-text-muted">
-            <span>auto-updates enabled</span>
-            <span>open source</span>
+            {/* Linux */}
+            <div className="border border-accent p-6">
+              <h3 className="font-mono text-sm mb-1">Linux</h3>
+              <p className="text-text-muted text-xs mb-4">X11 / Wayland &middot; GTK3</p>
+              <a
+                href="https://github.com/ibrue/sudo-app/releases/latest"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-terminal-accent block text-center text-xs mb-2"
+              >
+                [ INSTALL SCRIPT ]
+              </a>
+              <p className="text-text-muted text-xs text-center">Python / GTK3 AppIndicator</p>
+            </div>
           </div>
         </section>
 
-        {/* Alt install */}
+        {/* Install from source */}
         <section className="border border-border p-6">
           <h3 className="text-text-muted text-xs uppercase tracking-wider mb-4">
             &gt; install from source
@@ -64,50 +86,38 @@ export default function DownloadPage() {
           </div>
         </section>
 
-        {/* How it works */}
+        {/* Button Modes */}
         <section>
-          <h2 className="font-mono text-xs text-accent mb-4">
-            &gt; how it works
-          </h2>
-          <div className="border border-border">
-            <table className="w-full text-sm">
-              <tbody>
-                {[
-                  { step: "1. listen", desc: "intercepts Ctrl+Shift+F13\u2013F16 from the macro pad" },
-                  { step: "2. detect", desc: "identifies frontmost AI app via bundle ID or browser tab" },
-                  { step: "3. find", desc: "locates buttons via accessibility tree + vision OCR fallback" },
-                  { step: "4. act", desc: "presses button via AX API \u2014 no synthetic input, anti-cheat safe" },
-                ].map((row) => (
-                  <tr key={row.step} className="border-b border-border last:border-0">
-                    <td className="px-4 py-3 text-accent whitespace-nowrap">{row.step}</td>
-                    <td className="px-4 py-3 text-text-muted">{row.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <h2 className="font-mono text-xs text-accent mb-4">&gt; button modes</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="border border-border p-5">
+              <h3 className="font-mono text-sm text-accent mb-2">simple mode</h3>
+              <p className="text-text-muted text-xs mb-3">
+                Assign preset system shortcuts to each button.
+              </p>
+              <ul className="text-xs text-text-muted space-y-1">
+                <li><span className="text-accent">&#9679;</span> screenshot, copy, paste, undo</li>
+                <li><span className="text-accent">&#9679;</span> save, lock screen, media controls</li>
+                <li><span className="text-accent">&#9679;</span> custom keyboard shortcuts</li>
+              </ul>
+            </div>
+            <div className="border border-border p-5">
+              <h3 className="font-mono text-sm text-accent mb-2">complex mode</h3>
+              <p className="text-text-muted text-xs mb-3">
+                AI agent button-finding with customizable search terms.
+              </p>
+              <ul className="text-xs text-text-muted space-y-1">
+                <li><span className="text-accent">&#9679;</span> accessibility tree detection</li>
+                <li><span className="text-accent">&#9679;</span> OCR vision fallback</li>
+                <li><span className="text-accent">&#9679;</span> custom button labels per app</li>
+              </ul>
+            </div>
           </div>
         </section>
 
-        {/* Supported apps */}
+        {/* Default button map */}
         <section>
-          <h2 className="font-mono text-xs text-accent mb-4">
-            &gt; supported apps
-          </h2>
-          <div className="grid grid-cols-3 gap-4">
-            {["Claude", "ChatGPT", "Grok"].map((app) => (
-              <div key={app} className="border border-border p-4 text-center">
-                <p className="text-sm font-mono">{app}</p>
-                <p className="text-text-muted text-xs mt-1">native + browser</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Button map */}
-        <section>
-          <h2 className="font-mono text-xs text-accent mb-4">
-            &gt; button map
-          </h2>
+          <h2 className="font-mono text-xs text-accent mb-4">&gt; default button map</h2>
           <div className="border border-border">
             <table className="w-full text-sm">
               <thead>
@@ -133,34 +143,150 @@ export default function DownloadPage() {
               </tbody>
             </table>
           </div>
+          <p className="text-text-muted text-xs mt-2">all hotkeys are fully configurable in the app settings</p>
+        </section>
+
+        {/* Detection stack */}
+        <section>
+          <h2 className="font-mono text-xs text-accent mb-4">&gt; detection stack</h2>
+          <div className="border border-border overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border text-text-muted text-xs uppercase">
+                  <th className="px-4 py-2 text-left font-normal">feature</th>
+                  <th className="px-4 py-2 text-left font-normal">macOS</th>
+                  <th className="px-4 py-2 text-left font-normal">Windows</th>
+                  <th className="px-4 py-2 text-left font-normal">Linux</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { feature: "system tray", mac: "MenuBarExtra", win: "NotifyIcon", linux: "AppIndicator3" },
+                  { feature: "hotkeys", mac: "CGEvent tap", win: "RegisterHotKey", linux: "pynput" },
+                  { feature: "button finding", mac: "AXUIElement", win: "UI Automation", linux: "AT-SPI2" },
+                  { feature: "OCR fallback", mac: "Apple Vision", win: "Windows.Media.Ocr", linux: "Tesseract" },
+                  { feature: "execution", mac: "AXPress", win: "InvokePattern", linux: "AT-SPI / xdotool" },
+                ].map((row) => (
+                  <tr key={row.feature} className="border-b border-border last:border-0">
+                    <td className="px-4 py-2 text-accent font-mono whitespace-nowrap">{row.feature}</td>
+                    <td className="px-4 py-2 text-text-muted font-mono text-xs">{row.mac}</td>
+                    <td className="px-4 py-2 text-text-muted font-mono text-xs">{row.win}</td>
+                    <td className="px-4 py-2 text-text-muted font-mono text-xs">{row.linux}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* Firmware */}
+        <section>
+          <h2 className="font-mono text-xs text-accent mb-4">&gt; firmware (QMK / VIA / Vial)</h2>
+          <p className="text-text-muted text-sm mb-4">
+            The sudo macro pad runs QMK firmware on an RP2040 chip. Three keymap options are available:
+          </p>
+          <div className="border border-border overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border text-text-muted text-xs uppercase">
+                  <th className="px-4 py-2 text-left font-normal">keymap</th>
+                  <th className="px-4 py-2 text-left font-normal">features</th>
+                  <th className="px-4 py-2 text-left font-normal">reconfigure</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { keymap: "default", features: "Ctrl+Shift+F13\u2013F16", reconfig: "reflash required" },
+                  { keymap: "VIA", features: "live remapping via usevia.app", reconfig: "no reflash needed" },
+                  { keymap: "Vial", features: "auto-detection, no draft definition", reconfig: "no reflash needed" },
+                ].map((row) => (
+                  <tr key={row.keymap} className="border-b border-border last:border-0">
+                    <td className="px-4 py-2 text-accent font-mono">{row.keymap}</td>
+                    <td className="px-4 py-2 text-text-muted">{row.features}</td>
+                    <td className="px-4 py-2 text-text-muted">{row.reconfig}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-4 flex gap-4">
+            <a
+              href="https://github.com/ibrue/sudo-app/tree/main/firmware"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-terminal text-xs"
+            >
+              [ firmware source ]
+            </a>
+            <a
+              href="https://usevia.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-terminal text-xs"
+            >
+              [ usevia.app ]
+            </a>
+          </div>
+        </section>
+
+        {/* Supported apps */}
+        <section>
+          <h2 className="font-mono text-xs text-accent mb-4">&gt; supported apps</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="border border-border p-5">
+              <h3 className="font-mono text-xs text-text-muted uppercase mb-3">native apps</h3>
+              <div className="space-y-1 text-sm">
+                <p>Claude for Desktop</p>
+                <p>ChatGPT</p>
+              </div>
+            </div>
+            <div className="border border-border p-5">
+              <h3 className="font-mono text-xs text-text-muted uppercase mb-3">web apps</h3>
+              <div className="space-y-1 text-sm">
+                <p>claude.ai &middot; chatgpt.com &middot; grok.com</p>
+                <p className="text-text-muted text-xs mt-2">
+                  Safari (macOS) &middot; Chrome &middot; Firefox &middot; Brave &middot; Edge &middot; Opera &middot; Chromium
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Requirements */}
         <section>
-          <h2 className="font-mono text-xs text-accent mb-4">
-            &gt; requirements
-          </h2>
-          <ul className="text-sm text-text-muted space-y-2">
-            <li>
-              <span className="text-accent">&#9679;</span> macOS 13 Ventura or later
-            </li>
-            <li>
-              <span className="text-accent">&#9679;</span> Accessibility permission
-              (System Settings &rarr; Privacy &amp; Security)
-            </li>
-            <li>
-              <span className="text-accent">&#9679;</span> Screen Recording permission
-              (for OCR fallback)
-            </li>
-          </ul>
+          <h2 className="font-mono text-xs text-accent mb-4">&gt; requirements</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="border border-border p-4">
+              <h3 className="font-mono text-xs text-accent mb-2">macOS</h3>
+              <ul className="text-xs text-text-muted space-y-1">
+                <li>macOS 13 Ventura+</li>
+                <li>Accessibility permission</li>
+                <li>Screen Recording (OCR)</li>
+              </ul>
+            </div>
+            <div className="border border-border p-4">
+              <h3 className="font-mono text-xs text-accent mb-2">Windows</h3>
+              <ul className="text-xs text-text-muted space-y-1">
+                <li>Windows 10+</li>
+                <li>.NET 8 Runtime</li>
+                <li>Run as Administrator (optional)</li>
+              </ul>
+            </div>
+            <div className="border border-border p-4">
+              <h3 className="font-mono text-xs text-accent mb-2">Linux</h3>
+              <ul className="text-xs text-text-muted space-y-1">
+                <li>X11 or Wayland</li>
+                <li>Python 3.8+, GTK3</li>
+                <li>Tesseract OCR (optional)</li>
+              </ul>
+            </div>
+          </div>
         </section>
 
         {/* Footer */}
         <section className="border-t border-border pt-6">
           <div className="flex items-center justify-between text-sm text-text-muted">
-            <span>
-              [sudo] is open source hardware + software
-            </span>
+            <span>[sudo] is open source hardware + software</span>
             <a
               href="https://github.com/ibrue/sudo-app"
               target="_blank"

@@ -22,9 +22,9 @@ const pixel = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "sudo.supply \u2014 macro pads for the terminal-minded",
+  title: "sudo.supply \u2014 open-source macro pads for AI agents",
   description:
-    "Mechanical keyboard macro pads. Approve AI agent actions across Claude, ChatGPT, and Grok.",
+    "Open-source macro pads with cross-platform companion app. Approve, reject, and control AI agents across Claude, ChatGPT, and Grok on macOS, Windows, and Linux.",
   icons: {
     icon: "/favicon.svg",
   },
