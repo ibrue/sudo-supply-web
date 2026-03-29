@@ -16,9 +16,9 @@ export default function AboutPage() {
             sudo.supply was born from a simple frustration: AI agents asking for
             permission, and having no satisfying way to say yes. We build
             mechanical macro pads for developers who live in the terminal and
-            work alongside AI every day. A physical button to approve, reject,
-            continue, or cancel — because some actions deserve more than a
-            keystroke.
+            work alongside AI every day. A tactile way to approve, reject, or
+            override — because critical decisions shouldn&apos;t be buried in a
+            terminal prompt.
           </p>
         </section>
 

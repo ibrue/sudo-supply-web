@@ -21,7 +21,7 @@ export default function Home() {
             />
             <span className="text-accent text-4xl sm:text-6xl md:text-7xl animate-blink ml-1">&#9608;</span>
           </div>
-          <p className="font-mono text-text-muted text-sm sm:text-base tracking-wider">
+          <p className="font-pixel text-text-muted text-sm sm:text-base tracking-wider">
             approve. reject. repeat.
           </p>
           <div className="mt-12">
