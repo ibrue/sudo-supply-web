@@ -43,11 +43,25 @@ export interface UserProfile {
   created_at: string;
 }
 
-// Client-side Supabase client (uses anon key)
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+// Client-side Supabase client (uses anon key, lazily initialized)
+let _supabase: ReturnType<typeof createClient> | null = null;
+
+export function getSupabaseClient() {
+  if (!_supabase) {
+    _supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+  }
+  return _supabase;
+}
+
+/** @deprecated Use getSupabaseClient() instead */
+export const supabase = new Proxy({} as ReturnType<typeof createClient>, {
+  get(_target, prop) {
+    return (getSupabaseClient() as unknown as Record<string | symbol, unknown>)[prop];
+  },
+});
 
 // Server-side Supabase client (uses service role key for admin operations)
 export function createServiceClient() {
