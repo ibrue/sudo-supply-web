@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "about \u2014 sudo.supply",
@@ -47,7 +48,14 @@ export default function AboutPage() {
             &gt; open hardware
           </h2>
           <div className="flex items-center gap-4">
-            <div className="text-accent text-3xl font-mono">&#9881;</div>
+            <Image
+              src="/images/oshw-logo.svg"
+              alt="OSHW Logo"
+              width={40}
+              height={40}
+              className="text-accent flex-shrink-0"
+              style={{ filter: "invert(55%) sepia(95%) saturate(1000%) hue-rotate(90deg) brightness(105%)" }}
+            />
             <p className="text-text-muted">
               sudo macro pad is certified Open Source Hardware (OSHW). You can
               manufacture, modify, and distribute it freely. The design files are
