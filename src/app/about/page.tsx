@@ -11,19 +11,19 @@ export default function AboutPage() {
 
       <div className="space-y-8 text-sm leading-relaxed animate-fade-in-delay">
         <section>
-          <h2 className="font-pixel text-xs text-accent mb-4">&gt; the story</h2>
+          <h2 className="font-mono text-xs text-accent mb-4">&gt; the story</h2>
           <p className="text-text-muted">
             sudo.supply was born from a simple frustration: AI agents asking for
             permission, and having no satisfying way to say yes. We build
             mechanical macro pads for developers who live in the terminal and
             work alongside AI every day. A tactile way to approve, reject, or
-            override \u2014 because critical decisions shouldn&apos;t be buried in a
+            override &mdash; because critical decisions shouldn&apos;t be buried in a
             terminal prompt.
           </p>
         </section>
 
         <section>
-          <h2 className="font-pixel text-xs text-accent mb-4">
+          <h2 className="font-mono text-xs text-accent mb-4">
             &gt; open source
           </h2>
           <p className="text-text-muted mb-4">
@@ -43,7 +43,7 @@ export default function AboutPage() {
         </section>
 
         <section>
-          <h2 className="font-pixel text-xs text-accent mb-4">
+          <h2 className="font-mono text-xs text-accent mb-4">
             &gt; open hardware
           </h2>
           <div className="flex items-center gap-4">
@@ -57,7 +57,7 @@ export default function AboutPage() {
         </section>
 
         <section>
-          <h2 className="font-pixel text-xs text-accent mb-4">
+          <h2 className="font-mono text-xs text-accent mb-4">
             &gt; contact
           </h2>
           <p className="text-text-muted">

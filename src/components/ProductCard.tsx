@@ -16,7 +16,7 @@ export function ProductCard({ product }: { product: Product }) {
           className="object-contain p-6 rounded-lg"
         />
       </div>
-      <h3 className="font-pixel text-xs mb-2 group-hover:text-accent transition-colors">
+      <h3 className="font-mono text-xs mb-2 group-hover:text-accent transition-colors">
         {product.name}
       </h3>
       <div className="flex items-center justify-between">

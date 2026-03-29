@@ -40,7 +40,7 @@ export function OrderHistory({ userId }: OrderHistoryProps) {
   if (loading) {
     return (
       <section>
-        <h2 className="font-pixel text-xs text-accent mb-4">&gt; orders</h2>
+        <h2 className="font-mono text-xs text-accent mb-4">&gt; orders</h2>
         <p className="text-text-muted text-sm">Loading...</p>
       </section>
     );
@@ -48,7 +48,7 @@ export function OrderHistory({ userId }: OrderHistoryProps) {
 
   return (
     <section>
-      <h2 className="font-pixel text-xs text-accent mb-4">&gt; orders</h2>
+      <h2 className="font-mono text-xs text-accent mb-4">&gt; orders</h2>
 
       {orders.length === 0 ? (
         <div className="border border-border p-6 text-center">
@@ -68,8 +68,8 @@ export function OrderHistory({ userId }: OrderHistoryProps) {
                   </span>
                   <span className={`text-xs uppercase ${statusColors[order.status] ?? "text-text-muted"}`}>
                     {order.status === "delivered" || order.status === "shipped"
-                      ? `● ${order.status}`
-                      : `○ ${order.status}`}
+                      ? `\u25cf ${order.status}`
+                      : `\u25cb ${order.status}`}
                   </span>
                 </div>
                 <span className="font-mono text-sm tabular-nums">
@@ -80,7 +80,7 @@ export function OrderHistory({ userId }: OrderHistoryProps) {
               <div className="text-xs text-text-muted space-y-1">
                 {order.items.map((item, i) => (
                   <p key={i}>
-                    {item.title} × {item.quantity}
+                    {item.title} \u00d7 {item.quantity}
                   </p>
                 ))}
               </div>
@@ -92,7 +92,7 @@ export function OrderHistory({ userId }: OrderHistoryProps) {
                   rel="noopener noreferrer"
                   className="text-accent text-xs hover-accent mt-2 inline-block"
                 >
-                  track shipment →
+                  track shipment &rarr;
                 </a>
               )}
 

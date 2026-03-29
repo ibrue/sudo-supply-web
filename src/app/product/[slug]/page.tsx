@@ -9,8 +9,8 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }) {
   const product = getProduct(params.slug);
-  if (!product) return { title: "not found — sudo.supply" };
-  return { title: `${product.name} — sudo.supply` };
+  if (!product) return { title: "not found \u2014 sudo.supply" };
+  return { title: `${product.name} \u2014 sudo.supply` };
 }
 
 export default function ProductPage({ params }: { params: { slug: string } }) {
@@ -36,7 +36,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
         {/* Details */}
         <div className="flex flex-col">
-          <h1 className="font-pixel text-lg sm:text-xl mb-4">{product.name}</h1>
+          <h1 className="font-mono text-lg sm:text-xl mb-4">{product.name}</h1>
 
           <div className="flex items-center gap-4 mb-6">
             <span className="text-2xl font-mono tabular-nums">

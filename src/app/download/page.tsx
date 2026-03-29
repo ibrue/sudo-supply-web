@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "download [sudo] — sudo.supply",
+  title: "download [sudo] \u2014 sudo.supply",
   description: "Download the [sudo] companion app for macOS. Translates macro pad button presses into AI agent actions.",
 };
 
@@ -15,13 +14,7 @@ export default function DownloadPage() {
         {/* Hero */}
         <section className="text-center py-8">
           <div className="flex items-center justify-center mb-6">
-            <Image
-              src="/images/logo.svg"
-              alt="[sudo]"
-              width={200}
-              height={45}
-              className="invert"
-            />
+            <h2 className="font-pixel text-white text-3xl">[sudo]</h2>
           </div>
           <p className="text-text-muted text-sm leading-relaxed max-w-md mx-auto">
             The companion app for your sudo macro pad.
@@ -33,7 +26,7 @@ export default function DownloadPage() {
         <section className="border border-accent p-8">
           <div className="flex items-start justify-between mb-6">
             <div>
-              <h2 className="font-pixel text-sm mb-2">macOS</h2>
+              <h2 className="font-mono text-sm mb-2">macOS</h2>
               <p className="text-text-muted text-xs">
                 ventura 13.0+ &middot; apple silicon + intel
               </p>
@@ -73,7 +66,7 @@ export default function DownloadPage() {
 
         {/* How it works */}
         <section>
-          <h2 className="font-pixel text-xs text-accent mb-4">
+          <h2 className="font-mono text-xs text-accent mb-4">
             &gt; how it works
           </h2>
           <div className="border border-border">
@@ -97,7 +90,7 @@ export default function DownloadPage() {
 
         {/* Supported apps */}
         <section>
-          <h2 className="font-pixel text-xs text-accent mb-4">
+          <h2 className="font-mono text-xs text-accent mb-4">
             &gt; supported apps
           </h2>
           <div className="grid grid-cols-3 gap-4">
@@ -112,7 +105,7 @@ export default function DownloadPage() {
 
         {/* Button map */}
         <section>
-          <h2 className="font-pixel text-xs text-accent mb-4">
+          <h2 className="font-mono text-xs text-accent mb-4">
             &gt; button map
           </h2>
           <div className="border border-border">
@@ -144,7 +137,7 @@ export default function DownloadPage() {
 
         {/* Requirements */}
         <section>
-          <h2 className="font-pixel text-xs text-accent mb-4">
+          <h2 className="font-mono text-xs text-accent mb-4">
             &gt; requirements
           </h2>
           <ul className="text-sm text-text-muted space-y-2">
@@ -153,7 +146,7 @@ export default function DownloadPage() {
             </li>
             <li>
               <span className="text-accent">&#9679;</span> Accessibility permission
-              (System Settings → Privacy &amp; Security)
+              (System Settings &rarr; Privacy &amp; Security)
             </li>
             <li>
               <span className="text-accent">&#9679;</span> Screen Recording permission
@@ -174,7 +167,7 @@ export default function DownloadPage() {
               rel="noopener noreferrer"
               className="text-accent hover-accent"
             >
-              GitHub →
+              GitHub &rarr;
             </a>
           </div>
         </section>

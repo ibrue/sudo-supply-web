@@ -13,7 +13,7 @@ export function AccountHeader({ name, email }: AccountHeaderProps) {
     <section className="border border-border p-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-pixel text-sm mb-2">{name}</h1>
+          <h1 className="font-mono text-sm mb-2">{name}</h1>
           <p className="text-text-muted text-xs">{email}</p>
         </div>
         <UserButton
