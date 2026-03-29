@@ -16,7 +16,7 @@ const mono = localFont({
 });
 
 const pixel = localFont({
-  src: "./fonts/Silkscreen-Regular.woff",
+  src: "./fonts/PixelatedEleganceRegular-ovawB.ttf",
   variable: "--font-pixel",
   weight: "400",
 });
