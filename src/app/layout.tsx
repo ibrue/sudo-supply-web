@@ -25,6 +25,9 @@ export const metadata: Metadata = {
   title: "sudo.supply \u2014 macro pads for the terminal-minded",
   description:
     "Mechanical keyboard macro pads. Approve AI agent actions across Claude, ChatGPT, and Grok.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 const clerkAppearance = {
