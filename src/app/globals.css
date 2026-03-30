@@ -156,17 +156,17 @@ body {
   color: var(--bg);
 }
 
-/* Subtle green grid background */
+/* Subtle ambient glow background */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  background-image:
-    linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 50%, rgba(0, 255, 65, 0.025), transparent),
+    radial-gradient(ellipse 500px 300px at 80% 30%, rgba(0, 255, 65, 0.015), transparent),
+    radial-gradient(ellipse 400px 400px at 50% 90%, rgba(0, 255, 65, 0.02), transparent);
 }
 
 /* Glassmorphism utilities */

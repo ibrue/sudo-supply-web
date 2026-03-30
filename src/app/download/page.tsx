@@ -30,42 +30,42 @@ export default function DownloadPage() {
           <h2 className="font-mono text-xs text-accent mb-6">&gt; download</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* macOS */}
-            <div className="border border-accent p-6">
-              <h3 className="font-mono text-sm mb-1">macOS</h3>
-              <p className="text-text-muted text-xs mb-4">ventura 13.0+ &middot; apple silicon + intel</p>
+            <div className="glass-accent p-6">
+              <h3 className="font-mono text-sm mb-2">macOS</h3>
+              <p className="text-text-muted text-xs mb-6">ventura 13.0+ &middot; apple silicon</p>
               <a
                 href="https://github.com/ibrue/sudo-app/releases/latest"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-terminal-accent block text-center text-xs mb-2"
+                className="btn-terminal-accent block text-center text-xs mb-4"
               >
                 [ DOWNLOAD .DMG ]
               </a>
               <p className="text-text-muted text-xs text-center">Swift / SwiftUI menu bar app</p>
             </div>
             {/* Windows */}
-            <div className="border border-accent p-6">
-              <h3 className="font-mono text-sm mb-1">Windows</h3>
-              <p className="text-text-muted text-xs mb-4">Windows 10+ &middot; x64</p>
+            <div className="glass-accent p-6">
+              <h3 className="font-mono text-sm mb-2">Windows</h3>
+              <p className="text-text-muted text-xs mb-6">Windows 10+ &middot; x64</p>
               <a
                 href="https://github.com/ibrue/sudo-app/releases/latest"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-terminal-accent block text-center text-xs mb-2"
+                className="btn-terminal-accent block text-center text-xs mb-4"
               >
                 [ DOWNLOAD .EXE ]
               </a>
               <p className="text-text-muted text-xs text-center">C# / .NET 8 system tray app</p>
             </div>
             {/* Linux */}
-            <div className="border border-accent p-6">
-              <h3 className="font-mono text-sm mb-1">Linux</h3>
-              <p className="text-text-muted text-xs mb-4">X11 / Wayland &middot; GTK3</p>
+            <div className="glass-accent p-6">
+              <h3 className="font-mono text-sm mb-2">Linux</h3>
+              <p className="text-text-muted text-xs mb-6">X11 / Wayland &middot; GTK3</p>
               <a
                 href="https://github.com/ibrue/sudo-app/releases/latest"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-terminal-accent block text-center text-xs mb-2"
+                className="btn-terminal-accent block text-center text-xs mb-4"
               >
                 [ INSTALL SCRIPT ]
               </a>
@@ -75,7 +75,7 @@ export default function DownloadPage() {
         </section>
 
         {/* Install from source */}
-        <section className="border border-border p-6">
+        <section className="glass p-6">
           <h3 className="text-text-muted text-xs uppercase tracking-wider mb-4">
             &gt; install from source
           </h3>
@@ -90,7 +90,7 @@ export default function DownloadPage() {
         <section>
           <h2 className="font-mono text-xs text-accent mb-4">&gt; button modes</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="border border-border p-5">
+            <div className="glass p-5">
               <h3 className="font-mono text-sm text-accent mb-2">simple mode</h3>
               <p className="text-text-muted text-xs mb-3">
                 Assign preset system shortcuts to each button.
@@ -101,7 +101,7 @@ export default function DownloadPage() {
                 <li><span className="text-accent">&#9679;</span> custom keyboard shortcuts</li>
               </ul>
             </div>
-            <div className="border border-border p-5">
+            <div className="glass p-5">
               <h3 className="font-mono text-sm text-accent mb-2">complex mode</h3>
               <p className="text-text-muted text-xs mb-3">
                 AI agent button-finding with customizable search terms.
@@ -118,7 +118,7 @@ export default function DownloadPage() {
         {/* Default button map */}
         <section>
           <h2 className="font-mono text-xs text-accent mb-4">&gt; default button map</h2>
-          <div className="border border-border">
+          <div className="glass">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-text-muted text-xs uppercase">
@@ -149,7 +149,7 @@ export default function DownloadPage() {
         {/* Detection stack */}
         <section>
           <h2 className="font-mono text-xs text-accent mb-4">&gt; detection stack</h2>
-          <div className="border border-border overflow-x-auto">
+          <div className="glass overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-text-muted text-xs uppercase">
@@ -185,7 +185,7 @@ export default function DownloadPage() {
           <p className="text-text-muted text-sm mb-4">
             The sudo macro pad runs QMK firmware on an RP2040 chip. Three keymap options are available:
           </p>
-          <div className="border border-border overflow-x-auto">
+          <div className="glass overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-text-muted text-xs uppercase">
@@ -233,14 +233,14 @@ export default function DownloadPage() {
         <section>
           <h2 className="font-mono text-xs text-accent mb-4">&gt; supported apps</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="border border-border p-5">
+            <div className="glass p-5">
               <h3 className="font-mono text-xs text-text-muted uppercase mb-3">native apps</h3>
               <div className="space-y-1 text-sm">
                 <p>Claude for Desktop</p>
                 <p>ChatGPT</p>
               </div>
             </div>
-            <div className="border border-border p-5">
+            <div className="glass p-5">
               <h3 className="font-mono text-xs text-text-muted uppercase mb-3">web apps</h3>
               <div className="space-y-1 text-sm">
                 <p>claude.ai &middot; chatgpt.com &middot; grok.com</p>
@@ -256,7 +256,7 @@ export default function DownloadPage() {
         <section>
           <h2 className="font-mono text-xs text-accent mb-4">&gt; requirements</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="border border-border p-4">
+            <div className="glass p-4">
               <h3 className="font-mono text-xs text-accent mb-2">macOS</h3>
               <ul className="text-xs text-text-muted space-y-1">
                 <li>macOS 13 Ventura+</li>
@@ -264,7 +264,7 @@ export default function DownloadPage() {
                 <li>Screen Recording (OCR)</li>
               </ul>
             </div>
-            <div className="border border-border p-4">
+            <div className="glass p-4">
               <h3 className="font-mono text-xs text-accent mb-2">Windows</h3>
               <ul className="text-xs text-text-muted space-y-1">
                 <li>Windows 10+</li>
@@ -272,7 +272,7 @@ export default function DownloadPage() {
                 <li>Run as Administrator (optional)</li>
               </ul>
             </div>
-            <div className="border border-border p-4">
+            <div className="glass p-4">
               <h3 className="font-mono text-xs text-accent mb-2">Linux</h3>
               <ul className="text-xs text-text-muted space-y-1">
                 <li>X11 or Wayland</li>
