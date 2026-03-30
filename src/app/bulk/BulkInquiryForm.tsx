@@ -4,10 +4,10 @@ import { useState } from "react";
 import { Product } from "@/lib/products";
 import { toastBus } from "@/lib/toastBus";
 
+const CONTACT_EMAIL = "ianbrueggeman@gmail.com";
+
 export function BulkInquiryForm({ products }: { products: Product[] }) {
   const [submitted, setSubmitted] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   const [form, setForm] = useState({
     companyName: "",
@@ -25,38 +25,60 @@ export function BulkInquiryForm({ products }: { products: Product[] }) {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSubmitting(true);
-    setError(null);
 
-    try {
-      const res = await fetch("/api/bulk-inquiries", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Failed to submit");
-      }
-      toastBus.emit(
-        `$ sudo bulk-order --submit --company="${form.companyName || "direct"}" --qty=${form.quantity}`,
-        "Inquiry submitted. We'll be in touch within 24 hours."
-      );
-      setSubmitted(true);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
-    } finally {
-      setSubmitting(false);
-    }
+    const product = products.find((p) => p.slug === form.productSlug);
+
+    // 1. Save to internal tracker (fire-and-forget)
+    fetch("/api/bulk-inquiries", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    }).catch(() => {});
+
+    // 2. Open email to you
+    const subject = `[sudo.supply] Bulk Order Inquiry — ${form.quantity}× ${product?.name || form.productSlug}`;
+    const body = [
+      `Bulk Order Inquiry`,
+      ``,
+      `Contact: ${form.contactName}`,
+      `Email: ${form.email}`,
+      form.phone ? `Phone: ${form.phone}` : null,
+      form.companyName ? `Company: ${form.companyName}` : null,
+      ``,
+      `Product: ${product?.name || form.productSlug}`,
+      `Quantity: ${form.quantity}`,
+      form.notes ? `\nNotes:\n${form.notes}` : null,
+      ``,
+      `---`,
+      `Sent from sudo.supply/bulk`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(mailto, "_blank");
+
+    toastBus.emit(
+      `$ sudo bulk-order --submit --company="${form.companyName || "direct"}" --qty=${form.quantity}`,
+      "Opening email client..."
+    );
+    setSubmitted(true);
   }
 
   if (submitted) {
     return (
       <div className="glass p-6 text-center">
-        <p className="text-accent font-mono text-sm mb-2">&#9679; inquiry submitted</p>
-        <p className="text-text-muted text-sm">
-          We&apos;ll review your request and get back to you within 24 hours.
+        <p className="text-accent font-mono text-sm mb-2">&#9679; inquiry ready</p>
+        <p className="text-text-muted text-sm mb-4">
+          Your email client should have opened with the inquiry pre-filled.
+          Just hit send!
         </p>
+        <button
+          onClick={() => setSubmitted(false)}
+          className="btn-terminal text-xs"
+        >
+          [ START NEW INQUIRY ]
+        </button>
       </div>
     );
   }
@@ -67,10 +89,6 @@ export function BulkInquiryForm({ products }: { products: Product[] }) {
   return (
     <form onSubmit={handleSubmit} className="glass p-6 space-y-4">
       <h2 className="text-accent text-xs font-mono mb-2">&gt; request a quote</h2>
-
-      {error && (
-        <p className="text-error text-xs border border-error p-3">{error}</p>
-      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
@@ -157,11 +175,14 @@ export function BulkInquiryForm({ products }: { products: Product[] }) {
 
       <button
         type="submit"
-        disabled={submitting}
-        className="btn-terminal-accent w-full text-center disabled:opacity-50"
+        className="btn-terminal-accent w-full text-center"
       >
-        {submitting ? "[ SUBMITTING... ]" : "[ SUBMIT INQUIRY ]"}
+        [ SUBMIT INQUIRY ]
       </button>
+
+      <p className="text-text-muted text-xs text-center">
+        opens your email client with the inquiry pre-filled
+      </p>
     </form>
   );
 }
