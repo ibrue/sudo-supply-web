@@ -25,10 +25,11 @@ export default async function EditProductPage({
           description: product.description,
           longDescription: product.longDescription,
           inStock: product.inStock,
-          image: product.image,
+          images: product.images,
           specs: product.specs,
           shopifyVariantId: product.shopifyVariantId || "",
           sortOrder: 0,
+          status: product.status,
         }}
       />
     </div>

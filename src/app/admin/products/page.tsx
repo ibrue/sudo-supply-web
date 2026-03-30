@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { getProducts } from "@/lib/products";
+import { getAllProducts } from "@/lib/products";
 
 export default async function AdminProductsPage() {
-  const products = await getProducts();
+  const products = await getAllProducts();
 
   return (
     <div className="animate-fade-in-delay">
@@ -17,8 +17,8 @@ export default async function AdminProductsPage() {
         <table className="w-full text-sm font-mono">
           <thead>
             <tr className="border-b border-border text-text-muted text-xs uppercase tracking-wider">
+              <th className="text-center px-3 py-3">status</th>
               <th className="text-left px-4 py-3">name</th>
-              <th className="text-left px-4 py-3">slug</th>
               <th className="text-right px-4 py-3">price</th>
               <th className="text-center px-4 py-3">stock</th>
               <th className="text-right px-4 py-3">sold</th>
@@ -28,8 +28,19 @@ export default async function AdminProductsPage() {
           <tbody>
             {products.map((product) => (
               <tr key={product.slug} className="border-b border-border last:border-0 hover:bg-bg-secondary transition-colors">
-                <td className="px-4 py-3">{product.name}</td>
-                <td className="px-4 py-3 text-text-muted">{product.slug}</td>
+                <td className="px-3 py-3 text-center">
+                  {product.status === "published" ? (
+                    <span className="text-accent text-xs">&#9679;</span>
+                  ) : (
+                    <span className="text-text-muted text-xs">&#9675;</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  {product.name}
+                  {product.status === "draft" && (
+                    <span className="text-text-muted text-xs ml-2">(draft)</span>
+                  )}
+                </td>
                 <td className="px-4 py-3 text-right tabular-nums">${product.price.toFixed(2)}</td>
                 <td className="px-4 py-3 text-center">
                   {product.inStock ? (
@@ -41,7 +52,13 @@ export default async function AdminProductsPage() {
                 <td className="px-4 py-3 text-right tabular-nums text-text-muted">
                   {product.soldCount || 0}
                 </td>
-                <td className="px-4 py-3 text-right">
+                <td className="px-4 py-3 text-right space-x-2">
+                  <Link
+                    href={`/admin/products/${product.slug}/preview`}
+                    className="text-text-muted hover:text-text text-xs"
+                  >
+                    [ preview ]
+                  </Link>
                   <Link
                     href={`/admin/products/${product.slug}/edit`}
                     className="text-accent hover-accent text-xs"

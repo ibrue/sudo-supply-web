@@ -1,5 +1,7 @@
 import { createServiceClient } from "./supabase";
 
+export type ProductStatus = "draft" | "published";
+
 export interface Product {
   slug: string;
   name: string;
@@ -7,10 +9,14 @@ export interface Product {
   description: string;
   longDescription: string;
   inStock: boolean;
+  stockCount: number;
+  leadTime: string;
   image: string;
+  images: string[];
   specs: Record<string, string>;
   shopifyVariantId?: string;
   soldCount?: number;
+  status: ProductStatus;
 }
 
 /** Static fallback products — used when Supabase is unavailable */
@@ -24,7 +30,10 @@ export const staticProducts: Product[] = [
     longDescription:
       "The sudo macro pad v1 is a 4-button mechanical macro pad designed for developers who work with AI agents daily. Each key is MX hot-swap compatible, so you can use your favorite switches. Map the four keys to approve, reject, continue, or cancel — and take physical control of your AI workflow. Open-source hardware and firmware.",
     inStock: true,
+    stockCount: 0,
+    leadTime: "",
     image: "/images/macro-pad-placeholder.svg",
+    images: ["/images/macro-pad-placeholder.svg"],
     specs: {
       keys: "4× MX hot-swap",
       interface: "USB-C",
@@ -35,6 +44,7 @@ export const staticProducts: Product[] = [
       weight: "~120g",
       compatibility: "Windows / macOS / Linux",
     },
+    status: "published",
   },
   {
     slug: "sudo-keycaps",
@@ -44,7 +54,10 @@ export const staticProducts: Product[] = [
     longDescription:
       "A set of custom PBT dye-sub keycaps designed for the sudo macro pad. Each cap features terminal-inspired legends: [Y], [N], [→], [×]. Cherry-profile, compatible with any MX-style switch.",
     inStock: false,
+    stockCount: 0,
+    leadTime: "2-3 weeks",
     image: "/images/keycaps-placeholder.svg",
+    images: ["/images/keycaps-placeholder.svg"],
     specs: {
       material: "PBT",
       legends: "dye-sublimated",
@@ -52,10 +65,12 @@ export const staticProducts: Product[] = [
       compatibility: "MX-style switches",
       set_contents: "4 keycaps",
     },
+    status: "published",
   },
 ];
 
 function dbRowToProduct(row: Record<string, unknown>): Product {
+  const images = Array.isArray(row.images) ? (row.images as string[]) : [];
   return {
     slug: row.slug as string,
     name: row.name as string,
@@ -63,15 +78,38 @@ function dbRowToProduct(row: Record<string, unknown>): Product {
     description: row.description as string,
     longDescription: (row.long_description as string) || "",
     inStock: row.in_stock as boolean,
-    image: row.image as string,
+    stockCount: (row.stock_count as number) || 0,
+    leadTime: (row.lead_time as string) || "",
+    image: (row.image as string) || images[0] || "/images/macro-pad-placeholder.svg",
+    images: images.length > 0 ? images : [(row.image as string) || "/images/macro-pad-placeholder.svg"],
     specs: (row.specs as Record<string, string>) || {},
     shopifyVariantId: (row.shopify_variant_id as string) || undefined,
     soldCount: (row.sold_count as number) || 0,
+    status: (row.status as ProductStatus) || "published",
   };
 }
 
-/** Fetch all products from Supabase, falling back to static data */
+/** Fetch all published products from Supabase, falling back to static data */
 export async function getProducts(): Promise<Product[]> {
+  try {
+    const supabase = createServiceClient();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("status", "published")
+      .order("sort_order", { ascending: true });
+
+    if (error || !data || data.length === 0) {
+      return staticProducts;
+    }
+    return data.map(dbRowToProduct);
+  } catch {
+    return staticProducts;
+  }
+}
+
+/** Fetch ALL products including drafts (admin only) */
+export async function getAllProducts(): Promise<Product[]> {
   try {
     const supabase = createServiceClient();
     const { data, error } = await supabase
@@ -88,7 +126,7 @@ export async function getProducts(): Promise<Product[]> {
   }
 }
 
-/** Fetch a single product by slug */
+/** Fetch a single product by slug (any status — for admin preview) */
 export async function getProduct(slug: string): Promise<Product | undefined> {
   try {
     const supabase = createServiceClient();

@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
 
   const body = await req.json();
   const supabase = createServiceClient();
+  const images = Array.isArray(body.images) ? body.images : [];
 
   const { data, error } = await supabase
     .from("products")
@@ -40,10 +41,14 @@ export async function POST(req: NextRequest) {
       description: body.description,
       long_description: body.longDescription || "",
       in_stock: body.inStock ?? true,
-      image: body.image || "/images/macro-pad-placeholder.svg",
+      image: images[0] || body.image || "/images/macro-pad-placeholder.svg",
+      images,
       specs: body.specs || {},
       shopify_variant_id: body.shopifyVariantId || null,
       sort_order: body.sortOrder || 0,
+      status: body.status || "draft",
+      stock_count: body.stockCount || 0,
+      lead_time: body.leadTime || "",
     })
     .select()
     .single();

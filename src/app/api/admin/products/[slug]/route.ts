@@ -21,11 +21,20 @@ export async function PUT(
   if (body.description !== undefined) updates.description = body.description;
   if (body.longDescription !== undefined) updates.long_description = body.longDescription;
   if (body.inStock !== undefined) updates.in_stock = body.inStock;
-  if (body.image !== undefined) updates.image = body.image;
   if (body.specs !== undefined) updates.specs = body.specs;
   if (body.shopifyVariantId !== undefined) updates.shopify_variant_id = body.shopifyVariantId;
   if (body.sortOrder !== undefined) updates.sort_order = body.sortOrder;
   if (body.slug !== undefined) updates.slug = body.slug;
+  if (body.status !== undefined) updates.status = body.status;
+  if (body.stockCount !== undefined) updates.stock_count = body.stockCount;
+  if (body.leadTime !== undefined) updates.lead_time = body.leadTime;
+  if (body.images !== undefined) {
+    updates.images = body.images;
+    if (Array.isArray(body.images) && body.images.length > 0) {
+      updates.image = body.images[0];
+    }
+  }
+  if (body.image !== undefined) updates.image = body.image;
 
   const { data, error } = await supabase
     .from("products")

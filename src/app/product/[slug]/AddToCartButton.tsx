@@ -48,7 +48,7 @@ export function AddToCartButton({ product }: { product: Product }) {
       </button>
       {!product.inStock && (
         <p className="text-text-muted text-xs mt-2 text-center">
-          ships when back in stock
+          {product.leadTime ? `estimated lead time: ${product.leadTime}` : "ships when back in stock"}
         </p>
       )}
       {quantity >= 5 && (
