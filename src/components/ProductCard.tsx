@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/lib/products";
+import { resolveImageUrl } from "@/lib/imageUrl";
 
 export function ProductCard({ product }: { product: Product }) {
   return (
@@ -10,10 +11,11 @@ export function ProductCard({ product }: { product: Product }) {
     >
       <div className="relative aspect-square bg-bg-secondary mb-4 overflow-hidden">
         <Image
-          src={product.image}
+          src={resolveImageUrl(product.image)}
           alt={product.name}
           fill
           className="object-contain p-6 rounded-lg"
+          unoptimized
         />
       </div>
       <h3 className="font-mono text-xs mb-2 group-hover:text-accent transition-colors">

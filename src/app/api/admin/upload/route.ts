@@ -41,11 +41,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: uploadError.message }, { status: 500 });
     }
 
-    const { data: urlData } = supabase.storage
-      .from("product-images")
-      .getPublicUrl(fileName);
+    // Store the storage path — we'll generate signed URLs when serving
+    // Format: storage://product-images/slug/filename.ext
+    const storagePath = `storage://product-images/${fileName}`;
 
-    return NextResponse.json({ url: urlData.publicUrl });
+    return NextResponse.json({ url: storagePath, path: fileName });
   } catch (err) {
     console.error("[upload] Error:", err);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });

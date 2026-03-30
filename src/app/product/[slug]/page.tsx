@@ -5,6 +5,7 @@ import { AddToCartButton } from "./AddToCartButton";
 import { ReviewSection } from "./ReviewSection";
 import { QASection } from "./QASection";
 import { SocialProofBadge } from "@/components/SocialProofBadge";
+import { resolveImageUrl } from "@/lib/imageUrl";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -30,10 +31,11 @@ export default async function ProductPage({ params }: { params: { slug: string }
         {/* Image */}
         <div className="relative aspect-square bg-bg-secondary glass overflow-hidden">
           <Image
-            src={product.image}
+            src={resolveImageUrl(product.image)}
             alt={product.name}
             fill
             className="object-contain p-8 rounded-lg"
+            unoptimized
           />
         </div>
 

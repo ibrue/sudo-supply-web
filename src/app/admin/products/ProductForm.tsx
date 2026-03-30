@@ -3,6 +3,7 @@
 import { useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { resolveImageUrl } from "@/lib/imageUrl";
 
 interface ProductFormData {
   slug: string;
@@ -191,7 +192,7 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
             {form.images.map((url, i) => (
               <div key={`${url}-${i}`} className="relative group border border-border w-24 h-24 bg-bg-secondary">
                 <Image
-                  src={url}
+                  src={resolveImageUrl(url)}
                   alt={`Image ${i + 1}`}
                   fill
                   className="object-contain p-1"

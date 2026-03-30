@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import { getProduct } from "@/lib/products";
+import { resolveImageUrl } from "@/lib/imageUrl";
 import Link from "next/link";
 
 export default async function PreviewPage({
@@ -36,7 +37,7 @@ export default async function PreviewPage({
         <div className="space-y-3">
           <div className="relative aspect-square bg-bg-secondary glass overflow-hidden">
             <Image
-              src={product.images[0] || product.image}
+              src={resolveImageUrl(product.images[0] || product.image)}
               alt={product.name}
               fill
               className="object-contain p-8"
@@ -47,7 +48,7 @@ export default async function PreviewPage({
             <div className="flex gap-2">
               {product.images.map((img, i) => (
                 <div key={i} className="relative w-16 h-16 border border-border bg-bg-secondary">
-                  <Image src={img} alt={`${product.name} ${i + 1}`} fill className="object-contain p-1" unoptimized />
+                  <Image src={resolveImageUrl(img)} alt={`${product.name} ${i + 1}`} fill className="object-contain p-1" unoptimized />
                 </div>
               ))}
             </div>
