@@ -232,7 +232,7 @@ export default function DownloadPage() {
         {/* Supported apps */}
         <section>
           <h2 className="font-mono text-xs text-accent mb-4">&gt; supported apps</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <div className="glass p-5">
               <h3 className="font-mono text-xs text-text-muted uppercase mb-3">native apps</h3>
               <div className="space-y-1 text-sm">
@@ -241,11 +241,18 @@ export default function DownloadPage() {
               </div>
             </div>
             <div className="glass p-5">
+              <h3 className="font-mono text-xs text-text-muted uppercase mb-3">editors &amp; terminals</h3>
+              <div className="space-y-1 text-sm">
+                <p>Cursor &middot; VS Code &middot; Windsurf</p>
+                <p>Terminal &middot; iTerm2 &middot; Warp &middot; Ghostty</p>
+              </div>
+            </div>
+            <div className="glass p-5">
               <h3 className="font-mono text-xs text-text-muted uppercase mb-3">web apps</h3>
               <div className="space-y-1 text-sm">
                 <p>claude.ai &middot; chatgpt.com &middot; grok.com</p>
                 <p className="text-text-muted text-xs mt-2">
-                  Safari (macOS) &middot; Chrome &middot; Firefox &middot; Brave &middot; Edge &middot; Opera &middot; Chromium
+                  Safari &middot; Chrome &middot; Firefox &middot; Brave &middot; Edge
                 </p>
               </div>
             </div>
