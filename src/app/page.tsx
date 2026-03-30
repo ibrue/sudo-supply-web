@@ -50,15 +50,15 @@ export default function Home() {
           &gt; features
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="border border-border p-6">
+          <div className="glass p-6 hover:border-accent transition-colors">
             <h3 className="font-mono text-accent text-xs mb-3">cross-platform</h3>
             <p className="text-text-muted text-sm">Native apps for macOS, Windows, and Linux. Works with any AI agent in any browser or native app.</p>
           </div>
-          <div className="border border-border p-6">
+          <div className="glass p-6 hover:border-accent transition-colors">
             <h3 className="font-mono text-accent text-xs mb-3">customizable</h3>
             <p className="text-text-muted text-sm">Simple mode for system shortcuts, complex mode for AI agent control. Fully configurable key bindings.</p>
           </div>
-          <div className="border border-border p-6">
+          <div className="glass p-6 hover:border-accent transition-colors">
             <h3 className="font-mono text-accent text-xs mb-3">open firmware</h3>
             <p className="text-text-muted text-sm">QMK firmware with VIA and Vial support. Remap keys live without reflashing.</p>
           </div>

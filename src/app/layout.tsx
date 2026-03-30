@@ -8,6 +8,8 @@ import { Analytics } from "@vercel/analytics/react";
 import { CartProvider } from "@/context/CartContext";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
+import { SudoToast } from "@/components/SudoToast";
+import { LivePurchaseFeed } from "@/components/LivePurchaseFeed";
 
 const mono = localFont({
   src: "./fonts/GeistMonoVF.woff",
@@ -72,8 +74,10 @@ export default function RootLayout({
         <body className={`${mono.variable} ${pixel.variable} font-mono antialiased`}>
           <CartProvider>
             <Nav />
-            <main className="min-h-screen">{children}</main>
+            <main className="relative z-10 min-h-screen">{children}</main>
             <Footer />
+            <SudoToast />
+            <LivePurchaseFeed />
             <SpeedInsights />
             <Analytics />
           </CartProvider>

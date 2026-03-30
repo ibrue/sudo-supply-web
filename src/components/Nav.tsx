@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useAuth, UserButton } from "@clerk/nextjs";
+import { AdminLink } from "./AdminLink";
 
 export function Nav() {
   const { totalItems } = useCart();
@@ -24,6 +25,9 @@ export function Nav() {
           <Link href="/about" className="hover-accent text-text-muted hover:text-text transition-colors">
             ~/about
           </Link>
+          <Link href="/bulk" className="hover-accent text-text-muted hover:text-text transition-colors">
+            ~/bulk
+          </Link>
           <Link href="/cart" className="hover-accent text-text-muted hover:text-text transition-colors">
             ~/cart{totalItems > 0 && <span className="text-accent ml-1">[{totalItems}]</span>}
           </Link>
@@ -33,6 +37,7 @@ export function Nav() {
               <Link href="/account" className="hover-accent text-text-muted hover:text-text transition-colors">
                 ~/account
               </Link>
+              <AdminLink />
               <UserButton
                 appearance={{
                   elements: {

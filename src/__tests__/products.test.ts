@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { products, getProduct } from "@/lib/products";
+import { products, staticProducts } from "@/lib/products";
 
 describe("products", () => {
   it("should have at least one product", () => {
@@ -22,13 +22,13 @@ describe("products", () => {
     expect(new Set(slugs).size).toBe(slugs.length);
   });
 
-  it("getProduct should return correct product by slug", () => {
-    const product = getProduct("sudo-macro-pad-v1");
+  it("staticProducts should contain the macro pad", () => {
+    const product = staticProducts.find((p) => p.slug === "sudo-macro-pad-v1");
     expect(product).toBeDefined();
     expect(product!.name).toBe("sudo macro pad v1");
   });
 
-  it("getProduct should return undefined for unknown slug", () => {
-    expect(getProduct("nonexistent")).toBeUndefined();
+  it("staticProducts should not contain nonexistent slug", () => {
+    expect(staticProducts.find((p) => p.slug === "nonexistent")).toBeUndefined();
   });
 });

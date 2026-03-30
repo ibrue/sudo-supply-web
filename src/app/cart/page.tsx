@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { createCheckout } from "@/lib/shopify";
+import { toastBus, sudoCmd } from "@/lib/toastBus";
 
 function dotFill(label: string, amount: string, width: number = 50) {
   const contentLen = label.length + amount.length;
@@ -19,6 +20,7 @@ export default function CartPage() {
   async function handleCheckout() {
     setCheckingOut(true);
     setError(null);
+    toastBus.emit(sudoCmd.checkout(totalPrice.toFixed(2)), "Redirecting to secure checkout...");
 
     try {
       // Map cart items to Shopify line items
@@ -46,7 +48,7 @@ export default function CartPage() {
     <div className="pt-24 pb-16 px-6 max-w-3xl mx-auto">
       <p className="text-text-muted text-sm mb-8 animate-fade-in">~/cart</p>
 
-      <div className="font-mono text-sm animate-fade-in-delay">
+      <div className="font-mono text-sm animate-fade-in-delay glass p-6">
         <p className="text-accent mb-4">cart@sudo.supply ~&gt;</p>
 
         {items.length === 0 ? (

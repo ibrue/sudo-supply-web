@@ -2,6 +2,15 @@
 
 import { createContext, useContext, useState, useCallback, ReactNode } from "react";
 import { Product } from "@/lib/products";
+import { toastBus, sudoCmd } from "@/lib/toastBus";
+
+function trackCartActivity(slug: string, action: "add" | "remove") {
+  fetch("/api/cart-activity", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ slug, action }),
+  }).catch(() => {});
+}
 
 export interface CartItem {
   product: Product;
@@ -26,6 +35,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const addItem = useCallback((product: Product) => {
     setItems((prev) => {
       const existing = prev.find((i) => i.product.slug === product.slug);
+      const newQty = existing ? existing.quantity + 1 : 1;
+      toastBus.emit(
+        sudoCmd.addToCart(product.slug, 1),
+        `Package ${product.slug} (qty: ${newQty}) added to cart.`
+      );
+      trackCartActivity(product.slug, "add");
       if (existing) {
         return prev.map((i) =>
           i.product.slug === product.slug
@@ -38,14 +53,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const removeItem = useCallback((slug: string) => {
+    toastBus.emit(sudoCmd.removeFromCart(slug), `Package ${slug} removed.`);
+    trackCartActivity(slug, "remove");
     setItems((prev) => prev.filter((i) => i.product.slug !== slug));
   }, []);
 
   const updateQuantity = useCallback((slug: string, quantity: number) => {
     if (quantity <= 0) {
+      toastBus.emit(sudoCmd.removeFromCart(slug), `Package ${slug} removed.`);
       setItems((prev) => prev.filter((i) => i.product.slug !== slug));
       return;
     }
+    toastBus.emit(sudoCmd.updateQty(slug, quantity), `Quantity updated to ${quantity}.`);
     setItems((prev) =>
       prev.map((i) =>
         i.product.slug === slug ? { ...i, quantity } : i
@@ -53,7 +72,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   }, []);
 
-  const clearCart = useCallback(() => setItems([]), []);
+  const clearCart = useCallback(() => {
+    toastBus.emit(sudoCmd.clearCart(), "All packages removed.");
+    setItems([]);
+  }, []);
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0);
   const totalPrice = items.reduce(

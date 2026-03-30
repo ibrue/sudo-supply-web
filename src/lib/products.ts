@@ -1,3 +1,5 @@
+import { createServiceClient } from "./supabase";
+
 export interface Product {
   slug: string;
   name: string;
@@ -7,10 +9,12 @@ export interface Product {
   inStock: boolean;
   image: string;
   specs: Record<string, string>;
-  shopifyVariantId?: string; // Shopify variant GID — set this after connecting your store
+  shopifyVariantId?: string;
+  soldCount?: number;
 }
 
-export const products: Product[] = [
+/** Static fallback products — used when Supabase is unavailable */
+export const staticProducts: Product[] = [
   {
     slug: "sudo-macro-pad-v1",
     name: "sudo macro pad v1",
@@ -51,6 +55,57 @@ export const products: Product[] = [
   },
 ];
 
-export function getProduct(slug: string): Product | undefined {
-  return products.find((p) => p.slug === slug);
+function dbRowToProduct(row: Record<string, unknown>): Product {
+  return {
+    slug: row.slug as string,
+    name: row.name as string,
+    price: Number(row.price),
+    description: row.description as string,
+    longDescription: (row.long_description as string) || "",
+    inStock: row.in_stock as boolean,
+    image: row.image as string,
+    specs: (row.specs as Record<string, string>) || {},
+    shopifyVariantId: (row.shopify_variant_id as string) || undefined,
+    soldCount: (row.sold_count as number) || 0,
+  };
 }
+
+/** Fetch all products from Supabase, falling back to static data */
+export async function getProducts(): Promise<Product[]> {
+  try {
+    const supabase = createServiceClient();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("sort_order", { ascending: true });
+
+    if (error || !data || data.length === 0) {
+      return staticProducts;
+    }
+    return data.map(dbRowToProduct);
+  } catch {
+    return staticProducts;
+  }
+}
+
+/** Fetch a single product by slug */
+export async function getProduct(slug: string): Promise<Product | undefined> {
+  try {
+    const supabase = createServiceClient();
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .eq("slug", slug)
+      .single();
+
+    if (error || !data) {
+      return staticProducts.find((p) => p.slug === slug);
+    }
+    return dbRowToProduct(data);
+  } catch {
+    return staticProducts.find((p) => p.slug === slug);
+  }
+}
+
+/** Synchronous access to static products (for generateStaticParams, tests, etc.) */
+export const products = staticProducts;

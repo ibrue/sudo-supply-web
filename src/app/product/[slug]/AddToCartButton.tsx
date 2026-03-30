@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Product } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
 
@@ -49,6 +50,11 @@ export function AddToCartButton({ product }: { product: Product }) {
         <p className="text-text-muted text-xs mt-2 text-center">
           ships when back in stock
         </p>
+      )}
+      {quantity >= 5 && (
+        <Link href="/bulk" className="block text-accent text-xs mt-3 text-center hover-accent">
+          ordering {quantity}+? check bulk pricing &rarr;
+        </Link>
       )}
     </div>
   );

@@ -75,7 +75,7 @@ export function QASection({ slug }: { slug: string }) {
       ) : (
         <div className="space-y-4 mb-6">
           {questions.map((q) => (
-            <div key={q.id} className="border border-border p-4">
+            <div key={q.id} className="glass p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-accent text-xs">Q:</span>
                 <span className="text-text-muted text-xs">{q.user_name}</span>
@@ -139,7 +139,7 @@ export function QASection({ slug }: { slug: string }) {
       )}
 
       {isSignedIn && (
-        <form onSubmit={handleAskQuestion} className="border border-border p-4 space-y-4">
+        <form onSubmit={handleAskQuestion} className="glass p-4 space-y-4">
           <p className="text-xs text-text-muted">ask a question</p>
           <textarea
             value={questionBody}

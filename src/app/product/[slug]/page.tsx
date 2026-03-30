@@ -4,19 +4,20 @@ import { products, getProduct } from "@/lib/products";
 import { AddToCartButton } from "./AddToCartButton";
 import { ReviewSection } from "./ReviewSection";
 import { QASection } from "./QASection";
+import { SocialProofBadge } from "@/components/SocialProofBadge";
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }) {
-  const product = getProduct(params.slug);
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const product = await getProduct(params.slug);
   if (!product) return { title: "not found \u2014 sudo.supply" };
   return { title: `${product.name} \u2014 sudo.supply` };
 }
 
-export default function ProductPage({ params }: { params: { slug: string } }) {
-  const product = getProduct(params.slug);
+export default async function ProductPage({ params }: { params: { slug: string } }) {
+  const product = await getProduct(params.slug);
   if (!product) notFound();
 
   return (
@@ -27,7 +28,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 animate-fade-in-delay">
         {/* Image */}
-        <div className="relative aspect-square bg-bg-secondary border border-border overflow-hidden">
+        <div className="relative aspect-square bg-bg-secondary glass overflow-hidden">
           <Image
             src={product.image}
             alt={product.name}
@@ -53,12 +54,14 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
             </span>
           </div>
 
-          <p className="text-text-muted text-sm leading-relaxed mb-8">
+          <SocialProofBadge slug={product.slug} soldCount={product.soldCount} />
+
+          <p className="text-text-muted text-sm leading-relaxed mb-8 mt-4">
             {product.longDescription}
           </p>
 
           {/* Specs */}
-          <div className="border border-border mb-8">
+          <div className="glass mb-8">
             <div className="px-4 py-2 border-b border-border text-text-muted text-xs uppercase tracking-wider">
               specifications
             </div>

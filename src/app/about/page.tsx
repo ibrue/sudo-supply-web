@@ -10,7 +10,7 @@ export default function AboutPage() {
     <div className="pt-24 pb-16 px-6 max-w-3xl mx-auto">
       <p className="text-text-muted text-sm mb-8 animate-fade-in">~/about</p>
 
-      <div className="space-y-8 text-sm leading-relaxed animate-fade-in-delay">
+      <div className="space-y-8 text-sm leading-relaxed animate-fade-in-delay glass p-6">
         <section>
           <h2 className="font-mono text-xs text-accent mb-4">&gt; the story</h2>
           <p className="text-text-muted">

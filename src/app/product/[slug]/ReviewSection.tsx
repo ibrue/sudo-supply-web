@@ -63,7 +63,7 @@ export function ReviewSection({ slug }: { slug: string }) {
       ) : (
         <div className="space-y-4 mb-6">
           {reviews.map((review) => (
-            <div key={review.id} className="border border-border p-4">
+            <div key={review.id} className="glass p-4">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-accent text-xs font-mono">[{renderStars(review.rating)}]</span>
                 <span className="text-text-muted text-xs">{review.user_name}</span>
@@ -80,7 +80,7 @@ export function ReviewSection({ slug }: { slug: string }) {
       )}
 
       {isSignedIn && (
-        <form onSubmit={handleSubmit} className="border border-border p-4 space-y-4">
+        <form onSubmit={handleSubmit} className="glass p-4 space-y-4">
           <p className="text-xs text-text-muted">write a review</p>
           <div className="flex items-center gap-2">
             <span className="text-text-muted text-xs">rating:</span>
