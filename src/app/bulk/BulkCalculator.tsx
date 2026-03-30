@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Product } from "@/lib/products";
-import { getBulkPrice } from "@/lib/bulkPricing";
+import { getBulkPrice, PricingTier } from "@/lib/bulkPricing";
 import { toastBus, sudoCmd } from "@/lib/toastBus";
 
 function dotFill(label: string, value: string, width: number = 45) {
@@ -10,12 +10,12 @@ function dotFill(label: string, value: string, width: number = 45) {
   return `${label} ${"·".repeat(dots)} ${value}`;
 }
 
-export function BulkCalculator({ products }: { products: Product[] }) {
+export function BulkCalculator({ products, tiers }: { products: Product[]; tiers?: PricingTier[] }) {
   const [selectedSlug, setSelectedSlug] = useState(products[0]?.slug || "");
   const [quantity, setQuantity] = useState(5);
 
   const product = products.find((p) => p.slug === selectedSlug) || products[0];
-  const { perUnit, total, savings, tier } = getBulkPrice(product?.price || 29, quantity);
+  const { perUnit, total, savings, tier } = getBulkPrice(product?.price || 29, quantity, tiers);
 
   function handleCalculate() {
     toastBus.emit(

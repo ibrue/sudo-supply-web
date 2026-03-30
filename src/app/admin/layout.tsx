@@ -30,6 +30,9 @@ export default async function AdminLayout({
         <Link href="/admin/bulk" className="hover-accent text-text-muted hover:text-text transition-colors">
           bulk inquiries
         </Link>
+        <Link href="/admin/pricing" className="hover-accent text-text-muted hover:text-text transition-colors">
+          pricing
+        </Link>
       </div>
       {children}
     </div>

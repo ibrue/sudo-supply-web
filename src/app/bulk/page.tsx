@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { products } from "@/lib/products";
-import { tiers } from "@/lib/bulkPricing";
+import { defaultTiers, PricingTier } from "@/lib/bulkPricing";
+import { createServiceClient } from "@/lib/supabase";
 import { BulkCalculator } from "./BulkCalculator";
 import { BulkInquiryForm } from "./BulkInquiryForm";
 
@@ -8,7 +9,26 @@ export const metadata: Metadata = {
   title: "bulk orders — sudo.supply",
 };
 
-export default function BulkPage() {
+async function loadTiers(): Promise<PricingTier[]> {
+  try {
+    const supabase = createServiceClient();
+    const { data } = await supabase
+      .from("settings")
+      .select("value")
+      .eq("key", "bulk_pricing_tiers")
+      .single();
+    if (Array.isArray(data?.value) && data.value.length > 0) {
+      return data.value;
+    }
+  } catch {
+    // Table may not exist yet
+  }
+  return defaultTiers;
+}
+
+export default async function BulkPage() {
+  const tiers = await loadTiers();
+
   return (
     <div className="pt-24 pb-16 px-6 max-w-4xl mx-auto">
       <p className="text-text-muted text-sm mb-8 animate-fade-in">~/bulk</p>
@@ -55,7 +75,7 @@ export default function BulkPage() {
       </div>
 
       {/* Calculator */}
-      <BulkCalculator products={products} />
+      <BulkCalculator products={products} tiers={tiers} />
 
       {/* Inquiry form */}
       <BulkInquiryForm products={products} />
