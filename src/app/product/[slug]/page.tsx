@@ -22,12 +22,12 @@ export default async function ProductPage({ params }: { params: { slug: string }
   if (!product) notFound();
 
   return (
-    <div className="pt-24 pb-16 px-6 max-w-6xl mx-auto">
+    <div className="pt-24 pb-16 px-4 sm:px-6 max-w-6xl mx-auto">
       <p className="text-text-muted text-sm mb-8 animate-fade-in">
         ~/shop/{product.slug}
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 animate-fade-in-delay">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 animate-fade-in-delay">
         {/* Image */}
         <div className="relative aspect-square bg-bg-secondary glass overflow-hidden">
           <Image

@@ -30,7 +30,7 @@ export default async function BulkPage() {
   const tiers = await loadTiers();
 
   return (
-    <div className="pt-24 pb-16 px-6 max-w-4xl mx-auto">
+    <div className="pt-24 pb-16 px-4 sm:px-6 max-w-4xl mx-auto">
       <p className="text-text-muted text-sm mb-8 animate-fade-in">~/bulk</p>
 
       {/* Intro */}

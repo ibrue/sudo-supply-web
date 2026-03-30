@@ -6,12 +6,6 @@ import { useCart } from "@/context/CartContext";
 import { createCheckout } from "@/lib/shopify";
 import { toastBus, sudoCmd } from "@/lib/toastBus";
 
-function dotFill(label: string, amount: string, width: number = 50) {
-  const contentLen = label.length + amount.length;
-  const dots = Math.max(2, width - contentLen);
-  return `${label} ${"·".repeat(dots)} ${amount}`;
-}
-
 export default function CartPage() {
   const { items, updateQuantity, removeItem, totalPrice } = useCart();
   const [checkingOut, setCheckingOut] = useState(false);
@@ -23,17 +17,12 @@ export default function CartPage() {
     toastBus.emit(sudoCmd.checkout(totalPrice.toFixed(2)), "Redirecting to secure checkout...");
 
     try {
-      // Map cart items to Shopify line items
-      // For now, use the product slug as a placeholder variant ID.
-      // In production, these would be real Shopify variant GIDs.
       const lineItems = items.map((item) => ({
         variantId: item.product.shopifyVariantId || item.product.slug,
         quantity: item.quantity,
       }));
 
       const checkout = await createCheckout(lineItems);
-
-      // Redirect to Shopify hosted checkout
       window.location.href = checkout.webUrl;
     } catch (err) {
       console.error("Checkout error:", err);
@@ -45,10 +34,10 @@ export default function CartPage() {
   }
 
   return (
-    <div className="pt-24 pb-16 px-6 max-w-3xl mx-auto">
+    <div className="pt-24 pb-16 px-4 sm:px-6 max-w-3xl mx-auto">
       <p className="text-text-muted text-sm mb-8 animate-fade-in">~/cart</p>
 
-      <div className="font-mono text-sm animate-fade-in-delay glass p-6">
+      <div className="font-mono text-sm animate-fade-in-delay glass p-4 sm:p-6">
         <p className="text-accent mb-4">cart@sudo.supply ~&gt;</p>
 
         {items.length === 0 ? (
@@ -60,52 +49,48 @@ export default function CartPage() {
           </div>
         ) : (
           <>
-            <div className="space-y-3 mb-6">
+            <div className="space-y-4 mb-6">
               {items.map((item, i) => (
-                <div key={item.product.slug} className="flex items-center gap-4">
-                  <span className="text-text-muted flex-shrink-0">
-                    item_{i + 1}:
-                  </span>
-                  <span className="flex-1 overflow-hidden">
-                    <span className="whitespace-pre">
-                      {dotFill(
-                        `${item.product.name} × ${item.quantity}`,
-                        `$${(item.product.price * item.quantity).toFixed(2)}`
-                      )}
+                <div key={item.product.slug} className="border-b border-border pb-3 last:border-0">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-text-muted text-xs">item_{i + 1}:</span>
+                    <span className="text-text text-xs sm:text-sm truncate ml-2">{item.product.name}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => updateQuantity(item.product.slug, item.quantity - 1)}
+                        className="text-text-muted hover:text-accent text-xs"
+                      >
+                        [-]
+                      </button>
+                      <span className="tabular-nums">{item.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(item.product.slug, item.quantity + 1)}
+                        className="text-text-muted hover:text-accent text-xs"
+                      >
+                        [+]
+                      </button>
+                      <button
+                        onClick={() => removeItem(item.product.slug)}
+                        className="text-text-muted hover:text-error text-xs ml-2"
+                      >
+                        [x]
+                      </button>
+                    </div>
+                    <span className="tabular-nums">
+                      ${(item.product.price * item.quantity).toFixed(2)}
                     </span>
-                  </span>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.product.slug, item.quantity - 1)
-                      }
-                      className="text-text-muted hover:text-accent text-xs"
-                    >
-                      [-]
-                    </button>
-                    <button
-                      onClick={() =>
-                        updateQuantity(item.product.slug, item.quantity + 1)
-                      }
-                      className="text-text-muted hover:text-accent text-xs"
-                    >
-                      [+]
-                    </button>
-                    <button
-                      onClick={() => removeItem(item.product.slug)}
-                      className="text-text-muted hover:text-error text-xs"
-                    >
-                      [x]
-                    </button>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="border-t border-border my-4" />
-
-            <div className="whitespace-pre text-base mb-8">
-              {dotFill("total:", `$${totalPrice.toFixed(2)}`)}
+            <div className="border-t border-border pt-4 mb-6">
+              <div className="flex justify-between text-base">
+                <span>total:</span>
+                <span className="tabular-nums">${totalPrice.toFixed(2)}</span>
+              </div>
             </div>
 
             {error && (

@@ -29,7 +29,7 @@ export function LivePurchaseFeed() {
   if (!visible || events.length === 0) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 z-40 max-w-xs">
+    <div className="fixed bottom-2 left-2 sm:bottom-4 sm:left-4 z-40 max-w-[calc(100vw-1rem)] sm:max-w-xs hidden sm:block">
       <div className="glass-accent p-3">
         <div className="flex items-center justify-between mb-2">
           <span className="text-accent text-xs font-mono">&gt; live_feed</span>

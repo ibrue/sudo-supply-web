@@ -58,29 +58,29 @@ export function BulkCalculator({ products, tiers }: { products: Product[]; tiers
       </div>
 
       {/* Terminal-style price breakdown */}
-      <div className="font-mono text-sm space-y-1 mb-4">
+      <div className="font-mono text-xs sm:text-sm space-y-1 mb-4 overflow-x-auto">
         <p className="text-accent">bulk@sudo.supply ~&gt;</p>
-        <p className="whitespace-pre text-text-muted">
-          {dotFill("retail_price", `$${(product?.price || 29).toFixed(2)}`)}
+        <p className="whitespace-nowrap text-text-muted">
+          {dotFill("retail_price", `$${(product?.price || 29).toFixed(2)}`, 35)}
         </p>
-        <p className="whitespace-pre text-text-muted">
-          {dotFill("quantity", String(quantity))}
+        <p className="whitespace-nowrap text-text-muted">
+          {dotFill("quantity", String(quantity), 35)}
         </p>
         {tier && tier.discountPercent > 0 && (
-          <p className="whitespace-pre text-accent">
-            {dotFill("discount", `${tier.discountPercent}% (${tier.label})`)}
+          <p className="whitespace-nowrap text-accent">
+            {dotFill("discount", `${tier.discountPercent}% (${tier.label})`, 35)}
           </p>
         )}
-        <p className="whitespace-pre">
-          {dotFill("unit_price", `$${perUnit.toFixed(2)}`)}
+        <p className="whitespace-nowrap">
+          {dotFill("unit_price", `$${perUnit.toFixed(2)}`, 35)}
         </p>
         <div className="border-t border-border my-2" />
-        <p className="whitespace-pre text-base">
-          {dotFill("total", `$${total.toFixed(2)}`)}
+        <p className="whitespace-nowrap text-sm sm:text-base">
+          {dotFill("total", `$${total.toFixed(2)}`, 35)}
         </p>
         {savings > 0 && (
-          <p className="whitespace-pre text-accent">
-            {dotFill("savings", `$${savings.toFixed(2)}`)}
+          <p className="whitespace-nowrap text-accent">
+            {dotFill("savings", `$${savings.toFixed(2)}`, 35)}
           </p>
         )}
       </div>

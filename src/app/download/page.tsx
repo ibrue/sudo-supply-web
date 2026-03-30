@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function DownloadPage() {
   return (
-    <div className="pt-24 pb-16 px-6 max-w-4xl mx-auto">
+    <div className="pt-24 pb-16 px-4 sm:px-6 max-w-4xl mx-auto">
       <p className="text-text-muted text-sm mb-8 animate-fade-in">~/download</p>
 
       <div className="space-y-10 animate-fade-in-delay">

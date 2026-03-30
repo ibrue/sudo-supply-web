@@ -7,7 +7,7 @@ export function ProductCard({ product }: { product: Product }) {
   return (
     <Link
       href={`/product/${product.slug}`}
-      className="block glass p-4 hover:border-accent transition-colors group"
+      className="block glass p-3 sm:p-4 hover:border-accent transition-colors group"
     >
       <div className="relative aspect-square bg-bg-secondary mb-4 overflow-hidden">
         <Image
