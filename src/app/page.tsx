@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { products } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
+import { TerminalLink } from "@/components/TerminalLink";
 
 export default function Home() {
   return (
@@ -22,12 +22,12 @@ export default function Home() {
             open-source macro pad + cross-platform companion app for macOS, Windows &amp; Linux
           </p>
           <div className="mt-10 flex items-center justify-center gap-4">
-            <Link href="/shop" className="btn-terminal">
+            <TerminalLink href="/shop">
               [ browse products ]
-            </Link>
-            <Link href="/download" className="btn-terminal">
+            </TerminalLink>
+            <TerminalLink href="/download">
               [ download app ]
-            </Link>
+            </TerminalLink>
           </div>
         </div>
       </section>

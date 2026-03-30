@@ -6,10 +6,10 @@ export interface PricingTier {
 }
 
 export const tiers: PricingTier[] = [
-  { min: 5, max: 9, discountPercent: 10, label: "5–9 units" },
-  { min: 10, max: 24, discountPercent: 15, label: "10–24 units" },
-  { min: 25, max: 49, discountPercent: 20, label: "25–49 units" },
-  { min: 50, max: 99, discountPercent: 25, label: "50–99 units" },
+  { min: 5, max: 9, discountPercent: 20, label: "5–9 units" },
+  { min: 10, max: 24, discountPercent: 25, label: "10–24 units" },
+  { min: 25, max: 49, discountPercent: 30, label: "25–49 units" },
+  { min: 50, max: 99, discountPercent: 35, label: "50–99 units" },
   { min: 100, max: null, discountPercent: 0, label: "100+ units" },
 ];
 
