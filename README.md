@@ -30,6 +30,9 @@ npm run dev                   # http://localhost:3000
 - Live purchase feed (social proof)
 - Pre-order support for out-of-stock products
 - Product reviews and Q&A
+- Public analytics dashboard (anonymous usage telemetry from the companion app)
+- Telemetry API endpoint for opt-in usage data ingestion
+- Bug reports API for in-app bug reporting from the companion app menu bar
 
 ## Design tokens
 
