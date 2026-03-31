@@ -26,6 +26,7 @@ export function Nav() {
           <Link href="/download" className={linkClass}>~/app</Link>
           <Link href="/about" className={linkClass}>~/about</Link>
           <Link href="/bulk" className={linkClass}>~/bulk</Link>
+          <Link href="/analytics" className={linkClass}>~/analytics</Link>
           <Link href="/cart" className={linkClass}>
             ~/cart{totalItems > 0 && <span className="text-accent ml-1">[{totalItems}]</span>}
           </Link>
@@ -62,6 +63,7 @@ export function Nav() {
             <Link href="/download" onClick={() => setMenuOpen(false)} className={linkClass}>~/app</Link>
             <Link href="/about" onClick={() => setMenuOpen(false)} className={linkClass}>~/about</Link>
             <Link href="/bulk" onClick={() => setMenuOpen(false)} className={linkClass}>~/bulk</Link>
+            <Link href="/analytics" onClick={() => setMenuOpen(false)} className={linkClass}>~/analytics</Link>
             {isSignedIn === true ? (
               <>
                 <Link href="/account" onClick={() => setMenuOpen(false)} className={linkClass}>~/account</Link>
