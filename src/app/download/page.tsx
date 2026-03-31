@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "download [sudo] \u2014 sudo.supply",
+  title: "download [sudo] — sudo.supply",
   description: "Download the [sudo] companion app for macOS, Windows, and Linux. Control AI agents with a physical macro pad.",
 };
 
@@ -17,8 +17,8 @@ export default function DownloadPage() {
             <h2 className="font-pixel text-white text-3xl">[sudo]</h2>
           </div>
           <p className="text-text-muted text-sm leading-relaxed max-w-md mx-auto">
-            The cross-platform companion app for your sudo macro pad.
-            Approve, reject, and control AI agents with a physical button press.
+            the cross-platform companion app for your sudo macro pad.
+            approve, reject, and control AI agents with a physical button press.
           </p>
           <p className="text-text-muted text-xs mt-2">
             macOS &middot; Windows &middot; Linux
@@ -91,25 +91,27 @@ export default function DownloadPage() {
           <h2 className="font-mono text-xs text-accent mb-4">&gt; button modes</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="glass p-5">
-              <h3 className="font-mono text-sm text-accent mb-2">simple mode</h3>
+              <h3 className="font-mono text-sm text-accent mb-2">ai search mode</h3>
               <p className="text-text-muted text-xs mb-3">
-                Assign preset system shortcuts to each button.
-              </p>
-              <ul className="text-xs text-text-muted space-y-1">
-                <li><span className="text-accent">&#9679;</span> screenshot, copy, paste, undo</li>
-                <li><span className="text-accent">&#9679;</span> save, lock screen, media controls</li>
-                <li><span className="text-accent">&#9679;</span> custom keyboard shortcuts</li>
-              </ul>
-            </div>
-            <div className="glass p-5">
-              <h3 className="font-mono text-sm text-accent mb-2">complex mode</h3>
-              <p className="text-text-muted text-xs mb-3">
-                AI agent button-finding with customizable search terms.
+                automatically find and press buttons in AI apps using a 3-strategy pipeline.
               </p>
               <ul className="text-xs text-text-muted space-y-1">
                 <li><span className="text-accent">&#9679;</span> accessibility tree detection</li>
-                <li><span className="text-accent">&#9679;</span> OCR vision fallback</li>
+                <li><span className="text-accent">&#9679;</span> vision OCR fallback</li>
+                <li><span className="text-accent">&#9679;</span> keyboard fallback</li>
                 <li><span className="text-accent">&#9679;</span> custom button labels per app</li>
+              </ul>
+            </div>
+            <div className="glass p-5">
+              <h3 className="font-mono text-sm text-accent mb-2">shortcuts & macros</h3>
+              <p className="text-text-muted text-xs mb-3">
+                assign keyboard shortcuts, media keys, or macro sequences to each button.
+              </p>
+              <ul className="text-xs text-text-muted space-y-1">
+                <li><span className="text-accent">&#9679;</span> keyboard shortcuts & media keys</li>
+                <li><span className="text-accent">&#9679;</span> macro sequences with delays</li>
+                <li><span className="text-accent">&#9679;</span> per-app profiles with auto-switching</li>
+                <li><span className="text-accent">&#9679;</span> auto-approve rules engine</li>
               </ul>
             </div>
           </div>
@@ -126,19 +128,19 @@ export default function DownloadPage() {
                 <div className="bg-bg border border-border rounded px-3 py-2 mb-3 text-center">
                   <span className="font-mono text-accent text-xs font-bold">[sudo]</span>
                 </div>
-                {/* Buttons — top to bottom: black, red, yellow, green */}
+                {/* Buttons — top to bottom: 4 black, 3 red, 2 yellow, 1 green */}
                 {[
-                  { color: "bg-[#2a2a2a]", border: "border-[#3a3a3a]", label: "F16", name: "yolo (allow all)", key: "Ctrl+Shift+F16" },
-                  { color: "bg-[#c85c5c]", border: "border-[#a04848]", label: "F14", name: "reject / no", key: "Ctrl+Shift+F14" },
-                  { color: "bg-[#d4b85c]", border: "border-[#b09840]", label: "F15", name: "make it better", key: "Ctrl+Shift+F15" },
-                  { color: "bg-[#6abf73]", border: "border-[#4a9f53]", label: "F13", name: "approve / yes", key: "Ctrl+Shift+F13" },
+                  { color: "bg-[#2a2a2a]", border: "border-[#3a3a3a]", num: "4", name: "yolo (allow all)", key: "Ctrl+Shift+F16" },
+                  { color: "bg-[#c85c5c]", border: "border-[#a04848]", num: "3", name: "reject / no", key: "Ctrl+Shift+F14" },
+                  { color: "bg-[#d4b85c]", border: "border-[#b09840]", num: "2", name: "make it better", key: "Ctrl+Shift+F15" },
+                  { color: "bg-[#6abf73]", border: "border-[#4a9f53]", num: "1", name: "approve / yes", key: "Ctrl+Shift+F13" },
                 ].map((btn) => (
                   <div
-                    key={btn.label}
+                    key={btn.num}
                     className={`${btn.color} ${btn.border} border rounded px-3 py-3 mb-2 last:mb-0`}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-white text-[10px] font-bold">{btn.label}</span>
+                      <span className="font-mono text-white text-[10px] font-bold">{btn.num}</span>
                       <span className="font-mono text-white text-[10px] opacity-80">{btn.name}</span>
                     </div>
                   </div>
@@ -160,10 +162,10 @@ export default function DownloadPage() {
                   </thead>
                   <tbody>
                     {[
-                      { btn: "F13", color: "#6abf73", colorName: "green", key: "Ctrl+Shift+F13", action: "approve / yes" },
-                      { btn: "F14", color: "#c85c5c", colorName: "red", key: "Ctrl+Shift+F14", action: "reject / no" },
-                      { btn: "F15", color: "#d4b85c", colorName: "yellow", key: "Ctrl+Shift+F15", action: "make it better" },
-                      { btn: "F16", color: "#2a2a2a", colorName: "black", key: "Ctrl+Shift+F16", action: "yolo (allow all)" },
+                      { btn: "1", color: "#6abf73", colorName: "green", key: "Ctrl+Shift+F13", action: "approve / yes" },
+                      { btn: "2", color: "#d4b85c", colorName: "yellow", key: "Ctrl+Shift+F15", action: "make it better" },
+                      { btn: "3", color: "#c85c5c", colorName: "red", key: "Ctrl+Shift+F14", action: "reject / no" },
+                      { btn: "4", color: "#2a2a2a", colorName: "black", key: "Ctrl+Shift+F16", action: "yolo (allow all)" },
                     ].map((row) => (
                       <tr key={row.btn} className="border-b border-border last:border-0">
                         <td className="px-4 py-2 text-accent font-mono">{row.btn}</td>
@@ -179,6 +181,78 @@ export default function DownloadPage() {
                 </table>
               </div>
               <p className="text-text-muted text-xs mt-2">all buttons are fully configurable in the app settings with quick presets</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Quick Presets */}
+        <section>
+          <h2 className="font-mono text-xs text-accent mb-4">&gt; quick presets</h2>
+          <div className="glass overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border text-text-muted text-xs uppercase">
+                  <th className="px-4 py-2 text-left font-normal">preset</th>
+                  <th className="px-4 py-2 text-left font-normal">description</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { preset: "ai agent", desc: "approve / reject / make it better / yolo for AI permission prompts" },
+                  { preset: "plan mode", desc: "plan-oriented actions for AI coding agents" },
+                  { preset: "claude code", desc: "optimized for claude code terminal workflows" },
+                  { preset: "system shortcuts", desc: "screenshot, copy, paste, undo, save, lock screen" },
+                  { preset: "media controls", desc: "play/pause, next, previous, volume" },
+                  { preset: "web browsing", desc: "tab navigation, back, forward, refresh" },
+                  { preset: "discord soundboard", desc: "trigger soundboard clips" },
+                ].map((row) => (
+                  <tr key={row.preset} className="border-b border-border last:border-0">
+                    <td className="px-4 py-2 text-accent font-mono whitespace-nowrap">{row.preset}</td>
+                    <td className="px-4 py-2 text-text-muted">{row.desc}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* Developer Tools */}
+        <section>
+          <h2 className="font-mono text-xs text-accent mb-4">&gt; developer tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="glass p-5">
+              <h3 className="font-mono text-sm text-accent mb-2">local API</h3>
+              <p className="text-text-muted text-xs mb-3">
+                HTTP API on port 7483 for scripting and automation.
+              </p>
+              <ul className="text-xs text-text-muted space-y-1">
+                <li><span className="text-accent">&#9679;</span> simulate button presses</li>
+                <li><span className="text-accent">&#9679;</span> read/write button config</li>
+                <li><span className="text-accent">&#9679;</span> webhook notifications</li>
+                <li><span className="text-accent">&#9679;</span> action history</li>
+              </ul>
+            </div>
+            <div className="glass p-5">
+              <h3 className="font-mono text-sm text-accent mb-2">MCP server</h3>
+              <p className="text-text-muted text-xs mb-3">
+                gate AI tool use behind physical button approval.
+              </p>
+              <ul className="text-xs text-text-muted space-y-1">
+                <li><span className="text-accent">&#9679;</span> POST /mcp/request-approval</li>
+                <li><span className="text-accent">&#9679;</span> blocks until button press</li>
+                <li><span className="text-accent">&#9679;</span> works with any MCP client</li>
+              </ul>
+            </div>
+            <div className="glass p-5">
+              <h3 className="font-mono text-sm text-accent mb-2">plugin system</h3>
+              <p className="text-text-muted text-xs mb-3">
+                extend functionality with json plugin files.
+              </p>
+              <ul className="text-xs text-text-muted space-y-1">
+                <li><span className="text-accent">&#9679;</span> drop .json files in plugins dir</li>
+                <li><span className="text-accent">&#9679;</span> custom actions & search terms</li>
+                <li><span className="text-accent">&#9679;</span> automation rules</li>
+              </ul>
             </div>
           </div>
         </section>
@@ -220,7 +294,7 @@ export default function DownloadPage() {
         <section>
           <h2 className="font-mono text-xs text-accent mb-4">&gt; firmware (QMK / VIA / Vial)</h2>
           <p className="text-text-muted text-sm mb-4">
-            The sudo macro pad runs QMK firmware on an RP2040 chip. Three keymap options are available:
+            the sudo macro pad runs QMK firmware on an RP2040 chip. three keymap options are available:
           </p>
           <div className="glass overflow-x-auto">
             <table className="w-full text-sm">
@@ -233,7 +307,7 @@ export default function DownloadPage() {
               </thead>
               <tbody>
                 {[
-                  { keymap: "default", features: "Ctrl+Shift+F13\u2013F16", reconfig: "reflash required" },
+                  { keymap: "default", features: "Ctrl+Shift+F13–F16", reconfig: "reflash required" },
                   { keymap: "VIA", features: "live remapping via usevia.app", reconfig: "no reflash needed" },
                   { keymap: "Vial", features: "auto-detection, no draft definition", reconfig: "no reflash needed" },
                 ].map((row) => (
@@ -281,7 +355,9 @@ export default function DownloadPage() {
               <h3 className="font-mono text-xs text-text-muted uppercase mb-3">editors &amp; terminals</h3>
               <div className="space-y-1 text-sm">
                 <p>Cursor &middot; VS Code &middot; Windsurf</p>
-                <p>Terminal &middot; iTerm2 &middot; Warp &middot; Ghostty</p>
+                <p>VSCodium &middot; VS Code Insiders</p>
+                <p>Terminal &middot; iTerm2 &middot; Warp</p>
+                <p>Ghostty &middot; Kitty &middot; Alacritty</p>
               </div>
             </div>
             <div className="glass p-5">
@@ -289,7 +365,7 @@ export default function DownloadPage() {
               <div className="space-y-1 text-sm">
                 <p>claude.ai &middot; chatgpt.com &middot; grok.com</p>
                 <p className="text-text-muted text-xs mt-2">
-                  Safari &middot; Chrome &middot; Firefox &middot; Brave &middot; Edge
+                  Safari &middot; Chrome &middot; Firefox &middot; Brave &middot; Edge &middot; Arc &middot; Opera
                 </p>
               </div>
             </div>

@@ -25,6 +25,23 @@ export default function AboutPage() {
 
         <section>
           <h2 className="font-mono text-xs text-accent mb-4">
+            &gt; the ecosystem
+          </h2>
+          <p className="text-text-muted mb-4">
+            what started as a single approve button has grown into a full
+            developer platform. the companion app detects AI apps automatically,
+            finds buttons via accessibility tree + OCR + keyboard fallback, and
+            supports macro sequences, per-app profiles, and quick presets for
+            everything from claude code to discord soundboards. a local developer
+            API on port 7483 with webhooks, an MCP server mode for gating AI tool
+            use behind physical approval, and a plugin system make it extensible.
+            anonymous telemetry feeds a public analytics dashboard, and OTA updates
+            keep everything current.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-mono text-xs text-accent mb-4">
             &gt; open source
           </h2>
           <p className="text-text-muted mb-4">
