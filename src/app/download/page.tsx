@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "download [sudo] — sudo.supply",
-  description: "Download the [sudo] companion app for macOS, Windows, and Linux. Control AI agents with a physical macro pad.",
+  title: "app [sudo] — sudo.supply",
+  description: "the [sudo] companion app for macOS, Windows, and Linux. control AI agents with a physical macro pad.",
 };
 
 export default function DownloadPage() {
   return (
     <div className="pt-24 pb-16 px-4 sm:px-6 max-w-4xl mx-auto">
-      <p className="text-text-muted text-sm mb-8 animate-fade-in">~/download</p>
+      <p className="text-text-muted text-sm mb-8 animate-fade-in">~/app</p>
 
       <div className="space-y-10 animate-fade-in-delay">
         {/* Hero */}
@@ -27,7 +27,7 @@ export default function DownloadPage() {
 
         {/* Downloads */}
         <section>
-          <h2 className="font-mono text-xs text-accent mb-6">&gt; download</h2>
+          <h2 className="font-mono text-xs text-accent mb-6">&gt; get the app</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* macOS */}
             <div className="glass-accent p-6">
@@ -117,71 +117,41 @@ export default function DownloadPage() {
           </div>
         </section>
 
-        {/* Default button map — visual device */}
-        <section>
-          <h2 className="font-mono text-xs text-accent mb-4">&gt; default button map</h2>
-          <div className="flex flex-col md:flex-row gap-8 items-start">
-            {/* Visual device */}
-            <div className="w-48 flex-shrink-0 mx-auto md:mx-0">
-              <div className="bg-[#1a1a1a] rounded-lg p-3 border border-border">
-                {/* Screen */}
-                <div className="bg-bg border border-border rounded px-3 py-2 mb-3 text-center">
-                  <span className="font-mono text-accent text-xs font-bold">[sudo]</span>
-                </div>
-                {/* Buttons — top to bottom: 4 black, 3 red, 2 yellow, 1 green */}
+        {/* Default button map — unified device */}
+        <section className="flex flex-col items-center">
+          <h2 className="font-mono text-xs text-accent mb-4 self-start">&gt; default button map</h2>
+          <div className="w-full max-w-sm">
+            <div className="bg-[#1a1a1a] rounded-2xl p-5 border border-border/60 shadow-lg">
+              {/* OLED screen */}
+              <div className="bg-bg border border-border rounded-lg px-4 py-2.5 mb-5 text-center">
+                <span className="font-pixel text-accent text-sm">[sudo]</span>
+              </div>
+              {/* Buttons — top to bottom: 4 black, 3 red, 2 yellow, 1 green */}
+              <div className="space-y-3">
                 {[
-                  { color: "bg-[#2a2a2a]", border: "border-[#3a3a3a]", num: "4", name: "yolo (allow all)", key: "Ctrl+Shift+F16" },
-                  { color: "bg-[#c85c5c]", border: "border-[#a04848]", num: "3", name: "reject / no", key: "Ctrl+Shift+F14" },
-                  { color: "bg-[#d4b85c]", border: "border-[#b09840]", num: "2", name: "make it better", key: "Ctrl+Shift+F15" },
-                  { color: "bg-[#6abf73]", border: "border-[#4a9f53]", num: "1", name: "approve / yes", key: "Ctrl+Shift+F13" },
+                  { bg: "bg-[#2a2a2a]", border: "border-[#444]", num: "4", colorName: "black", action: "yolo (allow all)", hotkey: "ctrl+shift+F16", textColor: "text-white" },
+                  { bg: "bg-[#c85c5c]", border: "border-[#a04848]", num: "3", colorName: "red", action: "reject / no", hotkey: "ctrl+shift+F14", textColor: "text-white" },
+                  { bg: "bg-[#d4b85c]", border: "border-[#b09840]", num: "2", colorName: "yellow", action: "make it better", hotkey: "ctrl+shift+F15", textColor: "text-[#1a1a1a]" },
+                  { bg: "bg-[#6abf73]", border: "border-[#4a9f53]", num: "1", colorName: "green", action: "approve / yes", hotkey: "ctrl+shift+F13", textColor: "text-[#1a1a1a]" },
                 ].map((btn) => (
                   <div
                     key={btn.num}
-                    className={`${btn.color} ${btn.border} border rounded px-3 py-3 mb-2 last:mb-0`}
+                    className={`${btn.bg} ${btn.border} border rounded-lg px-4 py-3`}
                   >
-                    <div className="flex items-center gap-2">
-                      <span className="font-mono text-white text-[10px] font-bold">{btn.num}</span>
-                      <span className="font-mono text-white text-[10px] opacity-80">{btn.name}</span>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className={`font-mono text-xs font-bold ${btn.textColor}`}>
+                        {btn.num} &mdash; {btn.colorName}
+                      </span>
                     </div>
+                    <p className={`font-mono text-sm ${btn.textColor} opacity-90`}>{btn.action}</p>
+                    <p className={`font-mono text-xs ${btn.textColor} opacity-50 mt-0.5`}>{btn.hotkey}</p>
                   </div>
                 ))}
               </div>
             </div>
-
-            {/* Button details table */}
-            <div className="flex-1 w-full">
-              <div className="glass">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-border text-text-muted text-xs uppercase">
-                      <th className="px-4 py-2 text-left font-normal">button</th>
-                      <th className="px-4 py-2 text-left font-normal">color</th>
-                      <th className="px-4 py-2 text-left font-normal">hotkey</th>
-                      <th className="px-4 py-2 text-left font-normal">action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[
-                      { btn: "1", color: "#6abf73", colorName: "green", key: "Ctrl+Shift+F13", action: "approve / yes" },
-                      { btn: "2", color: "#d4b85c", colorName: "yellow", key: "Ctrl+Shift+F15", action: "make it better" },
-                      { btn: "3", color: "#c85c5c", colorName: "red", key: "Ctrl+Shift+F14", action: "reject / no" },
-                      { btn: "4", color: "#2a2a2a", colorName: "black", key: "Ctrl+Shift+F16", action: "yolo (allow all)" },
-                    ].map((row) => (
-                      <tr key={row.btn} className="border-b border-border last:border-0">
-                        <td className="px-4 py-2 text-accent font-mono">{row.btn}</td>
-                        <td className="px-4 py-2 font-mono">
-                          <span className="inline-block w-3 h-3 rounded-sm mr-2" style={{ backgroundColor: row.color }} />
-                          <span className="text-text-muted text-xs">{row.colorName}</span>
-                        </td>
-                        <td className="px-4 py-2 font-mono text-text-muted text-xs">{row.key}</td>
-                        <td className="px-4 py-2 font-mono">{row.action}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <p className="text-text-muted text-xs mt-2">all buttons are fully configurable in the app settings with quick presets</p>
-            </div>
+            <p className="text-text-muted text-xs text-center mt-4">
+              all buttons are fully configurable with quick presets in the app
+            </p>
           </div>
         </section>
 
