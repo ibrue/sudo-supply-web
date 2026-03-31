@@ -115,35 +115,72 @@ export default function DownloadPage() {
           </div>
         </section>
 
-        {/* Default button map */}
+        {/* Default button map — visual device */}
         <section>
           <h2 className="font-mono text-xs text-accent mb-4">&gt; default button map</h2>
-          <div className="glass">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border text-text-muted text-xs uppercase">
-                  <th className="px-4 py-2 text-left font-normal">button</th>
-                  <th className="px-4 py-2 text-left font-normal">hotkey</th>
-                  <th className="px-4 py-2 text-left font-normal">action</th>
-                </tr>
-              </thead>
-              <tbody>
+          <div className="flex flex-col md:flex-row gap-8 items-start">
+            {/* Visual device */}
+            <div className="w-48 flex-shrink-0 mx-auto md:mx-0">
+              <div className="bg-[#1a1a1a] rounded-lg p-3 border border-border">
+                {/* Screen */}
+                <div className="bg-bg border border-border rounded px-3 py-2 mb-3 text-center">
+                  <span className="font-mono text-accent text-xs font-bold">[sudo]</span>
+                </div>
+                {/* Buttons — top to bottom: black, red, yellow, green */}
                 {[
-                  { btn: "1", key: "Ctrl+Shift+F13", action: "Approve / Yes" },
-                  { btn: "2", key: "Ctrl+Shift+F14", action: "Reject / No" },
-                  { btn: "3", key: "Ctrl+Shift+F15", action: "Continue" },
-                  { btn: "4", key: "Ctrl+Shift+F16", action: "Stop" },
-                ].map((row) => (
-                  <tr key={row.btn} className="border-b border-border last:border-0">
-                    <td className="px-4 py-2 text-accent font-mono">{row.btn}</td>
-                    <td className="px-4 py-2 font-mono text-text-muted">{row.key}</td>
-                    <td className="px-4 py-2">{row.action}</td>
-                  </tr>
+                  { color: "bg-[#2a2a2a]", border: "border-[#3a3a3a]", label: "F16", name: "yolo (allow all)", key: "Ctrl+Shift+F16" },
+                  { color: "bg-[#c85c5c]", border: "border-[#a04848]", label: "F14", name: "reject / no", key: "Ctrl+Shift+F14" },
+                  { color: "bg-[#d4b85c]", border: "border-[#b09840]", label: "F15", name: "make it better", key: "Ctrl+Shift+F15" },
+                  { color: "bg-[#6abf73]", border: "border-[#4a9f53]", label: "F13", name: "approve / yes", key: "Ctrl+Shift+F13" },
+                ].map((btn) => (
+                  <div
+                    key={btn.label}
+                    className={`${btn.color} ${btn.border} border rounded px-3 py-3 mb-2 last:mb-0`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-white text-[10px] font-bold">{btn.label}</span>
+                      <span className="font-mono text-white text-[10px] opacity-80">{btn.name}</span>
+                    </div>
+                  </div>
                 ))}
-              </tbody>
-            </table>
+              </div>
+            </div>
+
+            {/* Button details table */}
+            <div className="flex-1 w-full">
+              <div className="glass">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-border text-text-muted text-xs uppercase">
+                      <th className="px-4 py-2 text-left font-normal">button</th>
+                      <th className="px-4 py-2 text-left font-normal">color</th>
+                      <th className="px-4 py-2 text-left font-normal">hotkey</th>
+                      <th className="px-4 py-2 text-left font-normal">action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { btn: "F13", color: "#6abf73", colorName: "green", key: "Ctrl+Shift+F13", action: "approve / yes" },
+                      { btn: "F14", color: "#c85c5c", colorName: "red", key: "Ctrl+Shift+F14", action: "reject / no" },
+                      { btn: "F15", color: "#d4b85c", colorName: "yellow", key: "Ctrl+Shift+F15", action: "make it better" },
+                      { btn: "F16", color: "#2a2a2a", colorName: "black", key: "Ctrl+Shift+F16", action: "yolo (allow all)" },
+                    ].map((row) => (
+                      <tr key={row.btn} className="border-b border-border last:border-0">
+                        <td className="px-4 py-2 text-accent font-mono">{row.btn}</td>
+                        <td className="px-4 py-2 font-mono">
+                          <span className="inline-block w-3 h-3 rounded-sm mr-2" style={{ backgroundColor: row.color }} />
+                          <span className="text-text-muted text-xs">{row.colorName}</span>
+                        </td>
+                        <td className="px-4 py-2 font-mono text-text-muted text-xs">{row.key}</td>
+                        <td className="px-4 py-2 font-mono">{row.action}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="text-text-muted text-xs mt-2">all buttons are fully configurable in the app settings with quick presets</p>
+            </div>
           </div>
-          <p className="text-text-muted text-xs mt-2">all hotkeys are fully configurable in the app settings</p>
         </section>
 
         {/* Detection stack */}
