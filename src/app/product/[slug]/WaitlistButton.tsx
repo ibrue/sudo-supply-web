@@ -3,11 +3,23 @@
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 
+const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
+const isClerkConfigured = clerkKey.startsWith("pk_") && !clerkKey.includes("placeholder");
+
+function useSignedInSafe(): boolean {
+  // Only call useAuth when Clerk is configured. When it isn't, the provider
+  // isn't mounted and useAuth() throws. This branch is stable for the
+  // component lifetime (env-driven), so it's safe vs. rules-of-hooks.
+  if (!isClerkConfigured) return false;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  return !!useAuth().isSignedIn;
+}
+
 export function WaitlistButton({ productSlug }: { productSlug: string }) {
   const [email, setEmail] = useState("");
   const [joined, setJoined] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const { isSignedIn } = useAuth();
+  const isSignedIn = useSignedInSafe();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -24,28 +36,28 @@ export function WaitlistButton({ productSlug }: { productSlug: string }) {
 
   if (joined) {
     return (
-      <div className="w-full py-3 border border-accent text-accent uppercase text-sm text-center">
-        [ ON WAITLIST ]
+      <div className="w-full py-3 px-5 rounded-full border border-accent text-accent text-sm text-center font-semibold">
+        ✓ You&apos;re on the list
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
+    <form onSubmit={handleSubmit} className="flex gap-2">
       <input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder={isSignedIn ? "your email for notifications" : "email@example.com"}
+        placeholder={isSignedIn ? "your email" : "email@example.com"}
         required
-        className="w-full bg-transparent border border-border p-3 text-sm text-text font-mono focus:border-accent outline-none"
+        className="flex-1 bg-transparent border border-border rounded-full px-4 py-2.5 text-sm text-text focus:border-accent outline-none"
       />
       <button
         type="submit"
         disabled={submitting}
-        className="btn-terminal-accent w-full text-center disabled:opacity-50"
+        className="px-5 py-2.5 text-sm font-semibold rounded-full text-black bg-accent hover:brightness-110 disabled:opacity-50 transition whitespace-nowrap"
       >
-        {submitting ? "[ JOINING... ]" : "[ NOTIFY ME WHEN AVAILABLE ]"}
+        {submitting ? "Joining…" : "Notify me"}
       </button>
     </form>
   );

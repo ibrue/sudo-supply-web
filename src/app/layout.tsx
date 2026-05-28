@@ -35,23 +35,24 @@ export const metadata: Metadata = {
 const clerkAppearance = {
   baseTheme: dark,
   variables: {
-    colorPrimary: "#00ff41",
+    colorPrimary: "#2ea468",
     colorBackground: "#0a0a0a",
-    colorInputBackground: "#111111",
-    colorInputText: "#f0f0f0",
-    borderRadius: "0px",
+    colorInputBackground: "#141414",
+    colorInputText: "#f2f2f2",
+    borderRadius: "0.75rem",
     fontFamily: "var(--font-mono), monospace",
   },
   elements: {
-    card: "border border-[#1e1e1e] shadow-none",
+    card: "border border-[#222] shadow-none rounded-3xl",
     formButtonPrimary:
-      "bg-transparent border border-[#00ff41] text-[#00ff41] hover:bg-[#00ff41] hover:text-[#0a0a0a] uppercase tracking-wider rounded-none",
-    footerActionLink: "text-[#00ff41] hover:text-[#00ff41]",
-    headerTitle: "font-mono",
-    headerSubtitle: "text-[#666666]",
-    socialButtonsBlockButton: "border-[#1e1e1e] rounded-none text-white [&_.cl-socialButtonsBlockButtonText]:text-white",
+      "bg-[#2ea468] text-black hover:brightness-110 font-semibold rounded-full",
+    footerActionLink: "text-[#2ea468] hover:text-[#2ea468]",
+    headerTitle: "font-sans font-bold",
+    headerSubtitle: "text-[#8a8a8a]",
+    socialButtonsBlockButton:
+      "border-[#222] rounded-2xl text-white [&_.cl-socialButtonsBlockButtonText]:text-white",
     socialButtonsProviderIcon: "brightness-0 invert",
-    formFieldInput: "border-[#1e1e1e] rounded-none bg-[#111111]",
+    formFieldInput: "border-[#222] rounded-2xl bg-[#141414]",
   },
 };
 
@@ -71,7 +72,7 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="en">
-        <body className={`${mono.variable} ${pixel.variable} font-mono antialiased`}>
+        <body className={`${mono.variable} ${pixel.variable} antialiased`}>
           <CartProvider>
             <Nav />
             <main className="relative z-10 min-h-screen">{children}</main>

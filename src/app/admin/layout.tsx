@@ -3,8 +3,16 @@ import { isAdmin } from "@/lib/admin";
 import Link from "next/link";
 
 export const metadata = {
-  title: "admin — sudo.supply",
+  title: "admin · sudo.supply",
 };
+
+const navLinks = [
+  { href: "/admin", label: "Dashboard" },
+  { href: "/admin/products", label: "Products" },
+  { href: "/admin/orders", label: "Orders" },
+  { href: "/admin/bulk", label: "Bulk inquiries" },
+  { href: "/admin/pricing", label: "Pricing" },
+];
 
 export default async function AdminLayout({
   children,
@@ -15,24 +23,17 @@ export default async function AdminLayout({
   if (!admin) redirect("/");
 
   return (
-    <div className="pt-24 pb-16 px-4 sm:px-6 max-w-6xl mx-auto">
-      <div className="flex flex-wrap items-center gap-3 sm:gap-6 mb-8 text-sm animate-fade-in">
-        <span className="text-text-muted">~/admin</span>
-        <Link href="/admin" className="hover-accent text-text-muted hover:text-text transition-colors">
-          dashboard
-        </Link>
-        <Link href="/admin/products" className="hover-accent text-text-muted hover:text-text transition-colors">
-          products
-        </Link>
-        <Link href="/admin/orders" className="hover-accent text-text-muted hover:text-text transition-colors">
-          orders
-        </Link>
-        <Link href="/admin/bulk" className="hover-accent text-text-muted hover:text-text transition-colors">
-          bulk inquiries
-        </Link>
-        <Link href="/admin/pricing" className="hover-accent text-text-muted hover:text-text transition-colors">
-          pricing
-        </Link>
+    <div className="pt-32 pb-16 max-w-[1280px] mx-auto px-4 sm:px-8">
+      <div className="flex flex-wrap items-center gap-1 mb-10 text-sm text-text-muted">
+        {navLinks.map((l) => (
+          <Link
+            key={l.href}
+            href={l.href}
+            className="px-4 py-2 rounded-full hover:bg-white/10 hover:text-white transition-colors"
+          >
+            {l.label}
+          </Link>
+        ))}
       </div>
       {children}
     </div>

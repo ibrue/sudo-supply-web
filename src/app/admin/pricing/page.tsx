@@ -76,34 +76,41 @@ export default function AdminPricingPage() {
   }
 
   const inputClass =
-    "w-full bg-transparent border border-border px-3 py-2 text-sm text-text font-mono focus:border-accent outline-none";
+    "w-full bg-transparent border border-border rounded-2xl px-4 py-2.5 text-sm text-text focus:border-accent outline-none";
 
   return (
-    <div className="animate-fade-in-delay">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-accent text-xs font-mono">&gt; bulk pricing tiers</h1>
+    <div>
+      <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
+        <div>
+          <p className="text-xs uppercase tracking-[0.2em] text-accent font-mono mb-3">Admin</p>
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.04em]">Bulk pricing tiers</h1>
+        </div>
         <div className="flex items-center gap-3">
-          {saved && <span className="text-accent text-xs font-mono">&#9679; saved</span>}
-          {error && <span className="text-error text-xs font-mono">{error}</span>}
-          <button onClick={handleSave} disabled={saving} className="btn-terminal-accent text-xs disabled:opacity-50">
-            {saving ? "[ SAVING... ]" : "[ SAVE TIERS ]"}
+          {saved && <span className="text-accent text-sm">&#9679; saved</span>}
+          {error && <span className="text-error text-sm">{error}</span>}
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="px-5 py-2.5 text-sm font-semibold rounded-full text-black bg-accent hover:brightness-110 transition disabled:opacity-50"
+          >
+            {saving ? "Saving..." : "Save tiers"}
           </button>
         </div>
       </div>
 
-      <div className="glass p-6 space-y-4">
-        <p className="text-text-muted text-xs mb-4">
+      <div className="rounded-3xl border border-border bg-surface p-6 space-y-4">
+        <p className="text-text-muted text-sm mb-2">
           Configure bulk pricing tiers. Set the last tier&apos;s max to empty for &quot;100+ units&quot; custom pricing.
           The starting discount % sets the tone for the whole tier structure.
         </p>
 
         {/* Column headers */}
-        <div className="grid grid-cols-12 gap-3 text-text-muted text-xs font-mono uppercase tracking-wider pb-2 border-b border-border">
-          <div className="col-span-2">min qty</div>
-          <div className="col-span-2">max qty</div>
-          <div className="col-span-3">discount %</div>
-          <div className="col-span-3">per unit ($29)</div>
-          <div className="col-span-2">actions</div>
+        <div className="grid grid-cols-12 gap-3 text-text-muted text-xs font-mono uppercase tracking-[0.2em] pb-3 border-b border-border">
+          <div className="col-span-2">Min qty</div>
+          <div className="col-span-2">Max qty</div>
+          <div className="col-span-3">Discount %</div>
+          <div className="col-span-3">Per unit ($40)</div>
+          <div className="col-span-2">Actions</div>
         </div>
 
         {tiers.map((tier, i) => (
@@ -146,7 +153,7 @@ export default function AdminPricingPage() {
               <span className="font-mono text-sm tabular-nums">
                 {tier.discountPercent > 0 ? (
                   <span className="text-accent">
-                    ${(29 * (1 - tier.discountPercent / 100)).toFixed(2)}
+                    ${(40 * (1 - tier.discountPercent / 100)).toFixed(2)}
                   </span>
                 ) : (
                   <span className="text-text-muted">custom</span>
@@ -156,40 +163,43 @@ export default function AdminPricingPage() {
             <div className="col-span-2">
               <button
                 onClick={() => removeTier(i)}
-                className="text-error text-xs hover:underline font-mono"
+                className="text-error text-sm hover:underline"
               >
-                [ remove ]
+                remove
               </button>
             </div>
           </div>
         ))}
 
-        <button onClick={addTier} className="btn-terminal text-xs mt-4">
-          [ + ADD TIER ]
+        <button
+          onClick={addTier}
+          className="px-5 py-2.5 text-sm font-medium rounded-full border border-border hover:bg-white/5 transition mt-4"
+        >
+          + Add tier
         </button>
       </div>
 
       {/* Preview */}
-      <div className="glass p-6 mt-6">
-        <h2 className="text-accent text-xs font-mono mb-4">&gt; preview (as shown on /bulk)</h2>
-        <table className="w-full text-sm font-mono">
+      <div className="rounded-3xl border border-border bg-surface p-6 mt-6">
+        <p className="text-xs uppercase tracking-[0.2em] text-accent font-mono mb-4">Preview (as shown on /bulk)</p>
+        <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-border text-text-muted text-xs uppercase tracking-wider">
-              <th className="text-left py-2">quantity</th>
-              <th className="text-right py-2">discount</th>
-              <th className="text-right py-2">per unit</th>
+            <tr className="border-b border-border text-text-muted text-xs uppercase tracking-[0.2em] font-mono">
+              <th className="text-left py-3">Quantity</th>
+              <th className="text-right py-3">Discount</th>
+              <th className="text-right py-3">Per unit</th>
             </tr>
           </thead>
           <tbody>
             {tiers.map((tier, i) => (
               <tr key={i} className="border-b border-border last:border-0">
-                <td className="py-2">{autoLabel(tier)}</td>
-                <td className="py-2 text-right text-accent">
+                <td className="py-3">{autoLabel(tier)}</td>
+                <td className="py-3 text-right text-accent">
                   {tier.discountPercent > 0 ? `${tier.discountPercent}% off` : "custom"}
                 </td>
-                <td className="py-2 text-right tabular-nums">
+                <td className="py-3 text-right tabular-nums font-mono">
                   {tier.discountPercent > 0
-                    ? `$${(29 * (1 - tier.discountPercent / 100)).toFixed(2)}`
+                    ? `$${(40 * (1 - tier.discountPercent / 100)).toFixed(2)}`
                     : "contact us"}
                 </td>
               </tr>

@@ -16,39 +16,42 @@ export default async function AdminOrdersPage() {
   }
 
   return (
-    <div className="animate-fade-in-delay">
-      <h1 className="text-accent text-xs font-mono mb-6">&gt; orders</h1>
+    <div>
+      <div className="mb-10">
+        <p className="text-xs uppercase tracking-[0.2em] text-accent font-mono mb-3">Admin</p>
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.04em]">Orders</h1>
+      </div>
 
       {orders.length === 0 ? (
-        <div className="glass p-6 text-text-muted text-sm">
+        <div className="rounded-3xl border border-border bg-surface p-8 text-text-muted text-sm">
           <p>No orders yet. Orders will appear here when customers purchase via Shopify.</p>
         </div>
       ) : (
-        <div className="glass overflow-hidden">
-          <table className="w-full text-sm font-mono">
+        <div className="rounded-3xl border border-border bg-surface overflow-hidden">
+          <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-border text-text-muted text-xs uppercase tracking-wider">
-                <th className="text-left px-4 py-3">order</th>
-                <th className="text-left px-4 py-3">status</th>
-                <th className="text-right px-4 py-3">total</th>
-                <th className="text-right px-4 py-3">date</th>
+              <tr className="border-b border-border text-text-muted text-xs uppercase tracking-[0.2em] font-mono">
+                <th className="text-left px-5 py-4">Order</th>
+                <th className="text-left px-5 py-4">Status</th>
+                <th className="text-right px-5 py-4">Total</th>
+                <th className="text-right px-5 py-4">Date</th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order) => (
                 <tr key={String(order.id)} className="border-b border-border last:border-0">
-                  <td className="px-4 py-3 text-accent">
+                  <td className="px-5 py-4 text-accent font-mono">
                     #{String(order.shopify_order_number || order.id).slice(0, 8)}
                   </td>
-                  <td className="px-4 py-3">
+                  <td className="px-5 py-4">
                     <span className={`text-xs ${order.status === "delivered" ? "text-accent" : "text-text-muted"}`}>
                       {String(order.status)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-right tabular-nums">
+                  <td className="px-5 py-4 text-right tabular-nums font-mono">
                     ${Number(order.total || 0).toFixed(2)}
                   </td>
-                  <td className="px-4 py-3 text-right text-text-muted">
+                  <td className="px-5 py-4 text-right text-text-muted">
                     {new Date(String(order.created_at)).toLocaleDateString()}
                   </td>
                 </tr>

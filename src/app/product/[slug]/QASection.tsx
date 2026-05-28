@@ -3,6 +3,19 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 
+const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
+const isClerkConfigured = clerkKey.startsWith("pk_") && !clerkKey.includes("placeholder");
+
+function SignedInOnly({ children }: { children: (signedIn: boolean) => React.ReactNode }) {
+  const { isSignedIn } = useAuth();
+  return <>{children(!!isSignedIn)}</>;
+}
+
+function AuthGate({ children }: { children: (signedIn: boolean) => React.ReactNode }) {
+  if (!isClerkConfigured) return <>{children(false)}</>;
+  return <SignedInOnly>{children}</SignedInOnly>;
+}
+
 interface Answer {
   id: string;
   user_name: string;
@@ -26,7 +39,6 @@ export function QASection({ slug }: { slug: string }) {
   const [answeringId, setAnsweringId] = useState<string | null>(null);
   const [answerBody, setAnswerBody] = useState("");
   const [refresh, setRefresh] = useState(false);
-  const { isSignedIn } = useAuth();
 
   useEffect(() => {
     fetch(`/api/questions?slug=${slug}`)
@@ -64,33 +76,45 @@ export function QASection({ slug }: { slug: string }) {
     setRefresh((r) => !r);
   }
 
+  const textareaClass =
+    "w-full bg-transparent border border-border rounded-xl p-3 text-sm text-text focus:border-accent outline-none resize-none";
+
   return (
-    <section className="mt-12">
-      <h2 className="font-mono text-xs text-accent mb-4">&gt; questions &amp; answers</h2>
+    <AuthGate>
+      {(isSignedIn) => (
+    <section>
+      <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight mb-6">
+        Questions &amp; answers
+      </h2>
 
       {loading ? (
-        <p className="text-text-muted text-sm">Loading...</p>
+        <p className="text-text-muted text-sm font-mono">
+          $ sudo cat /qa/{slug} <span className="animate-blink">▌</span>
+        </p>
       ) : questions.length === 0 ? (
-        <p className="text-text-muted text-sm mb-6">No questions yet. Be the first to ask.</p>
+        <div className="rounded-2xl border border-border bg-surface p-6 mb-6 text-center">
+          <p className="font-pixel text-accent text-xl mb-2">[ ? ]</p>
+          <p className="text-text-muted text-sm">No questions yet. Be the first to ask.</p>
+        </div>
       ) : (
-        <div className="space-y-4 mb-6">
+        <div className="space-y-3 mb-6">
           {questions.map((q) => (
-            <div key={q.id} className="glass p-4">
+            <div key={q.id} className="rounded-2xl border border-border bg-surface p-5">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-accent text-xs">Q:</span>
-                <span className="text-text-muted text-xs">{q.user_name}</span>
+                <span className="text-accent text-xs font-mono uppercase tracking-wider">Q</span>
+                <span className="text-text-muted text-xs font-mono">{q.user_name}</span>
               </div>
-              <p className="text-sm text-text mb-3">{q.body}</p>
+              <p className="text-text mb-3">{q.body}</p>
 
               {q.answers.length > 0 && (
-                <div className="ml-4 space-y-2 border-l border-border pl-4">
+                <div className="space-y-3 border-l-2 border-accent/30 pl-4 mt-4">
                   {q.answers.map((a) => (
                     <div key={a.id}>
-                      <div className="flex items-center justify-between">
-                        <span className="text-accent text-xs">A:</span>
-                        <span className="text-text-muted text-xs">{a.user_name}</span>
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-accent text-xs font-mono uppercase tracking-wider">A</span>
+                        <span className="text-text-muted text-xs font-mono">{a.user_name}</span>
                       </div>
-                      <p className="text-sm text-text-muted">{a.body}</p>
+                      <p className="text-text-muted text-sm">{a.body}</p>
                     </div>
                   ))}
                 </div>
@@ -98,37 +122,40 @@ export function QASection({ slug }: { slug: string }) {
 
               {isSignedIn && answeringId !== q.id && (
                 <button
-                  onClick={() => { setAnsweringId(q.id); setAnswerBody(""); }}
-                  className="text-accent text-xs hover-accent mt-2"
+                  onClick={() => {
+                    setAnsweringId(q.id);
+                    setAnswerBody("");
+                  }}
+                  className="text-accent text-sm hover:underline mt-3"
                 >
-                  [ reply ]
+                  Reply →
                 </button>
               )}
 
               {answeringId === q.id && (
-                <form onSubmit={(e) => handleAnswer(e, q.id)} className="mt-3 space-y-2">
+                <form onSubmit={(e) => handleAnswer(e, q.id)} className="mt-3 space-y-3">
                   <textarea
                     value={answerBody}
                     onChange={(e) => setAnswerBody(e.target.value)}
-                    placeholder="your answer..."
+                    placeholder="Your answer…"
                     required
                     rows={2}
-                    className="w-full bg-transparent border border-border p-2 text-sm text-text font-mono focus:border-accent outline-none resize-none"
+                    className={textareaClass}
                   />
                   <div className="flex gap-2">
                     <button
                       type="submit"
                       disabled={submitting || !answerBody.trim()}
-                      className="btn-terminal text-xs disabled:opacity-50"
+                      className="px-4 py-2 text-sm font-semibold rounded-full text-black bg-accent hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition"
                     >
-                      {submitting ? "[ ... ]" : "[ SUBMIT ]"}
+                      {submitting ? "Posting…" : "Post"}
                     </button>
                     <button
                       type="button"
                       onClick={() => setAnsweringId(null)}
-                      className="text-text-muted text-xs hover-accent"
+                      className="px-4 py-2 text-sm rounded-full border border-border hover:bg-white/5 transition"
                     >
-                      [ cancel ]
+                      Cancel
                     </button>
                   </div>
                 </form>
@@ -139,25 +166,29 @@ export function QASection({ slug }: { slug: string }) {
       )}
 
       {isSignedIn && (
-        <form onSubmit={handleAskQuestion} className="glass p-4 space-y-4">
-          <p className="text-xs text-text-muted">ask a question</p>
+        <form onSubmit={handleAskQuestion} className="rounded-2xl border border-border bg-surface p-5 space-y-4">
+          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-mono">
+            Ask a question
+          </p>
           <textarea
             value={questionBody}
             onChange={(e) => setQuestionBody(e.target.value)}
-            placeholder="your question..."
+            placeholder="What do you want to know?"
             required
             rows={2}
-            className="w-full bg-transparent border border-border p-3 text-sm text-text font-mono focus:border-accent outline-none resize-none"
+            className={textareaClass}
           />
           <button
             type="submit"
             disabled={submitting || !questionBody.trim()}
-            className="btn-terminal text-xs disabled:opacity-50"
+            className="px-5 py-2.5 text-sm font-semibold rounded-full text-black bg-accent hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
-            {submitting ? "[ SUBMITTING... ]" : "[ ASK QUESTION ]"}
+            {submitting ? "Posting…" : "Ask question"}
           </button>
         </form>
       )}
     </section>
+      )}
+    </AuthGate>
   );
 }

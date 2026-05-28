@@ -12,9 +12,12 @@ export default async function EditProductPage({
 
   return (
     <div>
-      <h1 className="text-accent text-xs font-mono mb-6 animate-fade-in">
-        &gt; edit: {product.name}
-      </h1>
+      <div className="mb-10">
+        <p className="text-xs uppercase tracking-[0.2em] text-accent font-mono mb-3">Admin · Products</p>
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.04em]">
+          Edit: <span className="text-accent">{product.name}</span>
+        </h1>
+      </div>
       <ProductForm
         mode="edit"
         editSlug={params.slug}

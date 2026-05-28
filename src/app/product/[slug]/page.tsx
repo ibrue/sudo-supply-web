@@ -1,11 +1,50 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
+import Link from "next/link";
 import { products, getProduct } from "@/lib/products";
-import { AddToCartButton } from "./AddToCartButton";
+import { ProductConfigurator } from "./ProductConfigurator";
 import { ReviewSection } from "./ReviewSection";
 import { QASection } from "./QASection";
-import { SocialProofBadge } from "@/components/SocialProofBadge";
+import { FAQ } from "./FAQ";
 import { resolveImageUrl } from "@/lib/imageUrl";
+
+// All three products share one GLB; per-product hides control what renders.
+const MODEL_SRC: Record<string, string | undefined> = {
+  "sudo-macro-pad-v1": "/models/sudo-macropad.glb",
+  "sudo-pcb": "/models/sudo-macropad.glb",
+  "sudo-keycaps": "/models/sudo-macropad.glb",
+};
+const MODEL_IOS_SRC: Record<string, string | undefined> = {
+  "sudo-macro-pad-v1": "/models/sudo-macropad.usdz",
+  "sudo-pcb": "/models/sudo-macropad.usdz",
+  "sudo-keycaps": "/models/sudo-macropad.usdz",
+};
+const VARIANT_KINDS: Record<string, ("case" | "keycaps")[]> = {
+  "sudo-macro-pad-v1": ["case", "keycaps"],
+  "sudo-keycaps": ["keycaps"],
+  "sudo-pcb": [],
+};
+const HIDE_MATERIALS: Record<string, string | undefined> = {
+  "sudo-pcb": "^(CASE|KEYCAP|SCREW)",
+  // Keycap set: hide everything that isn't a KEYCAP.
+  "sudo-keycaps": "^(CASE|SCREW|SUBSTRATE|SILKSCREEN|METAL|COMPONENT|PCB)",
+};
+
+const inBox: Record<string, string[]> = {
+  "sudo-macro-pad-v1": [
+    "1× sudo macro pad (assembled)",
+    "1× USB-C cable (1.5 m, braided)",
+    "1× spare keycap set (matching color)",
+    "1× sticker pack + setup card",
+  ],
+  "sudo-keycaps": ["4× PBT keycaps", "1× keycap puller"],
+  "sudo-pcb": ["1× sudo macro pad PCB", "1× USB-C cable (1.5 m, braided)"],
+};
+
+const trustBand = [
+  { label: "30-day returns", sub: "unopened, full refund" },
+  { label: "1-year warranty", sub: "replace if it breaks" },
+  { label: "Free US shipping", sub: "over $100" },
+];
 
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }));
@@ -13,82 +52,99 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const product = await getProduct(params.slug);
-  if (!product) return { title: "not found \u2014 sudo.supply" };
-  return { title: `${product.name} \u2014 sudo.supply` };
+  if (!product) return { title: "not found · sudo.supply" };
+  return {
+    title: `${product.name} · sudo.supply`,
+    description: product.description,
+  };
 }
 
 export default async function ProductPage({ params }: { params: { slug: string } }) {
   const product = await getProduct(params.slug);
   if (!product) notFound();
 
+  const gallery = (product.images?.length ? product.images : [product.image]).map(resolveImageUrl);
+
   return (
-    <div className="pt-24 pb-16 px-4 sm:px-6 max-w-6xl mx-auto">
-      <p className="text-text-muted text-sm mb-8 animate-fade-in">
-        ~/shop/{product.slug}
+    <div className="pt-32 pb-16 max-w-[1280px] mx-auto px-4 sm:px-8">
+      {/* Breadcrumb */}
+      <p className="text-xs uppercase tracking-[0.2em] mb-6 text-text-muted font-mono">
+        <Link href="/shop" className="hover:text-white">Shop</Link>
+        <span className="mx-2">/</span>
+        <span className="text-white">{product.name}</span>
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 animate-fade-in-delay">
-        {/* Image */}
-        <div className="relative aspect-square bg-bg-secondary glass overflow-hidden">
-          <Image
-            src={resolveImageUrl(product.image)}
-            alt={product.name}
-            fill
-            className="object-contain p-8 rounded-lg"
-            unoptimized
-          />
-        </div>
+      <ProductConfigurator
+        product={product}
+        galleryImages={gallery}
+        modelSrc={MODEL_SRC[product.slug]}
+        modelIosSrc={MODEL_IOS_SRC[product.slug]}
+        variantKinds={VARIANT_KINDS[product.slug] ?? []}
+        hideMaterialsMatching={HIDE_MATERIALS[product.slug]}
+      />
 
-        {/* Details */}
-        <div className="flex flex-col">
-          <h1 className="font-mono text-lg sm:text-xl mb-4">{product.name}</h1>
-
-          <div className="flex items-center gap-4 mb-6">
-            <span className="text-2xl font-mono tabular-nums">
-              ${product.price.toFixed(2)}
-            </span>
-            <span className="text-xs">
-              {product.inStock ? (
-                <span className="text-accent">&#9679; IN STOCK</span>
-              ) : (
-                <span className="text-text-muted">&#9675; OUT OF STOCK</span>
-              )}
-            </span>
+      {/* What's in the box + specs (full width below the configurator) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+        {inBox[product.slug] && (
+          <div className="rounded-2xl border border-border bg-surface p-5">
+            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-text-muted font-mono">
+              $ sudo unbox
+            </p>
+            <ul className="space-y-2 text-sm">
+              {inBox[product.slug].map((item) => (
+                <li key={item} className="flex items-center gap-3 text-text">
+                  <span className="text-accent font-mono">›</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
+        )}
 
-          <SocialProofBadge slug={product.slug} soldCount={product.soldCount} />
-
-          <p className="text-text-muted text-sm leading-relaxed mb-8 mt-4">
-            {product.longDescription}
-          </p>
-
-          {/* Specs */}
-          <div className="glass mb-8">
-            <div className="px-4 py-2 border-b border-border text-text-muted text-xs uppercase tracking-wider">
-              specifications
-            </div>
-            <table className="w-full text-sm">
-              <tbody>
-                {Object.entries(product.specs).map(([key, value]) => (
-                  <tr key={key} className="border-b border-border last:border-0">
-                    <td className="px-4 py-2 text-text-muted whitespace-nowrap">
-                      {key.replace(/_/g, " ")}
-                    </td>
-                    <td className="px-4 py-2 text-right font-mono">{value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="rounded-2xl border border-border overflow-hidden">
+          <div className="px-5 py-3 border-b border-border text-text-muted text-xs uppercase tracking-[0.2em] font-mono">
+            Specifications
           </div>
-
-          {/* Add to cart */}
-          <AddToCartButton product={product} />
+          <table className="w-full text-sm">
+            <tbody>
+              {Object.entries(product.specs).map(([key, value]) => (
+                <tr key={key} className="border-b border-border last:border-0">
+                  <td className="px-5 py-3 text-text-muted whitespace-nowrap capitalize">
+                    {key.replace(/_/g, " ")}
+                  </td>
+                  <td className="px-5 py-3 text-right font-mono text-white">{value}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
+      {/* Trust band */}
+      <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        {trustBand.map((t) => (
+          <div
+            key={t.label}
+            className="rounded-2xl border border-border bg-surface p-5 text-center"
+          >
+            <p className="font-semibold text-white text-base">{t.label}</p>
+            <p className="text-text-muted text-sm mt-1">{t.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* FAQ */}
+      <div className="mt-16">
+        <FAQ />
+      </div>
+
       {/* Reviews & Q&A */}
-      <ReviewSection slug={product.slug} />
-      <QASection slug={product.slug} />
+      <div className="mt-20">
+        <ReviewSection slug={product.slug} />
+      </div>
+      <div className="mt-12">
+        <QASection slug={product.slug} />
+      </div>
     </div>
   );
 }

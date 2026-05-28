@@ -10,20 +10,21 @@ interface AccountHeaderProps {
 
 export function AccountHeader({ name, email }: AccountHeaderProps) {
   return (
-    <section className="border border-border p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-mono text-sm mb-2">{name}</h1>
-          <p className="text-text-muted text-xs">{email}</p>
-        </div>
-        <UserButton
-          appearance={{
-            elements: {
-              avatarBox: "w-10 h-10 border border-[#1e1e1e] rounded-none",
-            },
-          }}
-        />
+    <section className="rounded-3xl border border-border bg-surface p-6 flex items-center justify-between gap-4">
+      <div>
+        <p className="text-xs font-mono text-text-muted mb-1">
+          $ sudo whoami
+        </p>
+        <p className="text-lg font-semibold">{name}</p>
+        <p className="text-text-muted text-sm">{email}</p>
       </div>
+      <UserButton
+        appearance={{
+          elements: {
+            avatarBox: "w-12 h-12 rounded-full",
+          },
+        }}
+      />
     </section>
   );
 }

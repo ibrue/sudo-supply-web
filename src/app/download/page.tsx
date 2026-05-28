@@ -1,393 +1,339 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "app [sudo] — sudo.supply",
-  description: "the [sudo] companion app for macOS, Windows, and Linux. control AI agents with a physical macro pad.",
+  title: "app [sudo] · sudo.supply",
+  description:
+    "the [sudo] companion app for macOS, Windows, and Linux. control AI agents with a physical macro pad.",
 };
+
+const platforms = [
+  {
+    name: "macOS",
+    sub: "Ventura 13.0+ · Apple Silicon",
+    label: "Download .dmg",
+    href: "https://github.com/ibrue/sudo-app/releases/latest",
+    note: "Swift / SwiftUI menu bar app",
+  },
+  {
+    name: "Windows",
+    sub: "Windows 10+ · x64",
+    label: "Download .exe",
+    href: "https://github.com/ibrue/sudo-app/releases/latest",
+    note: "C# / .NET 8 system tray app",
+  },
+  {
+    name: "Linux",
+    sub: "X11 / Wayland · GTK3",
+    label: "Install script",
+    href: "https://github.com/ibrue/sudo-app/releases/latest",
+    note: "Python / GTK3 AppIndicator",
+  },
+];
+
+const buttonMap = [
+  { color: "bg-[#2a2a2a]", border: "border-[#444]", num: "4", colorName: "black", action: "yolo (allow all)", hotkey: "ctrl+shift+F16", text: "text-white" },
+  { color: "bg-[#c85c5c]", border: "border-[#a04848]", num: "3", colorName: "red", action: "reject / no", hotkey: "ctrl+shift+F14", text: "text-white" },
+  { color: "bg-[#d4b85c]", border: "border-[#b09840]", num: "2", colorName: "yellow", action: "make it better", hotkey: "ctrl+shift+F15", text: "text-[#1a1a1a]" },
+  { color: "bg-[#6abf73]", border: "border-[#4a9f53]", num: "1", colorName: "green", action: "approve / yes", hotkey: "ctrl+shift+F13", text: "text-[#1a1a1a]" },
+];
+
+const presets = [
+  { preset: "ai agent", desc: "approve / reject / make it better / yolo for AI permission prompts" },
+  { preset: "plan mode", desc: "plan-oriented actions for AI coding agents" },
+  { preset: "claude code", desc: "optimized for claude code terminal workflows" },
+  { preset: "system shortcuts", desc: "screenshot, copy, paste, undo, save, lock screen" },
+  { preset: "media controls", desc: "play/pause, next, previous, volume" },
+  { preset: "web browsing", desc: "tab navigation, back, forward, refresh" },
+  { preset: "discord soundboard", desc: "trigger soundboard clips" },
+];
+
+const detection = [
+  { feature: "system tray", mac: "MenuBarExtra", win: "NotifyIcon", linux: "AppIndicator3" },
+  { feature: "hotkeys", mac: "CGEvent tap", win: "RegisterHotKey", linux: "pynput" },
+  { feature: "button finding", mac: "AXUIElement", win: "UI Automation", linux: "AT-SPI2" },
+  { feature: "OCR fallback", mac: "Apple Vision", win: "Windows.Media.Ocr", linux: "Tesseract" },
+  { feature: "execution", mac: "AXPress", win: "InvokePattern", linux: "AT-SPI / xdotool" },
+];
+
+const firmware = [
+  { keymap: "default", features: "Ctrl+Shift+F13–F16", reconfig: "reflash required" },
+  { keymap: "VIA", features: "live remapping via usevia.app", reconfig: "no reflash needed" },
+  { keymap: "Vial", features: "auto-detection, no draft definition", reconfig: "no reflash needed" },
+];
 
 export default function DownloadPage() {
   return (
-    <div className="pt-24 pb-16 px-4 sm:px-6 max-w-4xl mx-auto">
-      <p className="text-text-muted text-sm mb-8 animate-fade-in">~/app</p>
+    <div className="pt-32 pb-16 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-16">
+      {/* Hero */}
+      <section className="text-center">
+        <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-mono">
+          The companion app
+        </p>
+        <h1 className="font-pixel text-white text-5xl sm:text-7xl mb-6 tracking-tight">[sudo]</h1>
+        <p className="max-w-xl mx-auto text-text-muted text-lg leading-relaxed">
+          The cross-platform companion app for your sudo macro pad. Approve, reject, and control AI agents with a physical button press.
+        </p>
+        <p className="text-text-muted text-sm font-mono mt-3">macOS · Windows · Linux · all free</p>
+      </section>
 
-      <div className="space-y-10 animate-fade-in-delay">
-        {/* Hero */}
-        <section className="text-center py-8">
-          <div className="flex items-center justify-center mb-6">
-            <h2 className="font-pixel text-white text-3xl">[sudo]</h2>
+      {/* Downloads */}
+      <section>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Get the app</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {platforms.map((p) => (
+            <div key={p.name} className="rounded-3xl border border-border bg-surface p-6">
+              <h3 className="text-2xl font-bold mb-1">{p.name}</h3>
+              <p className="text-text-muted text-xs font-mono mb-6">{p.sub}</p>
+              <a
+                href={p.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block text-center px-5 py-2.5 rounded-full text-black bg-accent font-semibold text-sm hover:brightness-110 transition mb-3"
+              >
+                {p.label}
+              </a>
+              <p className="text-text-muted text-xs text-center">{p.note}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Install from source */}
+      <section className="rounded-3xl border border-border bg-surface p-6">
+        <p className="text-xs uppercase tracking-[0.2em] mb-4 text-text-muted font-mono">Install from source</p>
+        <div className="font-mono text-sm space-y-1 text-text-muted">
+          <p><span className="text-accent">$</span> git clone https://github.com/ibrue/sudo-app</p>
+          <p><span className="text-accent">$</span> cd sudo-app</p>
+          <p><span className="text-accent">$</span> ./install.sh</p>
+        </div>
+      </section>
+
+      {/* Button modes */}
+      <section>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Button modes</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="rounded-3xl border border-border bg-surface p-6">
+            <h3 className="text-xl font-bold text-accent mb-2">AI search mode</h3>
+            <p className="text-text-muted text-sm mb-4">
+              Automatically find and press buttons in AI apps using a 3-strategy pipeline.
+            </p>
+            <ul className="text-sm text-text-muted space-y-1.5">
+              <li>· accessibility tree detection</li>
+              <li>· vision OCR fallback</li>
+              <li>· keyboard fallback</li>
+              <li>· custom button labels per app</li>
+            </ul>
           </div>
-          <p className="text-text-muted text-sm leading-relaxed max-w-md mx-auto">
-            the cross-platform companion app for your sudo macro pad.
-            approve, reject, and control AI agents with a physical button press.
+          <div className="rounded-3xl border border-border bg-surface p-6">
+            <h3 className="text-xl font-bold text-accent mb-2">Shortcuts &amp; macros</h3>
+            <p className="text-text-muted text-sm mb-4">
+              Assign keyboard shortcuts, media keys, or macro sequences to each button.
+            </p>
+            <ul className="text-sm text-text-muted space-y-1.5">
+              <li>· keyboard shortcuts &amp; media keys</li>
+              <li>· macro sequences with delays</li>
+              <li>· per-app profiles with auto-switching</li>
+              <li>· auto-approve rules engine</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Default button map */}
+      <section className="flex flex-col items-center">
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono self-start">
+          Default button map
+        </p>
+        <div className="w-full max-w-sm">
+          <div className="bg-[#1a1a1a] rounded-3xl p-5 border border-border/60 shadow-lg">
+            <div className="bg-bg border border-border rounded-xl px-4 py-2.5 mb-5 text-center">
+              <span className="font-pixel text-accent text-sm">[sudo]</span>
+            </div>
+            <div className="space-y-3">
+              {buttonMap.map((btn) => (
+                <div key={btn.num} className={`${btn.color} ${btn.border} border rounded-2xl px-4 py-3`}>
+                  <p className={`font-mono text-xs font-bold ${btn.text} mb-0.5`}>
+                    {btn.num} · {btn.colorName}
+                  </p>
+                  <p className={`font-mono text-sm ${btn.text} opacity-90`}>{btn.action}</p>
+                  <p className={`font-mono text-xs ${btn.text} opacity-50 mt-0.5`}>{btn.hotkey}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <p className="text-text-muted text-xs text-center mt-4">
+            All buttons are fully configurable with quick presets in the app.
           </p>
-          <p className="text-text-muted text-xs mt-2">
-            macOS &middot; Windows &middot; Linux
-          </p>
-        </section>
+        </div>
+      </section>
 
-        {/* Downloads */}
-        <section>
-          <h2 className="font-mono text-xs text-accent mb-6">&gt; get the app</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* macOS */}
-            <div className="glass-accent p-6">
-              <h3 className="font-mono text-sm mb-2">macOS</h3>
-              <p className="text-text-muted text-xs mb-6">ventura 13.0+ &middot; apple silicon</p>
-              <a
-                href="https://github.com/ibrue/sudo-app/releases/latest"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-terminal-accent block text-center text-xs mb-4"
-              >
-                [ DOWNLOAD .DMG ]
-              </a>
-              <p className="text-text-muted text-xs text-center">Swift / SwiftUI menu bar app</p>
-            </div>
-            {/* Windows */}
-            <div className="glass-accent p-6">
-              <h3 className="font-mono text-sm mb-2">Windows</h3>
-              <p className="text-text-muted text-xs mb-6">Windows 10+ &middot; x64</p>
-              <a
-                href="https://github.com/ibrue/sudo-app/releases/latest"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-terminal-accent block text-center text-xs mb-4"
-              >
-                [ DOWNLOAD .EXE ]
-              </a>
-              <p className="text-text-muted text-xs text-center">C# / .NET 8 system tray app</p>
-            </div>
-            {/* Linux */}
-            <div className="glass-accent p-6">
-              <h3 className="font-mono text-sm mb-2">Linux</h3>
-              <p className="text-text-muted text-xs mb-6">X11 / Wayland &middot; GTK3</p>
-              <a
-                href="https://github.com/ibrue/sudo-app/releases/latest"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-terminal-accent block text-center text-xs mb-4"
-              >
-                [ INSTALL SCRIPT ]
-              </a>
-              <p className="text-text-muted text-xs text-center">Python / GTK3 AppIndicator</p>
-            </div>
+      {/* Quick presets */}
+      <section>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Quick presets</p>
+        <div className="rounded-3xl border border-border bg-surface overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-text-muted text-xs uppercase tracking-wider">
+                <th className="px-5 py-3 text-left font-normal font-mono">preset</th>
+                <th className="px-5 py-3 text-left font-normal font-mono">description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {presets.map((row) => (
+                <tr key={row.preset} className="border-b border-border last:border-0">
+                  <td className="px-5 py-3 text-accent font-mono whitespace-nowrap">{row.preset}</td>
+                  <td className="px-5 py-3 text-text-muted">{row.desc}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Developer tools */}
+      <section>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Developer tools</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="rounded-3xl border border-border bg-surface p-6">
+            <h3 className="text-lg font-bold text-accent mb-2">Local API</h3>
+            <p className="text-text-muted text-sm mb-3">HTTP API on port 7483 for scripting and automation.</p>
+            <ul className="text-sm text-text-muted space-y-1">
+              <li>· simulate button presses</li>
+              <li>· read/write button config</li>
+              <li>· webhook notifications</li>
+              <li>· action history</li>
+            </ul>
           </div>
-        </section>
-
-        {/* Install from source */}
-        <section className="glass p-6">
-          <h3 className="text-text-muted text-xs uppercase tracking-wider mb-4">
-            &gt; install from source
-          </h3>
-          <div className="font-mono text-sm space-y-1 text-text-muted">
-            <p><span className="text-accent">$</span> git clone https://github.com/ibrue/sudo-app</p>
-            <p><span className="text-accent">$</span> cd sudo-app</p>
-            <p><span className="text-accent">$</span> ./install.sh</p>
+          <div className="rounded-3xl border border-border bg-surface p-6">
+            <h3 className="text-lg font-bold text-accent mb-2">MCP server</h3>
+            <p className="text-text-muted text-sm mb-3">Gate AI tool use behind physical button approval.</p>
+            <ul className="text-sm text-text-muted space-y-1">
+              <li>· POST /mcp/request-approval</li>
+              <li>· blocks until button press</li>
+              <li>· works with any MCP client</li>
+            </ul>
           </div>
-        </section>
-
-        {/* Button Modes */}
-        <section>
-          <h2 className="font-mono text-xs text-accent mb-4">&gt; button modes</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="glass p-5">
-              <h3 className="font-mono text-sm text-accent mb-2">ai search mode</h3>
-              <p className="text-text-muted text-xs mb-3">
-                automatically find and press buttons in AI apps using a 3-strategy pipeline.
-              </p>
-              <ul className="text-xs text-text-muted space-y-1">
-                <li><span className="text-accent">&#9679;</span> accessibility tree detection</li>
-                <li><span className="text-accent">&#9679;</span> vision OCR fallback</li>
-                <li><span className="text-accent">&#9679;</span> keyboard fallback</li>
-                <li><span className="text-accent">&#9679;</span> custom button labels per app</li>
-              </ul>
-            </div>
-            <div className="glass p-5">
-              <h3 className="font-mono text-sm text-accent mb-2">shortcuts & macros</h3>
-              <p className="text-text-muted text-xs mb-3">
-                assign keyboard shortcuts, media keys, or macro sequences to each button.
-              </p>
-              <ul className="text-xs text-text-muted space-y-1">
-                <li><span className="text-accent">&#9679;</span> keyboard shortcuts & media keys</li>
-                <li><span className="text-accent">&#9679;</span> macro sequences with delays</li>
-                <li><span className="text-accent">&#9679;</span> per-app profiles with auto-switching</li>
-                <li><span className="text-accent">&#9679;</span> auto-approve rules engine</li>
-              </ul>
-            </div>
+          <div className="rounded-3xl border border-border bg-surface p-6">
+            <h3 className="text-lg font-bold text-accent mb-2">Plugin system</h3>
+            <p className="text-text-muted text-sm mb-3">Extend functionality with JSON plugin files.</p>
+            <ul className="text-sm text-text-muted space-y-1">
+              <li>· drop .json files in plugins dir</li>
+              <li>· custom actions &amp; search terms</li>
+              <li>· automation rules</li>
+            </ul>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Default button map — unified device */}
-        <section className="flex flex-col items-center">
-          <h2 className="font-mono text-xs text-accent mb-4 self-start">&gt; default button map</h2>
-          <div className="w-full max-w-sm">
-            <div className="bg-[#1a1a1a] rounded-2xl p-5 border border-border/60 shadow-lg">
-              {/* OLED screen */}
-              <div className="bg-bg border border-border rounded-lg px-4 py-2.5 mb-5 text-center">
-                <span className="font-pixel text-accent text-sm">[sudo]</span>
-              </div>
-              {/* Buttons — top to bottom: 4 black, 3 red, 2 yellow, 1 green */}
-              <div className="space-y-3">
-                {[
-                  { bg: "bg-[#2a2a2a]", border: "border-[#444]", num: "4", colorName: "black", action: "yolo (allow all)", hotkey: "ctrl+shift+F16", textColor: "text-white" },
-                  { bg: "bg-[#c85c5c]", border: "border-[#a04848]", num: "3", colorName: "red", action: "reject / no", hotkey: "ctrl+shift+F14", textColor: "text-white" },
-                  { bg: "bg-[#d4b85c]", border: "border-[#b09840]", num: "2", colorName: "yellow", action: "make it better", hotkey: "ctrl+shift+F15", textColor: "text-[#1a1a1a]" },
-                  { bg: "bg-[#6abf73]", border: "border-[#4a9f53]", num: "1", colorName: "green", action: "approve / yes", hotkey: "ctrl+shift+F13", textColor: "text-[#1a1a1a]" },
-                ].map((btn) => (
-                  <div
-                    key={btn.num}
-                    className={`${btn.bg} ${btn.border} border rounded-lg px-4 py-3`}
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className={`font-mono text-xs font-bold ${btn.textColor}`}>
-                        {btn.num} &mdash; {btn.colorName}
-                      </span>
-                    </div>
-                    <p className={`font-mono text-sm ${btn.textColor} opacity-90`}>{btn.action}</p>
-                    <p className={`font-mono text-xs ${btn.textColor} opacity-50 mt-0.5`}>{btn.hotkey}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <p className="text-text-muted text-xs text-center mt-4">
-              all buttons are fully configurable with quick presets in the app
+      {/* Detection stack */}
+      <section>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Detection stack</p>
+        <div className="rounded-3xl border border-border bg-surface overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-text-muted text-xs uppercase tracking-wider">
+                <th className="px-5 py-3 text-left font-normal font-mono">feature</th>
+                <th className="px-5 py-3 text-left font-normal font-mono">macOS</th>
+                <th className="px-5 py-3 text-left font-normal font-mono">Windows</th>
+                <th className="px-5 py-3 text-left font-normal font-mono">Linux</th>
+              </tr>
+            </thead>
+            <tbody>
+              {detection.map((row) => (
+                <tr key={row.feature} className="border-b border-border last:border-0">
+                  <td className="px-5 py-3 text-accent font-mono whitespace-nowrap">{row.feature}</td>
+                  <td className="px-5 py-3 text-text-muted font-mono text-xs">{row.mac}</td>
+                  <td className="px-5 py-3 text-text-muted font-mono text-xs">{row.win}</td>
+                  <td className="px-5 py-3 text-text-muted font-mono text-xs">{row.linux}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      {/* Firmware */}
+      <section>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Firmware (QMK / VIA / Vial)</p>
+        <p className="text-text-muted text-sm mb-4 max-w-2xl">
+          The sudo macro pad runs QMK firmware on an RP2040 chip. Three keymap options:
+        </p>
+        <div className="rounded-3xl border border-border bg-surface overflow-x-auto mb-4">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-text-muted text-xs uppercase tracking-wider">
+                <th className="px-5 py-3 text-left font-normal font-mono">keymap</th>
+                <th className="px-5 py-3 text-left font-normal font-mono">features</th>
+                <th className="px-5 py-3 text-left font-normal font-mono">reconfigure</th>
+              </tr>
+            </thead>
+            <tbody>
+              {firmware.map((row) => (
+                <tr key={row.keymap} className="border-b border-border last:border-0">
+                  <td className="px-5 py-3 text-accent font-mono">{row.keymap}</td>
+                  <td className="px-5 py-3 text-text-muted">{row.features}</td>
+                  <td className="px-5 py-3 text-text-muted">{row.reconfig}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="flex gap-3 flex-wrap">
+          <a
+            href="https://github.com/ibrue/sudo-app/tree/main/firmware"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2.5 text-sm font-medium rounded-full border border-border hover:bg-white/5 transition"
+          >
+            Firmware source ↗
+          </a>
+          <a
+            href="https://usevia.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2.5 text-sm font-medium rounded-full border border-border hover:bg-white/5 transition"
+          >
+            usevia.app ↗
+          </a>
+        </div>
+      </section>
+
+      {/* Supported apps */}
+      <section>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Supported apps</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="rounded-3xl border border-border bg-surface p-6">
+            <p className="font-mono text-xs text-text-muted uppercase mb-3">Native apps</p>
+            <p>Claude for Desktop</p>
+            <p>ChatGPT</p>
+          </div>
+          <div className="rounded-3xl border border-border bg-surface p-6">
+            <p className="font-mono text-xs text-text-muted uppercase mb-3">Editors &amp; terminals</p>
+            <p className="text-sm">Cursor · VS Code · Windsurf · VSCodium · VS Code Insiders</p>
+            <p className="text-sm mt-1">Terminal · iTerm2 · Warp · Ghostty · Kitty · Alacritty</p>
+          </div>
+          <div className="rounded-3xl border border-border bg-surface p-6">
+            <p className="font-mono text-xs text-text-muted uppercase mb-3">Web apps</p>
+            <p className="text-sm">claude.ai · chatgpt.com · grok.com</p>
+            <p className="text-text-muted text-xs mt-2">
+              Safari · Chrome · Firefox · Brave · Edge · Arc · Opera
             </p>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Quick Presets */}
-        <section>
-          <h2 className="font-mono text-xs text-accent mb-4">&gt; quick presets</h2>
-          <div className="glass overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border text-text-muted text-xs uppercase">
-                  <th className="px-4 py-2 text-left font-normal">preset</th>
-                  <th className="px-4 py-2 text-left font-normal">description</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { preset: "ai agent", desc: "approve / reject / make it better / yolo for AI permission prompts" },
-                  { preset: "plan mode", desc: "plan-oriented actions for AI coding agents" },
-                  { preset: "claude code", desc: "optimized for claude code terminal workflows" },
-                  { preset: "system shortcuts", desc: "screenshot, copy, paste, undo, save, lock screen" },
-                  { preset: "media controls", desc: "play/pause, next, previous, volume" },
-                  { preset: "web browsing", desc: "tab navigation, back, forward, refresh" },
-                  { preset: "discord soundboard", desc: "trigger soundboard clips" },
-                ].map((row) => (
-                  <tr key={row.preset} className="border-b border-border last:border-0">
-                    <td className="px-4 py-2 text-accent font-mono whitespace-nowrap">{row.preset}</td>
-                    <td className="px-4 py-2 text-text-muted">{row.desc}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* Developer Tools */}
-        <section>
-          <h2 className="font-mono text-xs text-accent mb-4">&gt; developer tools</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="glass p-5">
-              <h3 className="font-mono text-sm text-accent mb-2">local API</h3>
-              <p className="text-text-muted text-xs mb-3">
-                HTTP API on port 7483 for scripting and automation.
-              </p>
-              <ul className="text-xs text-text-muted space-y-1">
-                <li><span className="text-accent">&#9679;</span> simulate button presses</li>
-                <li><span className="text-accent">&#9679;</span> read/write button config</li>
-                <li><span className="text-accent">&#9679;</span> webhook notifications</li>
-                <li><span className="text-accent">&#9679;</span> action history</li>
-              </ul>
-            </div>
-            <div className="glass p-5">
-              <h3 className="font-mono text-sm text-accent mb-2">MCP server</h3>
-              <p className="text-text-muted text-xs mb-3">
-                gate AI tool use behind physical button approval.
-              </p>
-              <ul className="text-xs text-text-muted space-y-1">
-                <li><span className="text-accent">&#9679;</span> POST /mcp/request-approval</li>
-                <li><span className="text-accent">&#9679;</span> blocks until button press</li>
-                <li><span className="text-accent">&#9679;</span> works with any MCP client</li>
-              </ul>
-            </div>
-            <div className="glass p-5">
-              <h3 className="font-mono text-sm text-accent mb-2">plugin system</h3>
-              <p className="text-text-muted text-xs mb-3">
-                extend functionality with json plugin files.
-              </p>
-              <ul className="text-xs text-text-muted space-y-1">
-                <li><span className="text-accent">&#9679;</span> drop .json files in plugins dir</li>
-                <li><span className="text-accent">&#9679;</span> custom actions & search terms</li>
-                <li><span className="text-accent">&#9679;</span> automation rules</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* Detection stack */}
-        <section>
-          <h2 className="font-mono text-xs text-accent mb-4">&gt; detection stack</h2>
-          <div className="glass overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border text-text-muted text-xs uppercase">
-                  <th className="px-4 py-2 text-left font-normal">feature</th>
-                  <th className="px-4 py-2 text-left font-normal">macOS</th>
-                  <th className="px-4 py-2 text-left font-normal">Windows</th>
-                  <th className="px-4 py-2 text-left font-normal">Linux</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { feature: "system tray", mac: "MenuBarExtra", win: "NotifyIcon", linux: "AppIndicator3" },
-                  { feature: "hotkeys", mac: "CGEvent tap", win: "RegisterHotKey", linux: "pynput" },
-                  { feature: "button finding", mac: "AXUIElement", win: "UI Automation", linux: "AT-SPI2" },
-                  { feature: "OCR fallback", mac: "Apple Vision", win: "Windows.Media.Ocr", linux: "Tesseract" },
-                  { feature: "execution", mac: "AXPress", win: "InvokePattern", linux: "AT-SPI / xdotool" },
-                ].map((row) => (
-                  <tr key={row.feature} className="border-b border-border last:border-0">
-                    <td className="px-4 py-2 text-accent font-mono whitespace-nowrap">{row.feature}</td>
-                    <td className="px-4 py-2 text-text-muted font-mono text-xs">{row.mac}</td>
-                    <td className="px-4 py-2 text-text-muted font-mono text-xs">{row.win}</td>
-                    <td className="px-4 py-2 text-text-muted font-mono text-xs">{row.linux}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-        {/* Firmware */}
-        <section>
-          <h2 className="font-mono text-xs text-accent mb-4">&gt; firmware (QMK / VIA / Vial)</h2>
-          <p className="text-text-muted text-sm mb-4">
-            the sudo macro pad runs QMK firmware on an RP2040 chip. three keymap options are available:
-          </p>
-          <div className="glass overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border text-text-muted text-xs uppercase">
-                  <th className="px-4 py-2 text-left font-normal">keymap</th>
-                  <th className="px-4 py-2 text-left font-normal">features</th>
-                  <th className="px-4 py-2 text-left font-normal">reconfigure</th>
-                </tr>
-              </thead>
-              <tbody>
-                {[
-                  { keymap: "default", features: "Ctrl+Shift+F13–F16", reconfig: "reflash required" },
-                  { keymap: "VIA", features: "live remapping via usevia.app", reconfig: "no reflash needed" },
-                  { keymap: "Vial", features: "auto-detection, no draft definition", reconfig: "no reflash needed" },
-                ].map((row) => (
-                  <tr key={row.keymap} className="border-b border-border last:border-0">
-                    <td className="px-4 py-2 text-accent font-mono">{row.keymap}</td>
-                    <td className="px-4 py-2 text-text-muted">{row.features}</td>
-                    <td className="px-4 py-2 text-text-muted">{row.reconfig}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="mt-4 flex gap-4">
-            <a
-              href="https://github.com/ibrue/sudo-app/tree/main/firmware"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-terminal text-xs"
-            >
-              [ firmware source ]
-            </a>
-            <a
-              href="https://usevia.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-terminal text-xs"
-            >
-              [ usevia.app ]
-            </a>
-          </div>
-        </section>
-
-        {/* Supported apps */}
-        <section>
-          <h2 className="font-mono text-xs text-accent mb-4">&gt; supported apps</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="glass p-5">
-              <h3 className="font-mono text-xs text-text-muted uppercase mb-3">native apps</h3>
-              <div className="space-y-1 text-sm">
-                <p>Claude for Desktop</p>
-                <p>ChatGPT</p>
-              </div>
-            </div>
-            <div className="glass p-5">
-              <h3 className="font-mono text-xs text-text-muted uppercase mb-3">editors &amp; terminals</h3>
-              <div className="space-y-1 text-sm">
-                <p>Cursor &middot; VS Code &middot; Windsurf</p>
-                <p>VSCodium &middot; VS Code Insiders</p>
-                <p>Terminal &middot; iTerm2 &middot; Warp</p>
-                <p>Ghostty &middot; Kitty &middot; Alacritty</p>
-              </div>
-            </div>
-            <div className="glass p-5">
-              <h3 className="font-mono text-xs text-text-muted uppercase mb-3">web apps</h3>
-              <div className="space-y-1 text-sm">
-                <p>claude.ai &middot; chatgpt.com &middot; grok.com</p>
-                <p className="text-text-muted text-xs mt-2">
-                  Safari &middot; Chrome &middot; Firefox &middot; Brave &middot; Edge &middot; Arc &middot; Opera
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Requirements */}
-        <section>
-          <h2 className="font-mono text-xs text-accent mb-4">&gt; requirements</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="glass p-4">
-              <h3 className="font-mono text-xs text-accent mb-2">macOS</h3>
-              <ul className="text-xs text-text-muted space-y-1">
-                <li>macOS 13 Ventura+</li>
-                <li>Accessibility permission</li>
-                <li>Screen Recording (OCR)</li>
-              </ul>
-            </div>
-            <div className="glass p-4">
-              <h3 className="font-mono text-xs text-accent mb-2">Windows</h3>
-              <ul className="text-xs text-text-muted space-y-1">
-                <li>Windows 10+</li>
-                <li>.NET 8 Runtime</li>
-                <li>Run as Administrator (optional)</li>
-              </ul>
-            </div>
-            <div className="glass p-4">
-              <h3 className="font-mono text-xs text-accent mb-2">Linux</h3>
-              <ul className="text-xs text-text-muted space-y-1">
-                <li>X11 or Wayland</li>
-                <li>Python 3.8+, GTK3</li>
-                <li>Tesseract OCR (optional)</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        {/* Footer */}
-        <section className="border-t border-border pt-6">
-          <div className="flex items-center justify-between text-sm text-text-muted">
-            <span>[sudo] is open source hardware + software</span>
-            <a
-              href="https://github.com/ibrue/sudo-app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover-accent"
-            >
-              GitHub &rarr;
-            </a>
-          </div>
-        </section>
-      </div>
+      {/* Outro */}
+      <section className="pt-8 border-t border-border flex items-center justify-between text-sm text-text-muted font-mono">
+        <span>[sudo] is open source hardware + software</span>
+        <a
+          href="https://github.com/ibrue/sudo-app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-accent hover:underline"
+        >
+          GitHub →
+        </a>
+      </section>
     </div>
   );
 }

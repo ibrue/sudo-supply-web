@@ -6,7 +6,9 @@ import { BulkCalculator } from "./BulkCalculator";
 import { BulkInquiryForm } from "./BulkInquiryForm";
 
 export const metadata: Metadata = {
-  title: "bulk orders — sudo.supply",
+  title: "bulk orders · sudo.supply",
+  description:
+    "Equip your whole team with sudo macro pads. Minimum order of 5. Bulk pricing with volume discounts.",
 };
 
 async function loadTiers(): Promise<PricingTier[]> {
@@ -30,48 +32,53 @@ export default async function BulkPage() {
   const tiers = await loadTiers();
 
   return (
-    <div className="pt-24 pb-16 px-4 sm:px-6 max-w-4xl mx-auto">
-      <p className="text-text-muted text-sm mb-8 animate-fade-in">~/bulk</p>
-
+    <div className="pt-32 pb-16 max-w-[1100px] mx-auto px-4 sm:px-8">
       {/* Intro */}
-      <div className="animate-fade-in-delay mb-12">
-        <h1 className="font-mono text-lg mb-4">
-          <span className="text-accent">$</span> sudo apt install --bulk
+      <div className="mb-12">
+        <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">
+          Bulk · for teams
+        </p>
+        <h1 className="text-5xl sm:text-7xl font-extrabold tracking-[-0.04em] leading-[0.95]">
+          Equip the
+          <br />
+          <span className="text-accent">whole team.</span>
         </h1>
-        <p className="text-text-muted text-sm leading-relaxed max-w-2xl">
-          Equip your team with sudo macro pads. Minimum order of 5 units.
-          The more you order, the better the per-unit price. Orders of 100+
-          get custom pricing — reach out and we&apos;ll build a quote.
+        <p className="mt-6 max-w-2xl text-text-muted leading-relaxed">
+          Minimum order of 5 units. The more you order, the better the per-unit price. Orders of 100+ get custom pricing. Reach out and we&apos;ll build a quote.
         </p>
       </div>
 
       {/* Pricing tiers */}
-      <div className="glass p-6 mb-8 animate-fade-in-delay">
-        <h2 className="text-accent text-xs font-mono mb-4">&gt; pricing tiers</h2>
-        <table className="w-full text-sm font-mono">
-          <thead>
-            <tr className="border-b border-border text-text-muted text-xs uppercase tracking-wider">
-              <th className="text-left py-2">quantity</th>
-              <th className="text-right py-2">discount</th>
-              <th className="text-right py-2">per unit (pad)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tiers.map((tier) => (
-              <tr key={tier.label} className="border-b border-border last:border-0">
-                <td className="py-2">{tier.label}</td>
-                <td className="py-2 text-right text-accent">
-                  {tier.discountPercent > 0 ? `${tier.discountPercent}% off` : "custom"}
-                </td>
-                <td className="py-2 text-right tabular-nums">
-                  {tier.discountPercent > 0
-                    ? `$${(29.0 * (1 - tier.discountPercent / 100)).toFixed(2)}`
-                    : "contact us"}
-                </td>
+      <div className="rounded-3xl border border-border bg-surface p-6 sm:p-8 mb-8">
+        <p className="text-xs uppercase tracking-[0.2em] mb-4 text-accent font-mono">
+          Pricing tiers
+        </p>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-border text-text-muted text-xs uppercase tracking-wider">
+                <th className="text-left py-3 font-mono font-normal">Quantity</th>
+                <th className="text-right py-3 font-mono font-normal">Discount</th>
+                <th className="text-right py-3 font-mono font-normal">Per unit (pad)</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {tiers.map((tier) => (
+                <tr key={tier.label} className="border-b border-border last:border-0">
+                  <td className="py-3">{tier.label}</td>
+                  <td className="py-3 text-right text-accent font-mono">
+                    {tier.discountPercent > 0 ? `${tier.discountPercent}% off` : "custom"}
+                  </td>
+                  <td className="py-3 text-right tabular-nums font-mono">
+                    {tier.discountPercent > 0
+                      ? `$${(40.0 * (1 - tier.discountPercent / 100)).toFixed(2)}`
+                      : "contact us"}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Calculator */}

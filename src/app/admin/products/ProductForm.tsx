@@ -155,42 +155,47 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
   }
 
   const inputClass =
-    "w-full bg-transparent border border-border px-3 py-2 text-sm text-text font-mono focus:border-accent outline-none";
+    "w-full bg-transparent border border-border rounded-2xl px-4 py-2.5 text-sm text-text focus:border-accent outline-none";
+  const labelClass = "text-text-muted text-xs block mb-1.5 font-mono uppercase tracking-[0.2em]";
 
   return (
-    <div className="space-y-6 animate-fade-in-delay">
+    <div className="space-y-6">
       {/* Status badge */}
       <div className="flex items-center gap-3">
-        <span className={`text-xs font-mono px-2 py-1 border ${
-          form.status === "published" ? "border-accent text-accent" : "border-text-muted text-text-muted"
-        }`}>
-          {form.status === "published" ? "● published" : "○ draft"}
+        <span
+          className={`rounded-full border px-3 py-1 text-xs ${
+            form.status === "published"
+              ? "border-accent text-accent"
+              : "border-border text-text-muted"
+          }`}
+        >
+          {form.status === "published" ? "● Published" : "○ Draft"}
         </span>
         {mode === "edit" && (
           <a
             href={`/admin/products/${editSlug}/preview`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-accent text-xs font-mono hover-accent"
+            className="text-accent text-sm hover:underline"
           >
-            [ preview ]
+            preview
           </a>
         )}
       </div>
 
       {error && (
-        <p className="text-error text-xs border border-error p-3">{error}</p>
+        <p className="text-error text-sm rounded-2xl border border-error/40 bg-error/10 p-4">{error}</p>
       )}
 
       {/* Image dropbox */}
-      <div className="glass p-6">
-        <label className="text-text-muted text-xs block mb-3">images</label>
+      <div className="rounded-3xl border border-border bg-surface p-6">
+        <label className={labelClass}>Images</label>
 
         {/* Image grid with reordering */}
         {form.images.length > 0 && (
           <div className="flex flex-wrap gap-3 mb-4">
             {form.images.map((url, i) => (
-              <div key={`${url}-${i}`} className="relative group border border-border w-24 h-24 bg-bg-secondary">
+              <div key={`${url}-${i}`} className="relative group rounded-2xl overflow-hidden border border-border w-24 h-24 bg-bg">
                 <Image
                   src={resolveImageUrl(url)}
                   alt={`Image ${i + 1}`}
@@ -199,15 +204,15 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
                   unoptimized
                 />
                 {i === 0 && (
-                  <span className="absolute top-0 left-0 bg-accent text-bg text-[9px] px-1 font-mono">
+                  <span className="absolute top-1 left-1 bg-accent text-black text-[9px] px-1.5 py-0.5 rounded-full font-mono">
                     MAIN
                   </span>
                 )}
-                <div className="absolute inset-0 bg-bg/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
+                <div className="absolute inset-0 bg-bg/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                   <button
                     type="button"
                     onClick={() => moveImage(i, -1)}
-                    className="text-accent text-xs font-mono disabled:opacity-30"
+                    className="text-accent text-xs disabled:opacity-30"
                     disabled={i === 0}
                   >
                     ◀
@@ -215,14 +220,14 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
                   <button
                     type="button"
                     onClick={() => removeImage(i)}
-                    className="text-error text-xs font-mono"
+                    className="text-error text-xs"
                   >
                     ✕
                   </button>
                   <button
                     type="button"
                     onClick={() => moveImage(i, 1)}
-                    className="text-accent text-xs font-mono disabled:opacity-30"
+                    className="text-accent text-xs disabled:opacity-30"
                     disabled={i === form.images.length - 1}
                   >
                     ▶
@@ -239,8 +244,8 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
-          className={`border-2 border-dashed p-8 text-center cursor-pointer transition-colors ${
-            dragOver ? "border-accent bg-accent-dim" : "border-border hover:border-accent"
+          className={`rounded-2xl border-2 border-dashed p-8 text-center cursor-pointer transition-colors ${
+            dragOver ? "border-accent bg-accent/10" : "border-border hover:border-accent"
           }`}
         >
           <input
@@ -252,14 +257,14 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
             className="hidden"
           />
           {uploading ? (
-            <p className="text-accent text-xs font-mono">uploading...</p>
+            <p className="text-accent text-sm">Uploading...</p>
           ) : (
             <>
-              <p className="text-text-muted text-xs font-mono mb-1">
-                drag &amp; drop images here
+              <p className="text-text text-sm mb-1">
+                Drag &amp; drop images here
               </p>
-              <p className="text-text-muted text-[10px] font-mono">
-                or click to browse &middot; jpg, png, webp, svg
+              <p className="text-text-muted text-xs">
+                or click to browse · jpg, png, webp, svg
               </p>
             </>
           )}
@@ -285,18 +290,18 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
               addImageUrl(input.value);
               input.value = "";
             }}
-            className="btn-terminal text-xs px-3"
+            className="px-5 py-2.5 text-sm font-medium rounded-full border border-border hover:bg-white/5 transition"
           >
-            [+]
+            Add
           </button>
         </div>
       </div>
 
       {/* Core fields */}
-      <div className="glass p-6 space-y-4">
+      <div className="rounded-3xl border border-border bg-surface p-6 space-y-5">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-text-muted text-xs block mb-1">slug</label>
+            <label className={labelClass}>Slug</label>
             <input
               value={form.slug}
               onChange={(e) => update("slug", e.target.value)}
@@ -306,7 +311,7 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
             />
           </div>
           <div>
-            <label className="text-text-muted text-xs block mb-1">name</label>
+            <label className={labelClass}>Name</label>
             <input
               value={form.name}
               onChange={(e) => update("name", e.target.value)}
@@ -319,7 +324,7 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
-            <label className="text-text-muted text-xs block mb-1">price ($)</label>
+            <label className={labelClass}>Price ($)</label>
             <input
               type="number"
               step="0.01"
@@ -330,7 +335,7 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
             />
           </div>
           <div>
-            <label className="text-text-muted text-xs block mb-1">sort order</label>
+            <label className={labelClass}>Sort order</label>
             <input
               type="number"
               value={form.sortOrder}
@@ -339,7 +344,7 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
             />
           </div>
           <div>
-            <label className="text-text-muted text-xs block mb-1">stock count</label>
+            <label className={labelClass}>Stock count</label>
             <input
               type="number"
               min={0}
@@ -348,22 +353,22 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
               className={inputClass}
             />
           </div>
-          <div className="flex items-end gap-3">
-            <label className="text-text-muted text-xs flex items-center gap-2 cursor-pointer">
+          <div className="flex items-end">
+            <label className="text-text-muted text-sm flex items-center gap-2 cursor-pointer pb-2.5">
               <input
                 type="checkbox"
                 checked={form.inStock}
                 onChange={(e) => update("inStock", e.target.checked)}
-                className="accent-[#00ff41]"
+                className="accent-accent"
               />
-              in stock
+              In stock
             </label>
           </div>
         </div>
 
         {!form.inStock && (
           <div>
-            <label className="text-text-muted text-xs block mb-1">lead time (shown when out of stock)</label>
+            <label className={labelClass}>Lead time (shown when out of stock)</label>
             <input
               value={form.leadTime}
               onChange={(e) => update("leadTime", e.target.value)}
@@ -374,7 +379,7 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
         )}
 
         <div>
-          <label className="text-text-muted text-xs block mb-1">description</label>
+          <label className={labelClass}>Description</label>
           <textarea
             value={form.description}
             onChange={(e) => update("description", e.target.value)}
@@ -385,7 +390,7 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
         </div>
 
         <div>
-          <label className="text-text-muted text-xs block mb-1">long description</label>
+          <label className={labelClass}>Long description</label>
           <textarea
             value={form.longDescription}
             onChange={(e) => update("longDescription", e.target.value)}
@@ -395,7 +400,7 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
         </div>
 
         <div>
-          <label className="text-text-muted text-xs block mb-1">shopify variant ID</label>
+          <label className={labelClass}>Shopify variant ID</label>
           <input
             value={form.shopifyVariantId}
             onChange={(e) => update("shopifyVariantId", e.target.value)}
@@ -406,15 +411,19 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
       </div>
 
       {/* Specs editor */}
-      <div className="glass p-6">
-        <label className="text-text-muted text-xs block mb-2">specifications</label>
-        <div className="space-y-1 mb-3">
+      <div className="rounded-3xl border border-border bg-surface p-6">
+        <label className={labelClass}>Specifications</label>
+        <div className="space-y-2 mb-4">
           {Object.entries(form.specs).map(([key, value]) => (
-            <div key={key} className="flex items-center gap-2 text-sm font-mono">
-              <span className="text-text-muted">{key}:</span>
+            <div key={key} className="flex items-center gap-3 text-sm rounded-2xl border border-border px-4 py-2.5">
+              <span className="text-text-muted font-mono">{key}:</span>
               <span className="flex-1">{value}</span>
-              <button type="button" onClick={() => removeSpec(key)} className="text-error text-xs hover:underline">
-                [x]
+              <button
+                type="button"
+                onClick={() => removeSpec(key)}
+                className="text-error text-sm hover:underline"
+              >
+                remove
               </button>
             </div>
           ))}
@@ -422,7 +431,13 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
         <div className="flex gap-2">
           <input value={specKey} onChange={(e) => setSpecKey(e.target.value)} placeholder="key" className={inputClass + " flex-1"} />
           <input value={specValue} onChange={(e) => setSpecValue(e.target.value)} placeholder="value" className={inputClass + " flex-1"} />
-          <button type="button" onClick={addSpec} className="btn-terminal text-xs px-3">[+]</button>
+          <button
+            type="button"
+            onClick={addSpec}
+            className="px-5 py-2.5 text-sm font-medium rounded-full border border-border hover:bg-white/5 transition"
+          >
+            Add
+          </button>
         </div>
       </div>
 
@@ -432,17 +447,17 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
           type="button"
           onClick={() => save("draft")}
           disabled={saving}
-          className="btn-terminal flex-1 text-center disabled:opacity-50"
+          className="flex-1 px-5 py-2.5 text-sm font-medium rounded-full border border-border hover:bg-white/5 transition disabled:opacity-50"
         >
-          {saving ? "[ SAVING... ]" : "[ SAVE DRAFT ]"}
+          {saving ? "Saving..." : "Save draft"}
         </button>
         <button
           type="button"
           onClick={() => save("published")}
           disabled={saving}
-          className="btn-terminal-accent flex-1 text-center disabled:opacity-50"
+          className="flex-1 px-5 py-2.5 text-sm font-semibold rounded-full text-black bg-accent hover:brightness-110 transition disabled:opacity-50"
         >
-          {saving ? "[ PUBLISHING... ]" : "[ PUBLISH ]"}
+          {saving ? "Publishing..." : "Publish"}
         </button>
       </div>
     </div>

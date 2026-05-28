@@ -15,27 +15,28 @@ export default async function PreviewPage({
   return (
     <div>
       {/* Preview banner */}
-      <div className="glass-accent p-3 mb-6 flex items-center justify-between">
-        <span className="text-accent text-xs font-mono">
-          &#9679; preview mode — {product.status === "draft" ? "this product is not live yet" : "viewing published product"}
+      <div className="rounded-2xl border border-accent/40 bg-surface p-4 mb-8 flex flex-wrap items-center justify-between gap-3">
+        <span className="text-accent text-sm">
+          &#9679; Preview mode · {product.status === "draft" ? "this product is not live yet" : "viewing published product"}
         </span>
-        <div className="flex gap-3">
-          <Link href={`/admin/products/${product.slug}/edit`} className="text-accent text-xs font-mono hover-accent">
-            [ edit ]
+        <div className="flex gap-4">
+          <Link href={`/admin/products/${product.slug}/edit`} className="text-accent text-sm hover:underline">
+            edit
           </Link>
-          <Link href={`/product/${product.slug}`} className="text-text-muted text-xs font-mono hover-accent">
-            [ live page ]
+          <Link href={`/product/${product.slug}`} className="text-text-muted text-sm hover:text-text">
+            live page
           </Link>
         </div>
       </div>
 
-      {/* Product preview — mirrors the real product page */}
-      <p className="text-text-muted text-sm mb-8">~/shop/{product.slug}</p>
+      <div className="mb-8">
+        <p className="text-xs uppercase tracking-[0.2em] text-accent font-mono mb-3">Preview · /shop/{product.slug}</p>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Images */}
         <div className="space-y-3">
-          <div className="relative aspect-square bg-bg-secondary glass overflow-hidden">
+          <div className="relative aspect-square rounded-3xl border border-border bg-surface overflow-hidden">
             <Image
               src={resolveImageUrl(product.images[0] || product.image)}
               alt={product.name}
@@ -45,9 +46,9 @@ export default async function PreviewPage({
             />
           </div>
           {product.images.length > 1 && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               {product.images.map((img, i) => (
-                <div key={i} className="relative w-16 h-16 border border-border bg-bg-secondary">
+                <div key={i} className="relative w-16 h-16 rounded-2xl overflow-hidden border border-border bg-surface">
                   <Image src={resolveImageUrl(img)} alt={`${product.name} ${i + 1}`} fill className="object-contain p-1" unoptimized />
                 </div>
               ))}
@@ -57,10 +58,10 @@ export default async function PreviewPage({
 
         {/* Details */}
         <div className="flex flex-col">
-          <h1 className="font-mono text-lg sm:text-xl mb-4">{product.name}</h1>
+          <h1 className="text-4xl font-extrabold tracking-[-0.04em] mb-4">{product.name}</h1>
 
-          <div className="flex items-center gap-4 mb-4">
-            <span className="text-2xl font-mono tabular-nums">
+          <div className="flex items-center gap-4 mb-6">
+            <span className="text-3xl font-extrabold tabular-nums">
               ${product.price.toFixed(2)}
             </span>
             <span className="text-xs">
@@ -72,23 +73,23 @@ export default async function PreviewPage({
             </span>
           </div>
 
-          <p className="text-text-muted text-sm leading-relaxed mb-8">
+          <p className="text-text-muted text-base leading-relaxed mb-8">
             {product.longDescription}
           </p>
 
           {/* Specs */}
-          <div className="glass mb-8">
-            <div className="px-4 py-2 border-b border-border text-text-muted text-xs uppercase tracking-wider">
-              specifications
+          <div className="rounded-3xl border border-border bg-surface overflow-hidden mb-8">
+            <div className="px-5 py-3 border-b border-border text-text-muted text-xs uppercase tracking-[0.2em] font-mono">
+              Specifications
             </div>
             <table className="w-full text-sm">
               <tbody>
                 {Object.entries(product.specs).map(([key, value]) => (
                   <tr key={key} className="border-b border-border last:border-0">
-                    <td className="px-4 py-2 text-text-muted whitespace-nowrap">
+                    <td className="px-5 py-3 text-text-muted whitespace-nowrap">
                       {key.replace(/_/g, " ")}
                     </td>
-                    <td className="px-4 py-2 text-right font-mono">{value}</td>
+                    <td className="px-5 py-3 text-right font-mono">{value}</td>
                   </tr>
                 ))}
               </tbody>
@@ -96,11 +97,14 @@ export default async function PreviewPage({
           </div>
 
           <div className="mt-auto">
-            <button disabled className="btn-terminal-accent w-full text-center opacity-50 cursor-not-allowed">
-              [ ADD TO CART ]
+            <button
+              disabled
+              className="w-full px-5 py-3 text-sm font-semibold rounded-full text-black bg-accent opacity-50 cursor-not-allowed"
+            >
+              Add to cart
             </button>
-            <p className="text-text-muted text-xs mt-2 text-center">
-              (preview mode — buttons disabled)
+            <p className="text-text-muted text-xs mt-3 text-center">
+              (preview mode · buttons disabled)
             </p>
           </div>
         </div>

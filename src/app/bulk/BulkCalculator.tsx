@@ -5,88 +5,96 @@ import { Product } from "@/lib/products";
 import { getBulkPrice, PricingTier } from "@/lib/bulkPricing";
 import { toastBus, sudoCmd } from "@/lib/toastBus";
 
-function dotFill(label: string, value: string, width: number = 45) {
-  const dots = Math.max(2, width - label.length - value.length);
-  return `${label} ${"·".repeat(dots)} ${value}`;
-}
-
 export function BulkCalculator({ products, tiers }: { products: Product[]; tiers?: PricingTier[] }) {
   const [selectedSlug, setSelectedSlug] = useState(products[0]?.slug || "");
   const [quantity, setQuantity] = useState(5);
 
   const product = products.find((p) => p.slug === selectedSlug) || products[0];
-  const { perUnit, total, savings, tier } = getBulkPrice(product?.price || 29, quantity, tiers);
+  const { perUnit, total, savings, tier } = getBulkPrice(product?.price || 40, quantity, tiers);
 
   function handleCalculate() {
     toastBus.emit(
       sudoCmd.bulkOrder(selectedSlug, quantity),
       tier?.discountPercent
         ? `Bulk pricing applied: ${tier.discountPercent}% off (${tier.label})`
-        : "Custom pricing — submit inquiry below."
+        : "Custom pricing. Submit inquiry below."
     );
   }
 
-  return (
-    <div className="glass p-6 mb-8">
-      <h2 className="text-accent text-xs font-mono mb-4">&gt; price calculator</h2>
+  const inputClass =
+    "w-full bg-transparent border border-border rounded-2xl px-4 py-2.5 text-sm font-mono focus:border-accent outline-none";
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+  return (
+    <div className="rounded-3xl border border-border bg-surface p-6 sm:p-8 mb-8">
+      <p className="text-xs uppercase tracking-[0.2em] mb-4 text-accent font-mono">
+        Price calculator
+      </p>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
         <div>
-          <label className="text-text-muted text-xs block mb-1">product</label>
+          <label className="text-text-muted text-xs block mb-1.5 font-mono">product</label>
           <select
             value={selectedSlug}
             onChange={(e) => setSelectedSlug(e.target.value)}
-            className="w-full bg-transparent border border-border px-3 py-2 text-sm text-text font-mono focus:border-accent outline-none"
+            className={inputClass}
           >
             {products.map((p) => (
               <option key={p.slug} value={p.slug} className="bg-bg">
-                {p.name} — ${p.price.toFixed(2)}
+                {p.name} · ${p.price.toFixed(2)}
               </option>
             ))}
           </select>
         </div>
         <div>
-          <label className="text-text-muted text-xs block mb-1">quantity (min 5)</label>
+          <label className="text-text-muted text-xs block mb-1.5 font-mono">quantity (min 5)</label>
           <input
             type="number"
             min={5}
             value={quantity}
             onChange={(e) => setQuantity(Math.max(5, parseInt(e.target.value) || 5))}
-            className="w-full bg-transparent border border-border px-3 py-2 text-sm text-text font-mono focus:border-accent outline-none"
+            className={inputClass}
           />
         </div>
       </div>
 
-      {/* Terminal-style price breakdown */}
-      <div className="font-mono text-xs sm:text-sm space-y-1 mb-4 overflow-x-auto">
-        <p className="text-accent">bulk@sudo.supply ~&gt;</p>
-        <p className="whitespace-nowrap text-text-muted">
-          {dotFill("retail_price", `$${(product?.price || 29).toFixed(2)}`, 35)}
-        </p>
-        <p className="whitespace-nowrap text-text-muted">
-          {dotFill("quantity", String(quantity), 35)}
-        </p>
+      {/* Price breakdown — card */}
+      <div className="rounded-2xl border border-border p-5 mb-6 space-y-2 font-mono text-sm">
+        <div className="flex justify-between text-text-muted">
+          <span>Retail price</span>
+          <span className="tabular-nums">${(product?.price || 40).toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-text-muted">
+          <span>Quantity</span>
+          <span className="tabular-nums">{quantity}</span>
+        </div>
         {tier && tier.discountPercent > 0 && (
-          <p className="whitespace-nowrap text-accent">
-            {dotFill("discount", `${tier.discountPercent}% (${tier.label})`, 35)}
-          </p>
+          <div className="flex justify-between text-accent">
+            <span>Discount</span>
+            <span>{tier.discountPercent}% ({tier.label})</span>
+          </div>
         )}
-        <p className="whitespace-nowrap">
-          {dotFill("unit_price", `$${perUnit.toFixed(2)}`, 35)}
-        </p>
+        <div className="flex justify-between">
+          <span>Unit price</span>
+          <span className="tabular-nums">${perUnit.toFixed(2)}</span>
+        </div>
         <div className="border-t border-border my-2" />
-        <p className="whitespace-nowrap text-sm sm:text-base">
-          {dotFill("total", `$${total.toFixed(2)}`, 35)}
-        </p>
+        <div className="flex justify-between text-base">
+          <span className="font-semibold">Total</span>
+          <span className="tabular-nums font-bold">${total.toFixed(2)}</span>
+        </div>
         {savings > 0 && (
-          <p className="whitespace-nowrap text-accent">
-            {dotFill("savings", `$${savings.toFixed(2)}`, 35)}
-          </p>
+          <div className="flex justify-between text-accent">
+            <span>You save</span>
+            <span className="tabular-nums">${savings.toFixed(2)}</span>
+          </div>
         )}
       </div>
 
-      <button onClick={handleCalculate} className="btn-terminal-accent text-xs w-full text-center">
-        {quantity >= 100 ? "[ REQUEST CUSTOM QUOTE ]" : "[ CALCULATE ]"}
+      <button
+        onClick={handleCalculate}
+        className="w-full px-6 py-3 text-sm font-semibold rounded-full text-black bg-accent hover:brightness-110 transition"
+      >
+        {quantity >= 100 ? "Request custom quote →" : "Calculate"}
       </button>
     </div>
   );

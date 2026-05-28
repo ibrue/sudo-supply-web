@@ -1,0 +1,258 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace JSX {
+    interface IntrinsicElements {
+      "model-viewer": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement> & {
+          src?: string;
+          "ios-src"?: string;
+          alt?: string;
+          poster?: string;
+          ar?: boolean | "";
+          "ar-modes"?: string;
+          "auto-rotate"?: boolean | "";
+          "auto-rotate-delay"?: number | string;
+          "rotation-per-second"?: string;
+          "camera-controls"?: boolean;
+          "interaction-prompt"?: "auto" | "when-focused" | "none";
+          "shadow-intensity"?: number | string;
+          "shadow-softness"?: number | string;
+          exposure?: number | string;
+          "tone-mapping"?: "auto" | "aces" | "agx" | "commerce" | "neutral";
+          "environment-image"?: string;
+          loading?: "auto" | "lazy" | "eager";
+          reveal?: "auto" | "manual";
+          "animation-name"?: string;
+          "animation-crossfade-duration"?: number | string;
+        },
+        HTMLElement
+      >;
+    }
+  }
+}
+
+// Re-exported from the colour module so consumers can keep importing from
+// here while server components import the same helpers directly from
+// `@/lib/productColors` (avoiding the "use client" boundary).
+import { hexToRgb, type RGB } from "@/lib/productColors";
+export { hexToRgb, type RGB };
+
+interface Props {
+  src: string;
+  iosSrc?: string;
+  poster: string;
+  alt: string;
+  autoRotate?: boolean;
+  ar?: boolean;
+  cameraControls?: boolean;
+  className?: string;
+
+  // Configurator
+  caseColor?: RGB;
+  pcbColor?: RGB;
+  keycapColors?: [RGB, RGB, RGB, RGB];
+
+  /** Material-name regex (as a string, since this prop is passed across the
+   *  server → client boundary). Any matching material is rendered fully
+   *  transparent so the corresponding mesh disappears. Used to show a
+   *  PCB-only view from the full assembled GLB. */
+  hideMaterialsMatching?: string;
+}
+
+interface PbrMaterial {
+  name: string;
+  pbrMetallicRoughness: {
+    setBaseColorFactor: (rgba: [number, number, number, number]) => void;
+    setMetallicFactor?: (v: number) => void;
+    setRoughnessFactor?: (v: number) => void;
+  };
+  setAlphaMode?: (mode: "OPAQUE" | "MASK" | "BLEND") => void;
+  setAlphaCutoff?: (v: number) => void;
+}
+
+// Black-oxide M3 screws: dark base colour + high metallic so highlights still
+// catch the room. Forced at runtime so stale GLBs with bright-steel screw
+// defaults still render the intended look.
+const SCREW_RGB: RGB = [16 / 255, 16 / 255, 18 / 255];
+
+interface ModelViewerElement extends HTMLElement {
+  model?: { materials: PbrMaterial[] };
+}
+
+export function ProductModelViewer({
+  src,
+  iosSrc,
+  poster,
+  alt,
+  autoRotate = true,
+  ar = true,
+  cameraControls = true,
+  className = "",
+  caseColor,
+  pcbColor,
+  keycapColors,
+  hideMaterialsMatching,
+}: Props) {
+  const [ready, setReady] = useState(false);
+  const [modelFailed, setModelFailed] = useState(false);
+  const [modelLoaded, setModelLoaded] = useState(false);
+  const viewerRef = useRef<ModelViewerElement | null>(null);
+  const hasCaseMaterialRef = useRef(false);
+
+  // Dynamically import the web component on the client only.
+  useEffect(() => {
+    let cancelled = false;
+    import("@google/model-viewer")
+      .then(() => {
+        if (!cancelled) setReady(true);
+      })
+      .catch(() => {
+        if (!cancelled) setModelFailed(true);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Track load + error events
+  useEffect(() => {
+    const el = viewerRef.current;
+    if (!el) return;
+    const onError = () => setModelFailed(true);
+    const onLoad = () => {
+      setModelLoaded(true);
+      hasCaseMaterialRef.current =
+        el.model?.materials.some((m) => (m.name ?? "").startsWith("CASE")) ?? false;
+    };
+    el.addEventListener("error", onError);
+    el.addEventListener("load", onLoad);
+    return () => {
+      el.removeEventListener("error", onError);
+      el.removeEventListener("load", onLoad);
+    };
+  }, [ready]);
+
+  // Apply colour overrides + tuned PBR factors per material family, and hide
+  // any materials matched by `hideMaterialsMatching`. The 3D-printed case and
+  // PBT keycaps are nearly matte; the PCB top is a soldermask which is slightly
+  // less rough. Forcing roughness here keeps the model looking like real plastic
+  // instead of glossy injection-molded resin under model-viewer's default IBL.
+  useEffect(() => {
+    const el = viewerRef.current;
+    if (!el || !modelLoaded || !el.model) return;
+
+    const hasCase = hasCaseMaterialRef.current;
+    const hideRe = hideMaterialsMatching ? new RegExp(hideMaterialsMatching) : null;
+
+    for (const mat of el.model.materials) {
+      const name = mat.name ?? "";
+      const pbr = mat.pbrMetallicRoughness;
+
+      if (hideRe?.test(name)) {
+        // Clip via alpha-MASK so the mesh disappears entirely (no z-fighting
+        // that BLEND mode would introduce against the kept geometry).
+        mat.setAlphaMode?.("MASK");
+        mat.setAlphaCutoff?.(0.5);
+        pbr.setBaseColorFactor([0, 0, 0, 0]);
+        continue;
+      }
+
+      let rgb: RGB | undefined;
+      let roughness: number | undefined;
+      let metallic = 0;
+
+      if (name.startsWith("SCREW")) {
+        rgb = SCREW_RGB;
+        roughness = 0.4;
+        metallic = 0.85;
+      } else if (caseColor && hasCase && name.startsWith("CASE")) {
+        // 3D-printed PLA — semi-matte rather than fully matte ABS.
+        rgb = caseColor;
+        roughness = 0.72;
+      } else if (caseColor && !hasCase && (name.startsWith("PCB_TOP") || name.startsWith("PCB_BODY"))) {
+        rgb = caseColor;
+        roughness = 0.72;
+      } else if (pcbColor && name.startsWith("PCB_TOP")) {
+        rgb = pcbColor;
+        roughness = 0.55;
+      } else if (keycapColors && name.startsWith("KEYCAP")) {
+        const m = name.match(/KEYCAP_(\d+)/);
+        const i = m ? parseInt(m[1], 10) : 0;
+        rgb = keycapColors[Math.min(i, keycapColors.length - 1)];
+        roughness = 0.65;
+      }
+
+      if (rgb) pbr.setBaseColorFactor([rgb[0], rgb[1], rgb[2], 1]);
+      if (roughness !== undefined) {
+        pbr.setRoughnessFactor?.(roughness);
+        pbr.setMetallicFactor?.(metallic);
+      }
+    }
+  }, [modelLoaded, caseColor, pcbColor, keycapColors, hideMaterialsMatching]);
+
+  // If the script outright fails, fall back to the still image.
+  if (modelFailed) {
+    return (
+      <div className={`relative ${className}`}>
+        <Image src={poster} alt={alt} fill className="object-contain" priority />
+      </div>
+    );
+  }
+
+  return (
+    <div className={`relative ${className}`}>
+      {ready && (
+        <model-viewer
+          ref={viewerRef as React.Ref<HTMLElement>}
+          src={src}
+          ios-src={iosSrc}
+          alt={alt}
+          {...(ar ? { ar: "" } : {})}
+          ar-modes="webxr scene-viewer quick-look"
+          {...(autoRotate ? { "auto-rotate": "" } : {})}
+          auto-rotate-delay={1500}
+          rotation-per-second="20deg"
+          {...(cameraControls ? { "camera-controls": true } : {})}
+          interaction-prompt={cameraControls ? "auto" : "none"}
+          // Studio HDR + commerce tone-mapping = product-photography look.
+          // Slightly stronger, sharper shadows + a touch higher exposure
+          // give the model the "lifted off a seamless" feel a flat neutral
+          // env can't provide.
+          environment-image="/hdri/studio.hdr"
+          tone-mapping="commerce"
+          exposure="1.1"
+          shadow-intensity="1"
+          shadow-softness="0.7"
+          loading="eager"
+          reveal="auto"
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "transparent",
+            // Interactive viewer (product page): claim the touch so the model
+            // orbits cleanly. Static thumbnail (shop card / cart): let
+            // vertical scrolls pass through so the page can scroll when the
+            // user starts a swipe on the model canvas.
+            touchAction: cameraControls ? "none" : "pan-y",
+          }}
+        />
+      )}
+      {/* Poster overlay: stays mounted on top until the model itself has
+          finished loading, then cross-fades out. Avoids the jarring flash
+          where the still image swaps for an empty model-viewer canvas. */}
+      <div
+        aria-hidden={modelLoaded}
+        className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ${
+          modelLoaded ? "opacity-0" : "opacity-100"
+        }`}
+      >
+        <Image src={poster} alt={alt} fill className="object-contain" priority />
+      </div>
+    </div>
+  );
+}

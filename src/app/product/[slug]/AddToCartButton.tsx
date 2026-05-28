@@ -11,49 +11,69 @@ export function AddToCartButton({ product }: { product: Product }) {
   const { addItem } = useCart();
 
   const handleAdd = () => {
-    for (let i = 0; i < quantity; i++) {
-      addItem(product);
-    }
+    addItem(product, quantity);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
 
-  const label = product.inStock ? "ADD TO CART" : "PRE-ORDER";
-  const addedLabel = product.inStock ? "ADDED \u2713" : "PRE-ORDERED \u2713";
+  // Everything is always buyable — out-of-stock units become preorders that
+  // ship with the next batch. The shipping estimate switches accordingly.
+  const shipEstimate = product.inStock
+    ? product.leadTime || "3–5 days"
+    : product.preorderLeadTime || product.leadTime || "2–3 weeks";
 
   return (
-    <div className="mt-auto">
-      <div className="flex items-center gap-4 mb-4">
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1 rounded-full border border-border px-1.5 py-1">
+          <button
+            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+            className="w-11 h-11 sm:w-8 sm:h-8 rounded-full hover:bg-white/10 text-text-muted hover:text-white transition-colors text-xl sm:text-lg leading-none"
+            aria-label="decrease quantity"
+          >
+            −
+          </button>
+          <span className="font-mono text-base tabular-nums w-6 text-center">
+            {quantity}
+          </span>
+          <button
+            onClick={() => setQuantity((q) => q + 1)}
+            className="w-11 h-11 sm:w-8 sm:h-8 rounded-full hover:bg-white/10 text-text-muted hover:text-white transition-colors text-xl sm:text-lg leading-none"
+            aria-label="increase quantity"
+          >
+            +
+          </button>
+        </div>
         <button
-          onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-          className="btn-terminal px-3 py-1 text-xs"
+          onClick={handleAdd}
+          className="flex-1 px-5 sm:px-6 py-3.5 sm:py-3 text-sm font-semibold rounded-full text-black bg-accent hover:brightness-110 transition"
         >
-          [ - ]
-        </button>
-        <span className="font-mono text-lg tabular-nums w-8 text-center">
-          {quantity}
-        </span>
-        <button
-          onClick={() => setQuantity((q) => q + 1)}
-          className="btn-terminal px-3 py-1 text-xs"
-        >
-          [ + ]
+          {added
+            ? "Added ✓"
+            : `Add to bag · $${(product.price * quantity).toFixed(2)}`}
         </button>
       </div>
-      <button
-        onClick={handleAdd}
-        className="btn-terminal-accent w-full text-center"
-      >
-        {added ? `[ ${addedLabel} ]` : `[ ${label} ]`}
-      </button>
+
       {!product.inStock && (
-        <p className="text-text-muted text-xs mt-2 text-center">
-          {product.leadTime ? `estimated lead time: ${product.leadTime}` : "ships when back in stock"}
+        <div className="rounded-2xl border border-accent/30 bg-accent/5 p-4 text-sm">
+          <p className="text-accent font-mono text-xs uppercase tracking-wider mb-1">
+            [ preorder ]
+          </p>
+          <p className="text-text">
+            Current batch is sold out. Your order is reserved for the next batch, charged now, ships in <span className="text-accent font-semibold">{shipEstimate}</span>.
+          </p>
+        </div>
+      )}
+
+      {product.inStock && (
+        <p className="text-text-muted text-xs font-mono">
+          $ ships in <span className="text-accent">{shipEstimate}</span>
         </p>
       )}
+
       {quantity >= 5 && (
-        <Link href="/bulk" className="block text-accent text-xs mt-3 text-center hover-accent">
-          ordering {quantity}+? check bulk pricing &rarr;
+        <Link href="/bulk" className="text-accent text-sm hover:underline">
+          Ordering {quantity}+? Check bulk pricing →
         </Link>
       )}
     </div>

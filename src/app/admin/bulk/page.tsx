@@ -68,35 +68,38 @@ export default function AdminBulkPage() {
     .reduce((sum, i) => sum + i.quantity, 0);
 
   return (
-    <div className="animate-fade-in-delay">
-      <h1 className="text-accent text-xs font-mono mb-6">&gt; bulk inquiry tracker</h1>
+    <div>
+      <div className="mb-10">
+        <p className="text-xs uppercase tracking-[0.2em] text-accent font-mono mb-3">Admin</p>
+        <h1 className="text-4xl sm:text-5xl font-extrabold tracking-[-0.04em]">Bulk inquiries</h1>
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-        <div className="glass p-4">
-          <p className="text-text-muted text-xs mb-1">total inquiries</p>
-          <p className="text-xl font-mono text-accent">{inquiries.length}</p>
+        <div className="rounded-2xl border border-border bg-surface p-5">
+          <p className="text-text-muted text-xs block mb-2 font-mono uppercase tracking-[0.2em]">Total</p>
+          <p className="text-2xl font-extrabold tabular-nums">{inquiries.length}</p>
         </div>
-        <div className="glass p-4">
-          <p className="text-text-muted text-xs mb-1">active</p>
-          <p className="text-xl font-mono text-accent">{activeCount}</p>
+        <div className="rounded-2xl border border-border bg-surface p-5">
+          <p className="text-text-muted text-xs block mb-2 font-mono uppercase tracking-[0.2em]">Active</p>
+          <p className="text-2xl font-extrabold tabular-nums">{activeCount}</p>
         </div>
-        <div className="glass p-4">
-          <p className="text-text-muted text-xs mb-1">total units requested</p>
-          <p className="text-xl font-mono text-accent">{totalUnits}</p>
+        <div className="rounded-2xl border border-border bg-surface p-5">
+          <p className="text-text-muted text-xs block mb-2 font-mono uppercase tracking-[0.2em]">Units requested</p>
+          <p className="text-2xl font-extrabold tabular-nums">{totalUnits}</p>
         </div>
-        <div className="glass p-4">
-          <p className="text-text-muted text-xs mb-1">awaiting response</p>
-          <p className="text-xl font-mono text-accent">
+        <div className="rounded-2xl border border-border bg-surface p-5">
+          <p className="text-text-muted text-xs block mb-2 font-mono uppercase tracking-[0.2em]">Awaiting</p>
+          <p className="text-2xl font-extrabold tabular-nums">
             {inquiries.filter((i) => i.status === "new").length}
           </p>
         </div>
       </div>
 
       {loading ? (
-        <div className="glass p-6 text-text-muted text-sm">Loading...</div>
+        <div className="rounded-3xl border border-border bg-surface p-8 text-text-muted text-sm">Loading...</div>
       ) : inquiries.length === 0 ? (
-        <div className="glass p-6 text-text-muted text-sm">
+        <div className="rounded-3xl border border-border bg-surface p-8 text-text-muted text-sm">
           <p>No bulk inquiries yet. They&apos;ll appear here when companies submit the form on /bulk.</p>
         </div>
       ) : (
@@ -107,16 +110,21 @@ export default function AdminBulkPage() {
             const isUrgent = inq.status === "new" && days >= 2;
 
             return (
-              <div key={inq.id} className={`glass p-4 ${isUrgent ? "border-error" : ""}`}>
+              <div
+                key={inq.id}
+                className={`rounded-2xl border bg-surface p-5 ${
+                  isUrgent ? "border-error" : "border-border"
+                }`}
+              >
                 {/* Summary row */}
                 <div
                   className="flex items-center gap-4 cursor-pointer"
                   onClick={() => setExpandedId(isExpanded ? null : inq.id)}
                 >
-                  <span className={`text-xs font-mono ${STATUS_COLORS[inq.status] || "text-text-muted"}`}>
+                  <span className={`text-xs ${STATUS_COLORS[inq.status] || "text-text-muted"}`}>
                     &#9679; {inq.status}
                   </span>
-                  <span className="font-mono text-sm flex-1">
+                  <span className="text-sm flex-1">
                     {inq.contact_name}
                     {inq.company_name && (
                       <span className="text-text-muted"> @ {inq.company_name}</span>
@@ -138,30 +146,30 @@ export default function AdminBulkPage() {
 
                 {/* Expanded details */}
                 {isExpanded && (
-                  <div className="mt-4 pt-4 border-t border-border space-y-3 animate-fade-in">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm font-mono">
+                  <div className="mt-4 pt-4 border-t border-border space-y-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                       <div>
-                        <span className="text-text-muted">email: </span>
-                        <a href={`mailto:${inq.email}`} className="text-accent hover-accent">
+                        <span className="text-text-muted text-xs font-mono uppercase tracking-[0.2em] block mb-1">Email</span>
+                        <a href={`mailto:${inq.email}`} className="text-accent hover:underline">
                           {inq.email}
                         </a>
                       </div>
                       {inq.phone && (
                         <div>
-                          <span className="text-text-muted">phone: </span>
+                          <span className="text-text-muted text-xs font-mono uppercase tracking-[0.2em] block mb-1">Phone</span>
                           <span>{inq.phone}</span>
                         </div>
                       )}
                       <div>
-                        <span className="text-text-muted">product: </span>
+                        <span className="text-text-muted text-xs font-mono uppercase tracking-[0.2em] block mb-1">Product</span>
                         <span>{inq.product_slug}</span>
                       </div>
                       <div>
-                        <span className="text-text-muted">quantity: </span>
+                        <span className="text-text-muted text-xs font-mono uppercase tracking-[0.2em] block mb-1">Quantity</span>
                         <span className="text-accent">{inq.quantity} units</span>
                       </div>
                       <div>
-                        <span className="text-text-muted">submitted: </span>
+                        <span className="text-text-muted text-xs font-mono uppercase tracking-[0.2em] block mb-1">Submitted</span>
                         <span>
                           {new Date(inq.created_at).toLocaleDateString("en-US", {
                             year: "numeric", month: "short", day: "numeric",
@@ -169,7 +177,7 @@ export default function AdminBulkPage() {
                         </span>
                       </div>
                       <div>
-                        <span className="text-text-muted">waiting: </span>
+                        <span className="text-text-muted text-xs font-mono uppercase tracking-[0.2em] block mb-1">Waiting</span>
                         <span className={isUrgent ? "text-error" : ""}>
                           {waitLabel(days)}
                         </span>
@@ -178,19 +186,19 @@ export default function AdminBulkPage() {
 
                     {inq.notes && (
                       <div className="text-sm">
-                        <span className="text-text-muted font-mono">notes: </span>
+                        <span className="text-text-muted text-xs font-mono uppercase tracking-[0.2em] block mb-1">Notes</span>
                         <p className="text-text mt-1">{inq.notes}</p>
                       </div>
                     )}
 
                     {/* Status update */}
-                    <div className="flex items-center gap-2 pt-2">
-                      <span className="text-text-muted text-xs font-mono">status:</span>
+                    <div className="flex flex-wrap items-center gap-2 pt-2">
+                      <span className="text-text-muted text-xs font-mono uppercase tracking-[0.2em]">Status</span>
                       {STATUS_OPTIONS.map((s) => (
                         <button
                           key={s}
                           onClick={() => updateStatus(inq.id, s)}
-                          className={`text-xs font-mono px-2 py-1 border transition-colors ${
+                          className={`text-xs px-3 py-1 rounded-full border transition-colors ${
                             inq.status === s
                               ? "border-accent text-accent"
                               : "border-border text-text-muted hover:border-accent hover:text-accent"
@@ -204,10 +212,10 @@ export default function AdminBulkPage() {
                     {/* Quick actions */}
                     <div className="flex gap-3 pt-1">
                       <a
-                        href={`mailto:${inq.email}?subject=Re: Bulk Order Inquiry — ${inq.quantity}× ${inq.product_slug}`}
-                        className="btn-terminal text-xs"
+                        href={`mailto:${inq.email}?subject=Re: Bulk Order Inquiry · ${inq.quantity}× ${inq.product_slug}`}
+                        className="px-5 py-2.5 text-sm font-medium rounded-full border border-border hover:bg-white/5 transition"
                       >
-                        [ REPLY ]
+                        Reply
                       </a>
                     </div>
                   </div>
