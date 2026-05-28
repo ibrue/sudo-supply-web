@@ -79,8 +79,8 @@ export default async function PreviewPage({
 
           {/* Specs */}
           <div className="rounded-3xl border border-border bg-surface overflow-hidden mb-8">
-            <div className="px-5 py-3 border-b border-border text-text-muted text-xs uppercase tracking-[0.2em] font-mono">
-              Specifications
+            <div className="px-5 py-3 border-b border-border text-accent text-xs uppercase tracking-[0.2em] font-mono">
+              [ specifications ]
             </div>
             <table className="w-full text-sm">
               <tbody>

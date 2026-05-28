@@ -191,16 +191,18 @@ export default function AdminBulkPage() {
                       </div>
                     )}
 
-                    {/* Status update */}
+                    {/* Status update. Selected status gets the filled accent
+                        pill so admins can see at a glance which state a
+                        row is in without parsing colour-only changes. */}
                     <div className="flex flex-wrap items-center gap-2 pt-2">
                       <span className="text-text-muted text-xs font-mono uppercase tracking-[0.2em]">Status</span>
                       {STATUS_OPTIONS.map((s) => (
                         <button
                           key={s}
                           onClick={() => updateStatus(inq.id, s)}
-                          className={`text-xs px-3 py-1 rounded-full border transition-colors ${
+                          className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
                             inq.status === s
-                              ? "border-accent text-accent"
+                              ? "border-accent bg-accent/10 text-accent font-semibold"
                               : "border-border text-text-muted hover:border-accent hover:text-accent"
                           }`}
                         >
@@ -209,13 +211,14 @@ export default function AdminBulkPage() {
                       ))}
                     </div>
 
-                    {/* Quick actions */}
+                    {/* Quick actions — primary CTA matches the site's accent
+                        pill so replies stand out as the main action on a row. */}
                     <div className="flex gap-3 pt-1">
                       <a
                         href={`mailto:${inq.email}?subject=Re: Bulk Order Inquiry · ${inq.quantity}× ${inq.product_slug}`}
-                        className="px-5 py-2.5 text-sm font-medium rounded-full border border-border hover:bg-white/5 transition"
+                        className="px-5 py-2.5 text-sm font-semibold rounded-full text-black bg-accent hover:brightness-110 transition"
                       >
-                        Reply
+                        Reply →
                       </a>
                     </div>
                   </div>

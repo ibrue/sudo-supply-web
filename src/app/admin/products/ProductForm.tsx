@@ -160,25 +160,30 @@ export function ProductForm({ initialData, mode, editSlug }: Props) {
 
   return (
     <div className="space-y-6">
-      {/* Status badge */}
+      {/* Status badge. Filled accent pill when published mirrors the other
+          "active" pills (admin nav, bulk status) so the visual language is
+          consistent across the admin. */}
       <div className="flex items-center gap-3">
+        <span className="text-xs uppercase tracking-[0.2em] text-text-muted font-mono">
+          [ status ]
+        </span>
         <span
-          className={`rounded-full border px-3 py-1 text-xs ${
+          className={`rounded-full border px-3 py-1 text-xs font-mono transition-colors ${
             form.status === "published"
-              ? "border-accent text-accent"
+              ? "border-accent bg-accent/10 text-accent font-semibold"
               : "border-border text-text-muted"
           }`}
         >
-          {form.status === "published" ? "● Published" : "○ Draft"}
+          {form.status === "published" ? "● published" : "○ draft"}
         </span>
         {mode === "edit" && (
           <a
             href={`/admin/products/${editSlug}/preview`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-accent text-sm hover:underline"
+            className="ml-auto text-accent text-sm hover:underline"
           >
-            preview
+            preview →
           </a>
         )}
       </div>

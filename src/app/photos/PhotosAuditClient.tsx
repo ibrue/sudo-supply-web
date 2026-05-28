@@ -62,18 +62,6 @@ export function PhotosAuditClient({
   products: ProductPair[];
   uploads: Photo[];
 }) {
-  // Build the flat list of every photo URL the page renders, so the
-  // selection store can be keyed on stable URLs.
-  const allPhotos = useMemo(() => {
-    const list: Photo[] = [];
-    for (const pair of products) {
-      if (pair.original) list.push(pair.original);
-      if (pair.dark) list.push(pair.dark);
-    }
-    for (const u of uploads) list.push(u);
-    return list;
-  }, [products, uploads]);
-
   const [selection, setSelection] = useState<SelectionMap>({});
   const [hydrated, setHydrated] = useState(false);
   const [filter, setFilter] = useState<"all" | "selected" | "products" | "uploads">("all");
@@ -106,7 +94,8 @@ export function PhotosAuditClient({
       const next: Selection = { ...cur, ...patch };
       // If nothing is set, prune the entry so the export stays tight.
       if (!next.use && next.slots.length === 0 && !next.note.trim()) {
-        const { [key]: _drop, ...rest } = prev;
+        const rest = { ...prev };
+        delete rest[key];
         return rest;
       }
       return { ...prev, [key]: next };

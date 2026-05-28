@@ -20,7 +20,7 @@ const items: FaqItem[] = [
     a: (
       <>
         Yes. The pad ships with QMK firmware and VIA + Vial support, so you can remap keys live
-        without reflashing. There's also a 4-button quick-preset library in the companion app
+        without reflashing. There&apos;s also a 4-button quick-preset library in the companion app
         (approve / reject / make-it-better / yolo, media controls, system shortcuts, Discord
         soundboard, etc.).
       </>
