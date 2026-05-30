@@ -150,31 +150,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Lifestyle strip — real desk in context */}
-      <section className="max-w-[1400px] mx-auto px-4 sm:px-8 py-12">
-        <div className="relative aspect-[4/3] rounded-3xl overflow-hidden border border-border bg-surface">
-          <Image
-            src="/images/products/lifestyle-rasta-lit.jpeg"
-            alt="sudo macro pad on a real desk next to a keyboard"
-            fill
-            className="object-cover"
-          />
-          <div
-            className="absolute inset-0 flex items-end p-6 sm:p-10 pointer-events-none"
-            style={{ background: "linear-gradient(to top, rgba(10,10,10,0.7), transparent 55%)" }}
-          >
-            <div>
-              <p className="text-xs uppercase tracking-[0.3em] mb-2 text-accent font-mono">
-                In the wild
-              </p>
-              <h3 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-                Real desks. Real keys.
-              </h3>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Bento capabilities */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-8 py-16">
         <div className="mb-10">
