@@ -112,17 +112,30 @@ interface ModelViewerElement extends HTMLElement {
 }
 
 // Lazily import the ~1 MB @google/model-viewer chunk, cached after the first
-// call so every viewer on the page shares one download. Deliberately NOT run
-// at module-evaluation time: that would pull 1 MB of three.js onto every route
-// that merely renders a card (e.g. /shop), even before the user interacts.
-// Instead each viewer calls this only when it actually activates, so an
-// untouched grid of hover-gated cards costs nothing.
+// call so every viewer on the page shares one download.
 let modelViewerPromise: Promise<void> | null = null;
 function loadModelViewer(): Promise<void> {
   if (!modelViewerPromise) {
     modelViewerPromise = import("@google/model-viewer").then(() => undefined);
   }
   return modelViewerPromise;
+}
+
+// Warm the chunk during the first idle window after the page's JS evaluates,
+// so the heavy three.js parse is done BEFORE any viewer activates. By the time
+// a card scrolls near the viewport (or you land on /shop), the module is ready
+// and only the cheap per-instance WebGL init remains. Runs once; the module is
+// only bundled into routes that actually render a viewer, so this never pulls
+// it onto pages without 3D.
+if (typeof window !== "undefined") {
+  const idle =
+    "requestIdleCallback" in window
+      ? (cb: () => void) =>
+          (window as unknown as { requestIdleCallback: (c: () => void) => number }).requestIdleCallback(cb)
+      : (cb: () => void) => window.setTimeout(cb, 1);
+  idle(() => {
+    loadModelViewer().catch(() => {});
+  });
 }
 
 export function ProductModelViewer({
@@ -179,7 +192,11 @@ export function ProductModelViewer({
       };
     }
 
-    // "idle": mount once the viewer is on/near screen AND the browser is idle.
+    // "idle": preload the live model on idle once it's within ~1.5 screens of
+    // the viewport, so it's already mounted and rotating by the time you scroll
+    // to it (or land on /shop). The big rootMargin is the "preload ahead"
+    // knob; model-viewer pauses its render loop while off-screen, so warming a
+    // viewer early costs the one-time load but no ongoing GPU until it's shown.
     const ric: (cb: () => void) => number =
       typeof window !== "undefined" && "requestIdleCallback" in window
         ? (cb) => (window as unknown as { requestIdleCallback: (c: () => void) => number }).requestIdleCallback(cb)
@@ -192,7 +209,7 @@ export function ProductModelViewer({
           idleHandle = ric(activate);
         }
       },
-      { rootMargin: "200px" },
+      { rootMargin: "1500px 0px" },
     );
     observer.observe(el);
     return () => {
