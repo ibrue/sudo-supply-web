@@ -42,6 +42,24 @@ declare global {
 import { hexToRgb, type RGB } from "@/lib/productColors";
 export { hexToRgb, type RGB };
 
+/**
+ * Controls WHEN the heavy WebGL <model-viewer> is mounted. Until activation
+ * the component renders only the poster <img>, so initial paint costs the same
+ * as any other image on the page (no 1 MB three.js parse, no WebGL context, no
+ * HDR prefiltering competing with page render).
+ *
+ *  - "idle"  : mount once the viewer scrolls into view AND the browser goes
+ *              idle (requestIdleCallback). The page paints instantly; the live
+ *              model quietly upgrades a beat later. Used for the hero + the
+ *              product-page gallery.
+ *  - "hover" : mount on first pointer hover (desktop). Touch devices have no
+ *              hover, so the poster stays — and on a card that's fine because
+ *              tapping navigates to the product page. Used for shop/home cards
+ *              and cart thumbnails so a grid of them costs zero WebGL on load.
+ *  - "eager" : mount as soon as the module is ready (legacy behaviour).
+ */
+export type ViewerActivation = "idle" | "hover" | "eager";
+
 interface Props {
   src: string;
   iosSrc?: string;
@@ -51,6 +69,8 @@ interface Props {
   ar?: boolean;
   cameraControls?: boolean;
   className?: string;
+  /** When the WebGL viewer is allowed to mount. Defaults to "idle". */
+  activation?: ViewerActivation;
 
   // Configurator
   caseColor?: RGB;
@@ -84,22 +104,19 @@ interface ModelViewerElement extends HTMLElement {
   model?: { materials: PbrMaterial[] };
 }
 
-// Start fetching the @google/model-viewer chunk the instant this module
-// evaluates on the client (not when a component mounts). Combined with the
-// <link rel="preload"> on the GLB + HDR in the document head this lets the
-// browser fetch the script, geometry, and environment map in parallel — so
-// the viewer is ready as soon as React paints the placeholder.
-const modelViewerReady: Promise<void> | null =
-  typeof window !== "undefined"
-    ? import("@google/model-viewer").then(
-        () => undefined,
-        (err) => {
-          // Surface the failure mode used by the previous useEffect-based
-          // import: components will fall back to the still poster.
-          throw err;
-        },
-      )
-    : null;
+// Lazily import the ~1 MB @google/model-viewer chunk, cached after the first
+// call so every viewer on the page shares one download. Deliberately NOT run
+// at module-evaluation time: that would pull 1 MB of three.js onto every route
+// that merely renders a card (e.g. /shop), even before the user interacts.
+// Instead each viewer calls this only when it actually activates, so an
+// untouched grid of hover-gated cards costs nothing.
+let modelViewerPromise: Promise<void> | null = null;
+function loadModelViewer(): Promise<void> {
+  if (!modelViewerPromise) {
+    modelViewerPromise = import("@google/model-viewer").then(() => undefined);
+  }
+  return modelViewerPromise;
+}
 
 export function ProductModelViewer({
   src,
@@ -110,24 +127,78 @@ export function ProductModelViewer({
   ar = true,
   cameraControls = true,
   className = "",
+  activation = "idle",
   caseColor,
   pcbColor,
   keycapColors,
   hideMaterialsMatching,
 }: Props) {
   const [ready, setReady] = useState(false);
+  const [activated, setActivated] = useState(false);
   const [modelFailed, setModelFailed] = useState(false);
   const [modelLoaded, setModelLoaded] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const viewerRef = useRef<ModelViewerElement | null>(null);
   const hasCaseMaterialRef = useRef(false);
 
-  // Wait on the module-level import. Already-resolved on subsequent mounts
-  // since the promise is cached at module scope — second component pays
-  // zero network cost.
+  // Decide when to activate (i.e. when WebGL is allowed to spin up). Until
+  // `activated` flips true the component is a plain poster image, so initial
+  // paint is as cheap as any other image on the page.
   useEffect(() => {
+    if (activated) return;
+    const el = containerRef.current;
+    if (!el) return;
+
+    if (activation === "eager") {
+      setActivated(true);
+      return;
+    }
+
+    let idleHandle: number | undefined;
     let cancelled = false;
-    if (!modelViewerReady) return;
-    modelViewerReady
+    const activate = () => {
+      if (!cancelled) setActivated(true);
+    };
+
+    if (activation === "hover") {
+      // Desktop: first hover mounts the live model (and it stays mounted).
+      // Touch devices never fire pointerenter without a tap, so the poster
+      // stands in — which is what we want for a card whose tap navigates away.
+      el.addEventListener("pointerenter", activate, { once: true });
+      return () => {
+        cancelled = true;
+        el.removeEventListener("pointerenter", activate);
+      };
+    }
+
+    // "idle": mount once the viewer is on/near screen AND the browser is idle.
+    const ric: (cb: () => void) => number =
+      typeof window !== "undefined" && "requestIdleCallback" in window
+        ? (cb) => (window as unknown as { requestIdleCallback: (c: () => void) => number }).requestIdleCallback(cb)
+        : (cb) => window.setTimeout(cb, 200);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          observer.disconnect();
+          idleHandle = ric(activate);
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    observer.observe(el);
+    return () => {
+      cancelled = true;
+      observer.disconnect();
+      if (idleHandle !== undefined) window.clearTimeout(idleHandle);
+    };
+  }, [activation, activated]);
+
+  // Once activated, pull in the heavy module. Cached across all viewers.
+  useEffect(() => {
+    if (!activated) return;
+    let cancelled = false;
+    loadModelViewer()
       .then(() => {
         if (!cancelled) setReady(true);
       })
@@ -137,7 +208,7 @@ export function ProductModelViewer({
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [activated]);
 
   // Track load + error events
   useEffect(() => {
@@ -219,13 +290,13 @@ export function ProductModelViewer({
   if (modelFailed) {
     return (
       <div className={`relative ${className}`}>
-        <Image src={poster} alt={alt} fill className="object-contain" priority />
+        <Image src={poster} alt={alt} fill className="object-contain" unoptimized />
       </div>
     );
   }
 
   return (
-    <div className={`relative ${className}`}>
+    <div ref={containerRef} className={`relative ${className}`}>
       {ready && (
         <model-viewer
           ref={viewerRef as React.Ref<HTMLElement>}
@@ -255,23 +326,32 @@ export function ProductModelViewer({
             height: "100%",
             background: "transparent",
             // Interactive viewer (product page): claim the touch so the model
-            // orbits cleanly. Static thumbnail (shop card / cart): let
-            // vertical scrolls pass through so the page can scroll when the
-            // user starts a swipe on the model canvas.
+            // orbits cleanly. Static thumbnail (shop card / cart): make the
+            // canvas itself transparent to pointer events so clicks fall
+            // through to the surrounding card link and vertical scroll/hover
+            // is handled by the wrapper (which still drives hover activation).
             touchAction: cameraControls ? "none" : "pan-y",
+            pointerEvents: cameraControls ? "auto" : "none",
           }}
         />
       )}
-      {/* Poster overlay: stays mounted on top until the model itself has
-          finished loading, then cross-fades out. Avoids the jarring flash
-          where the still image swaps for an empty model-viewer canvas. */}
+      {/* Poster overlay: the only thing painted until the model loads, then it
+          cross-fades out. For hover-activated cards it is the resting state, so
+          we don't mark it priority (a grid of them shouldn't all preload). */}
       <div
         aria-hidden={modelLoaded}
         className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ${
           modelLoaded ? "opacity-0" : "opacity-100"
         }`}
       >
-        <Image src={poster} alt={alt} fill className="object-contain" priority />
+        <Image
+          src={poster}
+          alt={alt}
+          fill
+          className="object-contain"
+          priority={activation !== "hover"}
+          unoptimized
+        />
       </div>
     </div>
   );

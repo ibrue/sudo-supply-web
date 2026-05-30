@@ -39,9 +39,12 @@ export function ProductCard({ product, index, total, modelSrc, hideMaterialsMatc
     >
       <div className="relative aspect-square bg-surface">
         {modelSrc ? (
-          // pointer-events-none keeps the whole card clickable through the
-          // model-viewer canvas (camera-controls disabled anyway).
-          <div className="absolute inset-0 pointer-events-none">
+          // Card thumbnail: static product photo on load (instant), live model
+          // spins up only on hover (activation="hover"). The wrapper keeps
+          // pointer events so it can detect hover; the model-viewer element
+          // itself is pointer-events:none (set in ProductModelViewer for
+          // non-interactive viewers) so clicks still navigate the card link.
+          <div className="absolute inset-0">
             <ProductModelViewer
               src={modelSrc}
               poster={src}
@@ -53,6 +56,7 @@ export function ProductCard({ product, index, total, modelSrc, hideMaterialsMatc
               cameraControls={false}
               ar={false}
               autoRotate
+              activation="hover"
             />
           </div>
         ) : (

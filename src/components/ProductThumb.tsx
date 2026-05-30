@@ -46,10 +46,10 @@ export function ProductThumb({ product, className = "w-20 h-20" }: Props) {
 
   return (
     <div className={`relative ${className} rounded-2xl overflow-hidden border border-border bg-surface shrink-0`}>
-      {/* pointer-events-none keeps cart row buttons clickable through the
-          model-viewer canvas even though the thumb itself doesn't need any
-          interaction. */}
-      <div className="absolute inset-0 pointer-events-none">
+      {/* Wrapper keeps pointer events so hover can activate the viewer; the
+          model-viewer element itself is pointer-events:none (non-interactive
+          viewer) so it never steals taps from the cart row. */}
+      <div className="absolute inset-0">
         <ProductModelViewer
           src={MODEL_SRC}
           poster={resolveImageUrl(product.image)}
@@ -61,6 +61,7 @@ export function ProductThumb({ product, className = "w-20 h-20" }: Props) {
           cameraControls={false}
           ar={false}
           autoRotate
+          activation="hover"
         />
       </div>
     </div>
