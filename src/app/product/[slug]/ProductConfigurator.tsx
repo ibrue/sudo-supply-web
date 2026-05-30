@@ -8,6 +8,7 @@ import { ProductGallery } from "./ProductGallery";
 import { hexToRgb, type RGB } from "@/components/ProductModelViewer";
 import { SocialProofBadge } from "@/components/SocialProofBadge";
 import { CASE_RENDER, CASE_SWATCH, KEYCAP_RENDER, KEYCAP_SWATCH } from "@/lib/productColors";
+import type { Turntable } from "@/lib/turntables";
 
 const CASE_OPTIONS = [
   { id: "white", label: "White", swatch: CASE_SWATCH.white, color: CASE_RENDER.white },
@@ -52,6 +53,9 @@ interface Props {
    *  Plain string so it survives the server → client component boundary;
    *  compiled to RegExp inside the viewer. */
   hideMaterialsMatching?: string;
+  /** Pre-rendered turntable for the default config, looped instantly before
+   *  the live model loads. */
+  turntable?: Turntable;
 }
 
 export function ProductConfigurator({
@@ -61,6 +65,7 @@ export function ProductConfigurator({
   modelIosSrc,
   variantKinds = [],
   hideMaterialsMatching,
+  turntable,
 }: Props) {
   const showCase = variantKinds.includes("case");
   const showKeycaps = variantKinds.includes("keycaps");
@@ -119,6 +124,7 @@ export function ProductConfigurator({
         caseColor={showCase ? caseColor : undefined}
         keycapColors={showKeycaps ? keycapColors : undefined}
         hideMaterialsMatching={hideMaterialsMatching}
+        turntable={turntable}
       />
 
       {/* Details + configurator + buy — right */}

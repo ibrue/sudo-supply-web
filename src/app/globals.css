@@ -156,6 +156,28 @@ body {
   will-change: transform;
 }
 
+/* Pre-rendered turntable sprite: a vertical filmstrip of 37 square frames
+   (36 around 360° + 1 duplicate of frame 0 so the steps() loop wraps
+   seamlessly). Pure CSS on the compositor — paints instantly like any
+   image, zero WebGL. The frame stays square and centred regardless of
+   container aspect (auto width). The 37 / steps(36) values must stay in
+   sync with FRAMES in scripts/render-turntables.mjs (hardcoded rather than
+   a CSS var because var() inside steps() isn't reliably supported). */
+.turntable-sprite {
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: 0%;
+  background-size: auto 3700%;
+  animation: turntable-spin var(--tt-dur, 6s) steps(36) infinite;
+  will-change: background-position;
+}
+@keyframes turntable-spin {
+  to { background-position-y: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .turntable-sprite { animation: none; }
+}
+
 /* Legacy scanline (kept for any opt-in usage but no longer applied to body) */
 .scanline-overlay {
   pointer-events: none;

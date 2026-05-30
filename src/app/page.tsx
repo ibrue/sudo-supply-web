@@ -5,6 +5,7 @@ import { HeroModel } from "@/components/HeroModel";
 import { hexToRgb, type RGB, CASE_RENDER, KEYCAP_RENDER } from "@/lib/productColors";
 import { ProductCard } from "@/components/ProductCard";
 import { ModelPreloader } from "@/components/ModelPreloader";
+import { HERO_TURNTABLE } from "@/lib/turntables";
 
 // Same per-product 3D config used on /shop so the homepage Pick-yours cards
 // match the shop cards (single GLB, per-product mesh hides).
@@ -65,7 +66,7 @@ export default async function Home() {
 
   return (
     <div className="pt-24">
-      <ModelPreloader />
+      <ModelPreloader heroSprite={HERO_TURNTABLE.src} />
       {/* Hero */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-8 pt-8 sm:pt-12 pb-12">
         <h1

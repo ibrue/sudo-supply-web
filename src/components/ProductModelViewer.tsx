@@ -71,6 +71,12 @@ interface Props {
   className?: string;
   /** When the WebGL viewer is allowed to mount. Defaults to "idle". */
   activation?: ViewerActivation;
+  /** Optional pre-rendered turntable sprite (a CSS-animated filmstrip). When
+   *  set it loops instantly on first paint — no WebGL — and crossfades out
+   *  once the live model loads. On touch devices with `activation="hover"`
+   *  (cards) the live viewer never mounts, so this loop is the whole 3D
+   *  experience: instant, zero WebGL. See scripts/render-turntables.mjs. */
+  turntable?: { src: string; frames: number; durationMs?: number };
 
   // Configurator
   caseColor?: RGB;
@@ -128,6 +134,7 @@ export function ProductModelViewer({
   cameraControls = true,
   className = "",
   activation = "idle",
+  turntable,
   caseColor,
   pcbColor,
   keycapColors,
@@ -335,23 +342,40 @@ export function ProductModelViewer({
           }}
         />
       )}
-      {/* Poster overlay: the only thing painted until the model loads, then it
-          cross-fades out. For hover-activated cards it is the resting state, so
-          we don't mark it priority (a grid of them shouldn't all preload). */}
+      {/* Instant overlay: the only thing painted until the live model loads,
+          then it cross-fades out. When a turntable sprite is provided it loops
+          (pure CSS, no WebGL) so the product is already spinning at first
+          paint; otherwise it's the static poster. For hover-activated cards
+          this is the resting state, so the poster isn't marked priority (a
+          grid of them shouldn't all preload). */}
       <div
         aria-hidden={modelLoaded}
-        className={`pointer-events-none absolute inset-0 transition-opacity duration-300 ${
+        className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
           modelLoaded ? "opacity-0" : "opacity-100"
         }`}
       >
-        <Image
-          src={poster}
-          alt={alt}
-          fill
-          className="object-contain"
-          priority={activation !== "hover"}
-          unoptimized
-        />
+        {turntable ? (
+          <div
+            className="turntable-sprite absolute inset-0"
+            role="img"
+            aria-label={alt}
+            style={
+              {
+                backgroundImage: `url(${turntable.src})`,
+                "--tt-dur": `${(turntable.durationMs ?? 6000) / 1000}s`,
+              } as React.CSSProperties
+            }
+          />
+        ) : (
+          <Image
+            src={poster}
+            alt={alt}
+            fill
+            className="object-contain"
+            priority={activation !== "hover"}
+            unoptimized
+          />
+        )}
       </div>
     </div>
   );

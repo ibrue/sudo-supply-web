@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ProductModelViewer, type RGB } from "@/components/ProductModelViewer";
+import type { Turntable } from "@/lib/turntables";
 
 interface Props {
   images: string[];
@@ -17,6 +18,8 @@ interface Props {
    *  on the PCB-only product so the macropad GLB renders as just the PCB).
    *  Plain string so it survives server → client serialization. */
   hideMaterialsMatching?: string;
+  /** Pre-rendered turntable that loops instantly before the live model loads. */
+  turntable?: Turntable;
 }
 
 export function ProductGallery({
@@ -27,6 +30,7 @@ export function ProductGallery({
   caseColor,
   keycapColors,
   hideMaterialsMatching,
+  turntable,
 }: Props) {
   const [active, setActive] = useState(0);
   const [showModel, setShowModel] = useState(Boolean(modelSrc));
@@ -47,6 +51,7 @@ export function ProductGallery({
             caseColor={caseColor}
             keycapColors={keycapColors}
             hideMaterialsMatching={hideMaterialsMatching}
+            turntable={turntable}
           />
         ) : (
           <div className="relative w-full h-full p-8">

@@ -7,6 +7,7 @@ import { QASection } from "./QASection";
 import { FAQ } from "./FAQ";
 import { resolveImageUrl } from "@/lib/imageUrl";
 import { ModelPreloader } from "@/components/ModelPreloader";
+import { PRODUCT_TURNTABLE } from "@/lib/turntables";
 
 // All three products share one GLB; per-product hides control what renders.
 const MODEL_SRC: Record<string, string | undefined> = {
@@ -83,6 +84,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
         modelIosSrc={MODEL_IOS_SRC[product.slug]}
         variantKinds={VARIANT_KINDS[product.slug] ?? []}
         hideMaterialsMatching={HIDE_MATERIALS[product.slug]}
+        turntable={PRODUCT_TURNTABLE[product.slug]}
       />
 
       {/* What's in the box + specs (full width below the configurator) */}

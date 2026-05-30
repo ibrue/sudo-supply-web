@@ -6,6 +6,7 @@ import { Product } from "@/lib/products";
 import { resolveImageUrl } from "@/lib/imageUrl";
 import { ProductModelViewer, hexToRgb, type RGB } from "@/components/ProductModelViewer";
 import { CASE_RENDER, KEYCAP_RENDER } from "@/lib/productColors";
+import { PRODUCT_TURNTABLE } from "@/lib/turntables";
 
 interface Props {
   product: Product;
@@ -31,6 +32,7 @@ const DEFAULT_KEYCAPS: [RGB, RGB, RGB, RGB] = KEYCAP_RENDER.traffic.map(hexToRgb
 
 export function ProductCard({ product, index, total, modelSrc, hideMaterialsMatching }: Props) {
   const src = resolveImageUrl(product.image);
+  const turntable = PRODUCT_TURNTABLE[product.slug];
 
   return (
     <Link
@@ -57,6 +59,7 @@ export function ProductCard({ product, index, total, modelSrc, hideMaterialsMatc
               ar={false}
               autoRotate
               activation="hover"
+              turntable={turntable}
             />
           </div>
         ) : (

@@ -1,6 +1,7 @@
 "use client";
 
 import { ProductModelViewer, type RGB } from "./ProductModelViewer";
+import { HERO_TURNTABLE } from "@/lib/turntables";
 
 interface Props {
   src: string;
@@ -21,6 +22,7 @@ export function HeroModel({ src, iosSrc, poster, alt, caseColor, keycapColors }:
       className="w-full h-full"
       caseColor={caseColor}
       keycapColors={keycapColors}
+      turntable={HERO_TURNTABLE}
     />
   );
 }
