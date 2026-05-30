@@ -23,12 +23,34 @@ const pixel = localFont({
   weight: "400",
 });
 
+// metadataBase makes every relative OG/Twitter image URL absolute. Falls
+// back to localhost in dev so previews still work when running locally.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://sudo.supply");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "sudo.supply \u2014 open-source macro pads for AI agents",
   description:
     "Open-source macro pads with cross-platform companion app. Approve, reject, and control AI agents across Claude, ChatGPT, and Grok on macOS, Windows, and Linux.",
   icons: {
     icon: "/favicon.svg",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "sudo.supply",
+    title: "sudo.supply \u2014 open-source macro pads for AI agents",
+    description:
+      "Open hardware, hand-assembled. Press buttons on purpose. Macro pads + cross-platform companion app for Claude, ChatGPT, and Grok.",
+    // No explicit image URL \u2014 Next picks up the conventional
+    // src/app/opengraph-image.tsx automatically.
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "sudo.supply \u2014 open-source macro pads for AI agents",
+    description:
+      "Open hardware, hand-assembled. Press buttons on purpose.",
   },
 };
 
