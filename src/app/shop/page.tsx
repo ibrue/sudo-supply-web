@@ -1,5 +1,6 @@
 import { products } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
+import { ModelPreloader } from "@/components/ModelPreloader";
 
 export const metadata = {
   title: "shop · sudo.supply",
@@ -19,6 +20,7 @@ const HIDE_MATERIALS: Record<string, string | undefined> = {
 export default function ShopPage() {
   return (
     <div className="pt-32 pb-16 max-w-[1280px] mx-auto px-4 sm:px-8">
+      <ModelPreloader />
       <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">

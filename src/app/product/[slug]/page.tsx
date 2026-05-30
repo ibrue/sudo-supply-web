@@ -6,6 +6,7 @@ import { ReviewSection } from "./ReviewSection";
 import { QASection } from "./QASection";
 import { FAQ } from "./FAQ";
 import { resolveImageUrl } from "@/lib/imageUrl";
+import { ModelPreloader } from "@/components/ModelPreloader";
 
 // All three products share one GLB; per-product hides control what renders.
 const MODEL_SRC: Record<string, string | undefined> = {
@@ -67,6 +68,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
 
   return (
     <div className="pt-32 pb-16 max-w-[1280px] mx-auto px-4 sm:px-8">
+      <ModelPreloader />
       {/* Breadcrumb */}
       <p className="text-xs uppercase tracking-[0.2em] mb-6 text-text-muted font-mono">
         <Link href="/shop" className="hover:text-white">Shop</Link>

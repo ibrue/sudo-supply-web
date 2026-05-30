@@ -6,6 +6,7 @@ import { useCart } from "@/context/CartContext";
 import { createCheckout } from "@/lib/shopify";
 import { toastBus, sudoCmd } from "@/lib/toastBus";
 import { ProductThumb } from "@/components/ProductThumb";
+import { ModelPreloader } from "@/components/ModelPreloader";
 
 export default function CartPage() {
   const { items, updateQuantity, removeItem, totalPrice } = useCart();
@@ -33,6 +34,7 @@ export default function CartPage() {
 
   return (
     <div className="pt-32 pb-16 max-w-[900px] mx-auto px-4 sm:px-8">
+      <ModelPreloader />
       <div className="mb-10">
         <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">Your bag</p>
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-[-0.04em]">

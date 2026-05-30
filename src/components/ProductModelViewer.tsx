@@ -84,6 +84,23 @@ interface ModelViewerElement extends HTMLElement {
   model?: { materials: PbrMaterial[] };
 }
 
+// Start fetching the @google/model-viewer chunk the instant this module
+// evaluates on the client (not when a component mounts). Combined with the
+// <link rel="preload"> on the GLB + HDR in the document head this lets the
+// browser fetch the script, geometry, and environment map in parallel — so
+// the viewer is ready as soon as React paints the placeholder.
+const modelViewerReady: Promise<void> | null =
+  typeof window !== "undefined"
+    ? import("@google/model-viewer").then(
+        () => undefined,
+        (err) => {
+          // Surface the failure mode used by the previous useEffect-based
+          // import: components will fall back to the still poster.
+          throw err;
+        },
+      )
+    : null;
+
 export function ProductModelViewer({
   src,
   iosSrc,
@@ -104,10 +121,13 @@ export function ProductModelViewer({
   const viewerRef = useRef<ModelViewerElement | null>(null);
   const hasCaseMaterialRef = useRef(false);
 
-  // Dynamically import the web component on the client only.
+  // Wait on the module-level import. Already-resolved on subsequent mounts
+  // since the promise is cached at module scope — second component pays
+  // zero network cost.
   useEffect(() => {
     let cancelled = false;
-    import("@google/model-viewer")
+    if (!modelViewerReady) return;
+    modelViewerReady
       .then(() => {
         if (!cancelled) setReady(true);
       })
