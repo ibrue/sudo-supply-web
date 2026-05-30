@@ -71,11 +71,12 @@ interface Props {
   className?: string;
   /** When the WebGL viewer is allowed to mount. Defaults to "idle". */
   activation?: ViewerActivation;
-  /** Optional pre-rendered turntable sprite (a CSS-animated filmstrip). When
-   *  set it loops instantly on first paint — no WebGL — and crossfades out
-   *  once the live model loads. On touch devices with `activation="hover"`
-   *  (cards) the live viewer never mounts, so this loop is the whole 3D
-   *  experience: instant, zero WebGL. See scripts/render-turntables.mjs. */
+  /** Optional pre-rendered turntable filmstrip, shown as a STILL loader (its
+   *  first frame, rendered at 0° to match the live model's initial camera).
+   *  Paints instantly — no WebGL — and crossfades out once the live model
+   *  loads. Better than the photo poster here because the frame's lighting
+   *  and pose line up exactly with the live model for a seamless handoff.
+   *  See scripts/render-turntables.mjs. */
   turntable?: { src: string; frames: number; durationMs?: number };
 
   // Configurator
@@ -343,11 +344,11 @@ export function ProductModelViewer({
         />
       )}
       {/* Instant overlay: the only thing painted until the live model loads,
-          then it cross-fades out. When a turntable sprite is provided it loops
-          (pure CSS, no WebGL) so the product is already spinning at first
-          paint; otherwise it's the static poster. For hover-activated cards
-          this is the resting state, so the poster isn't marked priority (a
-          grid of them shouldn't all preload). */}
+          then it cross-fades out. When a turntable filmstrip is provided we
+          show its first frame as a still loader (matches the live model's
+          start pose for a seamless handoff); otherwise the static poster. For
+          hover-activated cards this is the resting state, so the poster isn't
+          marked priority (a grid of them shouldn't all preload). */}
       <div
         aria-hidden={modelLoaded}
         className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${
@@ -359,12 +360,7 @@ export function ProductModelViewer({
             className="turntable-sprite absolute inset-0"
             role="img"
             aria-label={alt}
-            style={
-              {
-                backgroundImage: `url(${turntable.src})`,
-                "--tt-dur": `${(turntable.durationMs ?? 6000) / 1000}s`,
-              } as React.CSSProperties
-            }
+            style={{ backgroundImage: `url(${turntable.src})` }}
           />
         ) : (
           <Image

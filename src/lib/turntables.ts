@@ -1,7 +1,8 @@
-// Pre-rendered turntable sprites (see scripts/render-turntables.mjs). Each is a
-// vertical filmstrip of 37 frames (36 around 360° + 1 duplicate of frame 0 for
-// a seamless CSS steps() loop). Shared so cards, the hero, and the product
-// gallery all reference the same assets and frame count.
+// Pre-rendered turntable filmstrips (see scripts/render-turntables.mjs). Each
+// is a vertical strip of 37 frames; the viewer shows only frame 0 as a still
+// loader (rendered at 0° to match the live model's start pose) and crossfades
+// to the live WebGL model, which does the actual rotating. Shared so cards,
+// the hero, and the product gallery reference the same assets.
 
 export interface Turntable {
   src: string;
