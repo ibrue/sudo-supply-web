@@ -130,21 +130,46 @@ body {
   border-color: rgba(46, 164, 104, 0.4);
 }
 
-/* Toast animations */
+/* Toast — terminal card */
 @keyframes toast-enter {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  0%   { opacity: 0; transform: translateY(16px) scale(0.94); filter: blur(6px); }
+  55%  { filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 @keyframes toast-exit {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(-8px); }
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-10px) scale(0.96); }
 }
 @keyframes cursor-type {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
 }
-.toast-enter { animation: toast-enter 0.3s ease-out forwards; }
-.toast-exit { animation: toast-exit 0.3s ease-in forwards; }
+.toast-enter { animation: toast-enter 0.42s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+.toast-exit { animation: toast-exit 0.28s ease-in forwards; }
+
+/* Terminal-card chrome: surface + accent edge + soft accent glow. */
+.toast-card {
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  border: 1px solid rgba(46, 164, 104, 0.35);
+  border-radius: 0.85rem;
+  box-shadow:
+    0 10px 34px rgba(0, 0, 0, 0.5),
+    0 0 24px rgba(46, 164, 104, 0.12);
+  backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+
+/* Depleting countdown bar shown while the toast waits to auto-dismiss. */
+@keyframes toast-progress {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+.toast-progress {
+  height: 2px;
+  transform-origin: left;
+  background: linear-gradient(90deg, var(--accent), var(--accent-deep));
+  animation: toast-progress 2.5s linear forwards;
+}
 
 /* Marquee — infinite horizontal scroll */
 @keyframes marquee {
