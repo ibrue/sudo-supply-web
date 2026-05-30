@@ -1,18 +1,19 @@
 /**
- * Pre-render turntable sprite-sheets for the product cards / hero.
+ * Pre-render a still 3D loader image for each product card / hero.
  *
  * Why: a live <model-viewer> costs ~1 MB of three.js + a WebGL context + HDR
- * prefiltering before it shows anything. A pre-rendered turntable is a single
- * WebP that paints instantly (like any image) and loops via CSS steps() — so
- * the card shows a spinning product the moment the page paints, on mobile and
- * desktop, with zero WebGL. The live interactive viewer then crossfades in.
+ * prefiltering before it shows anything. This renders a single high-res WebP
+ * still (the model at its 0° resting pose) that paints instantly like any
+ * image — zero WebGL — and crossfades into the live interactive model once it
+ * mounts. (A CSS-stepped spinning sprite was tried first but read as glitchy
+ * at the frame rate a filmstrip allows, so the motion lives only in the real
+ * WebGL turntable; this is just a crisp placeholder.)
  *
- * The frames are captured with the SAME GLB, HDR, tone-mapping, and per-mesh
- * material overrides the live ProductModelViewer applies, so the sprite and
- * the live model line up and the crossfade is seamless.
+ * The still is captured with the SAME GLB, HDR, tone-mapping, camera, and
+ * per-mesh material overrides the live ProductModelViewer applies, so it lines
+ * up with the live model and the crossfade has no scale/colour jump.
  *
- * Output: public/turntables/<id>.webp — a vertical filmstrip of FRAMES+1
- * frames (the +1 duplicates frame 0 so the CSS steps() loop wraps seamlessly).
+ * Output: public/turntables/<id>.webp — one ~1200 px still per config.
  *
  * Run (puppeteer is installed transiently, not in package.json, so it never
  * touches the Vercel build):
@@ -27,9 +28,12 @@ import path from "node:path";
 
 const BASE = "http://localhost:3000";
 const MV_VERSION = "4.2.0";
-const FRAMES = 36; // 10° per frame
-const FRAME = 440; // px per frame (440×(37) = 16280 < WebP's 16383 limit)
-const CAPTURE_SCALE = 2; // render at 2× then downscale for crisp edges
+// The loader is a single STILL (frame 0, 0°) that crossfades into the live
+// model — so we render one crisp high-res frame per config rather than a
+// low-res filmstrip. SIZE is the CSS box; CAPTURE_SCALE oversamples for retina.
+const SIZE = 600;
+const CAPTURE_SCALE = 2; // → 1200 px stills (≈2.7× the old 440 px filmstrip)
+const ORBIT = "0deg 75deg auto"; // matches <model-viewer>'s default resting camera
 const OUT_DIR = path.resolve("public/turntables");
 
 // Mirror of ProductModelViewer's per-mesh overrides. Kept in sync by hand;
@@ -62,7 +66,7 @@ const CONFIGS = [
 
 const harnessHtml = `<!doctype html><html><head><meta charset="utf-8">
 <style>html,body{margin:0;background:transparent}
-#mv{width:${FRAME}px;height:${FRAME}px;background:transparent;--poster-color:transparent}</style>
+#mv{width:${SIZE}px;height:${SIZE}px;background:transparent;--poster-color:transparent}</style>
 <script type="module" src="https://unpkg.com/@google/model-viewer@${MV_VERSION}/dist/model-viewer.min.js"></script>
 </head><body>
 <model-viewer id="mv"
@@ -71,7 +75,7 @@ const harnessHtml = `<!doctype html><html><head><meta charset="utf-8">
   tone-mapping="commerce" exposure="1.1"
   shadow-intensity="1" shadow-softness="0.7"
   interaction-prompt="none" camera-controls disable-zoom disable-pan
-  camera-orbit="0deg 75deg auto" reveal="auto"></model-viewer>
+  camera-orbit="${ORBIT}" reveal="auto"></model-viewer>
 </body></html>`;
 
 function applyMaterials(config) {
@@ -125,43 +129,32 @@ async function main() {
   try {
     for (const config of CONFIGS) {
       const page = await browser.newPage();
-      await page.setViewport({ width: FRAME, height: FRAME, deviceScaleFactor: CAPTURE_SCALE });
+      await page.setViewport({ width: SIZE, height: SIZE, deviceScaleFactor: CAPTURE_SCALE });
       await page.goto(`${BASE}/_turntable.html`, { waitUntil: "networkidle0", timeout: 60000 });
       await page.waitForFunction(() => document.getElementById("mv")?.loaded === true, { timeout: 60000 });
       await page.evaluate(applyMaterials, { ...config, SCREW });
-      await new Promise((r) => setTimeout(r, 1200)); // env prefilter + first render
+
+      // Per-config framing: hidden-mesh views (pcb/keycaps) keep the full
+      // model's bounding box, so zoom in to fill the frame with the visible
+      // part. `orbit` overrides the default resting camera.
+      await page.evaluate((orbit) => {
+        const mv = document.getElementById("mv");
+        if (orbit) { mv.cameraOrbit = orbit; mv.jumpCameraToGoal(); }
+      }, config.orbit || ORBIT);
+      await new Promise((r) => setTimeout(r, 1200)); // env prefilter + render
 
       const el = await page.$("#mv");
-      const frameBufs = [];
-      for (let i = 0; i < FRAMES; i++) {
-        const theta = (i * 360) / FRAMES;
-        await page.evaluate((t) => {
-          const mv = document.getElementById("mv");
-          mv.cameraOrbit = `${t}deg 75deg auto`;
-          mv.jumpCameraToGoal();
-        }, theta);
-        await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
-        const shot = await el.screenshot({ omitBackground: true });
-        // Downscale the 2× capture to FRAME px, keep alpha.
-        frameBufs.push(await sharp(shot).resize(FRAME, FRAME, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } }).png().toBuffer());
-      }
+      const shot = await el.screenshot({ omitBackground: true });
       await page.close();
 
-      // Vertical filmstrip with a duplicate of frame 0 appended so the CSS
-      // steps() loop wraps seamlessly (steps(FRAMES) over FRAMES+1 frames).
-      const strip = [...frameBufs, frameBufs[0]];
-      const composites = await Promise.all(
-        strip.map(async (b, i) => ({ input: b, top: i * FRAME, left: 0 })),
-      );
+      // Single high-res still at the live viewer's framing, so the crossfade
+      // to the live model has no scale jump. Just transcode the capture to WebP.
       const outPath = path.join(OUT_DIR, `${config.id}.webp`);
-      await sharp({
-        create: { width: FRAME, height: FRAME * strip.length, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
-      })
-        .composite(composites)
-        .webp({ quality: 82, alphaQuality: 90, effort: 6 })
+      await sharp(shot)
+        .webp({ quality: 90, alphaQuality: 100, effort: 6 })
         .toFile(outPath);
       const kb = Math.round((await fs.stat(outPath)).size / 1024);
-      console.log(`OK  ${config.id}  → ${outPath}  (${strip.length} frames, ${kb} KB)`);
+      console.log(`OK  ${config.id}  → ${outPath}  (still ${SIZE * CAPTURE_SCALE}px, ${kb} KB)`);
     }
   } finally {
     await browser.close();

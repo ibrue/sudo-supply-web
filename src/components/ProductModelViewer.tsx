@@ -77,7 +77,7 @@ interface Props {
    *  loads. Better than the photo poster here because the frame's lighting
    *  and pose line up exactly with the live model for a seamless handoff.
    *  See scripts/render-turntables.mjs. */
-  turntable?: { src: string; frames: number; durationMs?: number };
+  turntable?: { src: string };
 
   // Configurator
   caseColor?: RGB;
