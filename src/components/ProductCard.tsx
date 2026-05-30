@@ -41,11 +41,13 @@ export function ProductCard({ product, index, total, modelSrc, hideMaterialsMatc
     >
       <div className="relative aspect-square bg-surface">
         {modelSrc ? (
-          // Card thumbnail: static product photo on load (instant), live model
-          // spins up only on hover (activation="hover"). The wrapper keeps
-          // pointer events so it can detect hover; the model-viewer element
-          // itself is pointer-events:none (set in ProductModelViewer for
-          // non-interactive viewers) so clicks still navigate the card link.
+          // Card thumbnail: crisp still on first paint (instant), then the live
+          // model auto-mounts on idle once in view and starts rotating — no
+          // hover needed, so there's no "waiting for it to start" lag. (The
+          // still already gave instant paint; model-viewer pauses its render
+          // loop when scrolled off-screen, so idle activation stays light.)
+          // The model-viewer element is pointer-events:none so clicks still
+          // navigate the card link.
           <div className="absolute inset-0">
             <ProductModelViewer
               src={modelSrc}
@@ -58,7 +60,7 @@ export function ProductCard({ product, index, total, modelSrc, hideMaterialsMatc
               cameraControls={false}
               ar={false}
               autoRotate
-              activation="hover"
+              activation="idle"
               turntable={turntable}
             />
           </div>

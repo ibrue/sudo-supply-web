@@ -270,12 +270,13 @@ export function ProductModelViewer({
         roughness = 0.4;
         metallic = 0.85;
       } else if (caseColor && hasCase && name.startsWith("CASE")) {
-        // 3D-printed PLA — semi-matte rather than fully matte ABS.
+        // 3D-printed PLA — matte. High roughness so it reads as real printed
+        // plastic under the studio HDR rather than glossy CG resin.
         rgb = caseColor;
-        roughness = 0.72;
+        roughness = 0.82;
       } else if (caseColor && !hasCase && (name.startsWith("PCB_TOP") || name.startsWith("PCB_BODY"))) {
         rgb = caseColor;
-        roughness = 0.72;
+        roughness = 0.82;
       } else if (pcbColor && name.startsWith("PCB_TOP")) {
         rgb = pcbColor;
         roughness = 0.55;
@@ -283,7 +284,8 @@ export function ProductModelViewer({
         const m = name.match(/KEYCAP_(\d+)/);
         const i = m ? parseInt(m[1], 10) : 0;
         rgb = keycapColors[Math.min(i, keycapColors.length - 1)];
-        roughness = 0.65;
+        // PBT dye-sub — matte with only a faint sheen.
+        roughness = 0.78;
       }
 
       if (rgb) pbr.setBaseColorFactor([rgb[0], rgb[1], rgb[2], 1]);
@@ -324,9 +326,9 @@ export function ProductModelViewer({
           // env can't provide.
           environment-image="/hdri/studio.hdr"
           tone-mapping="commerce"
-          exposure="1.1"
+          exposure="1.05"
           shadow-intensity="1"
-          shadow-softness="0.7"
+          shadow-softness="0.8"
           loading="eager"
           reveal="auto"
           style={{

@@ -72,8 +72,8 @@ const harnessHtml = `<!doctype html><html><head><meta charset="utf-8">
 <model-viewer id="mv"
   src="${BASE}/models/sudo-macropad.glb"
   environment-image="${BASE}/hdri/studio.hdr"
-  tone-mapping="commerce" exposure="1.1"
-  shadow-intensity="1" shadow-softness="0.7"
+  tone-mapping="commerce" exposure="1.05"
+  shadow-intensity="1" shadow-softness="0.8"
   interaction-prompt="none" camera-controls disable-zoom disable-pan
   camera-orbit="${ORBIT}" reveal="auto"></model-viewer>
 </body></html>`;
@@ -96,14 +96,14 @@ function applyMaterials(config) {
     if (name.startsWith("SCREW")) {
       rgb = config.SCREW; rough = 0.4; metal = 0.85;
     } else if (config.caseColor && hasCase && name.startsWith("CASE")) {
-      rgb = config.caseColor; rough = 0.72;
+      rgb = config.caseColor; rough = 0.82;
     } else if (config.caseColor && !hasCase && (name.startsWith("PCB_TOP") || name.startsWith("PCB_BODY"))) {
-      rgb = config.caseColor; rough = 0.72;
+      rgb = config.caseColor; rough = 0.82;
     } else if (config.keycaps && name.startsWith("KEYCAP")) {
       const m = name.match(/KEYCAP_(\d+)/);
       const i = m ? parseInt(m[1], 10) : 0;
       rgb = config.keycaps[Math.min(i, config.keycaps.length - 1)];
-      rough = 0.65;
+      rough = 0.78;
     }
     if (rgb) pbr.setBaseColorFactor([rgb[0], rgb[1], rgb[2], 1]);
     if (rough !== undefined) { pbr.setRoughnessFactor(rough); pbr.setMetallicFactor(metal); }
