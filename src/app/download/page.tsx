@@ -3,9 +3,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "app [sudo] · sudo.supply",
   description:
-    "the [sudo] companion app for macOS, Windows, and Linux. control AI agents with a physical macro pad.",
+    "the [sudo] companion app for macOS. control AI agents with a physical macro pad. Windows & Linux coming soon.",
 };
 
+// macOS ships today; Windows & Linux are in progress.
 const platforms = [
   {
     name: "macOS",
@@ -13,22 +14,37 @@ const platforms = [
     label: "Download .dmg",
     href: "https://github.com/ibrue/sudo-app/releases/latest",
     note: "Swift / SwiftUI menu bar app",
+    available: true,
   },
   {
     name: "Windows",
     sub: "Windows 10+ · x64",
-    label: "Download .exe",
-    href: "https://github.com/ibrue/sudo-app/releases/latest",
     note: "C# / .NET 8 system tray app",
+    available: false,
   },
   {
     name: "Linux",
     sub: "X11 / Wayland · GTK3",
-    label: "Install script",
-    href: "https://github.com/ibrue/sudo-app/releases/latest",
     note: "Python / GTK3 AppIndicator",
+    available: false,
   },
 ];
+
+// Latest release tag from GitHub (ISR-cached). Falls back to null so the page
+// never breaks if the repo has no releases or the API is rate-limited.
+async function getLatestVersion(): Promise<string | null> {
+  try {
+    const res = await fetch("https://api.github.com/repos/ibrue/sudo-app/releases/latest", {
+      next: { revalidate: 3600 },
+      headers: { Accept: "application/vnd.github+json" },
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return typeof data?.tag_name === "string" ? data.tag_name : null;
+  } catch {
+    return null;
+  }
+}
 
 const buttonMap = [
   { color: "bg-[#2a2a2a]", border: "border-[#444]", num: "4", colorName: "black", action: "yolo (allow all)", hotkey: "ctrl+shift+F16", text: "text-white" },
@@ -61,7 +77,9 @@ const firmware = [
   { keymap: "Vial", features: "auto-detection, no draft definition", reconfig: "no reflash needed" },
 ];
 
-export default function DownloadPage() {
+export default async function DownloadPage() {
+  const version = await getLatestVersion();
+
   return (
     <div className="pt-32 pb-16 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-16">
       {/* Hero */}
@@ -71,9 +89,16 @@ export default function DownloadPage() {
         </p>
         <h1 className="font-pixel text-white text-5xl sm:text-7xl mb-6 tracking-tight">[sudo]</h1>
         <p className="max-w-xl mx-auto text-text-muted text-lg leading-relaxed">
-          The cross-platform companion app for your sudo macro pad. Approve, reject, and control AI agents with a physical button press.
+          The companion app for your sudo macro pad. Approve, reject, and control AI agents with a physical button press.
         </p>
-        <p className="text-text-muted text-sm font-mono mt-3">macOS · Windows · Linux · all free</p>
+        <div className="flex items-center justify-center gap-2 mt-4 flex-wrap">
+          <span className="inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/10 px-3 py-1 text-xs font-mono text-accent">
+            macOS{version ? ` · ${version}` : ""} · free
+          </span>
+          <span className="inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-mono text-text-muted">
+            Windows &amp; Linux coming soon
+          </span>
+        </div>
       </section>
 
       {/* Downloads */}
@@ -81,17 +106,38 @@ export default function DownloadPage() {
         <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Get the app</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {platforms.map((p) => (
-            <div key={p.name} className="rounded-3xl border border-border bg-surface p-6">
-              <h3 className="text-2xl font-bold mb-1">{p.name}</h3>
+            <div
+              key={p.name}
+              className={`rounded-3xl border bg-surface p-6 ${
+                p.available ? "border-border" : "border-border/60"
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <h3 className={`text-2xl font-bold ${p.available ? "" : "text-text-muted"}`}>
+                  {p.name}
+                </h3>
+                {!p.available && (
+                  <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-text-muted">
+                    soon
+                  </span>
+                )}
+              </div>
               <p className="text-text-muted text-xs font-mono mb-6">{p.sub}</p>
-              <a
-                href={p.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block text-center px-5 py-2.5 rounded-full text-black bg-accent font-semibold text-sm hover:brightness-110 transition mb-3"
-              >
-                {p.label}
-              </a>
+              {p.available ? (
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block text-center px-5 py-2.5 rounded-full text-black bg-accent font-semibold text-sm hover:brightness-110 transition mb-3"
+                >
+                  {p.label}
+                  {version ? ` · ${version}` : ""}
+                </a>
+              ) : (
+                <div className="block text-center px-5 py-2.5 rounded-full border border-border text-text-muted font-semibold text-sm mb-3 cursor-not-allowed select-none">
+                  Coming soon
+                </div>
+              )}
               <p className="text-text-muted text-xs text-center">{p.note}</p>
             </div>
           ))}

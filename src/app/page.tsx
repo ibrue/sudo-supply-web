@@ -197,17 +197,25 @@ export default async function Home() {
             </div>
           </div>
 
-          {/* Cross-platform */}
+          {/* Platform availability */}
           <div className="col-span-12 md:col-span-5 rounded-3xl border border-border bg-surface p-8">
             <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">
-              Cross-platform
+              The companion app
             </p>
-            <h3 className="text-2xl font-bold mb-3">macOS · Windows · Linux</h3>
-            <p className="text-text-muted">One companion app, three platforms. Works with Claude, ChatGPT, Grok.</p>
+            <h3 className="text-2xl font-bold mb-3">macOS today.</h3>
+            <p className="text-text-muted">
+              Native menu-bar app for macOS. Works with Claude, ChatGPT, and Grok. Windows &amp; Linux coming soon.
+            </p>
             <div className="mt-6 flex gap-2 flex-wrap">
-              {["macOS 13+", "Win 10/11", "Ubuntu 22+", "Arch (btw)"].map((p) => (
-                <span key={p} className="text-xs px-2 py-1 rounded-md border border-border font-mono text-text-muted">
-                  {p}
+              <span className="text-xs px-2 py-1 rounded-md border border-accent/40 bg-accent/10 font-mono text-accent">
+                macOS 13+
+              </span>
+              {["Windows", "Linux"].map((p) => (
+                <span
+                  key={p}
+                  className="text-xs px-2 py-1 rounded-md border border-border font-mono text-text-muted"
+                >
+                  {p} · soon
                 </span>
               ))}
             </div>
@@ -228,14 +236,14 @@ export default async function Home() {
           {/* Colorways */}
           <div className="col-span-12 md:col-span-6 rounded-3xl border border-border overflow-hidden relative aspect-[16/9] bg-surface">
             <Image
-              src="/images/products/lineup-all-four-dark.jpeg"
+              src="/images/products/lineup-all-four-cutout.webp"
               alt="all colorways"
               fill
               className="object-contain p-6"
             />
             <div
               className="absolute inset-0 flex items-end p-6 pointer-events-none"
-              style={{ background: "linear-gradient(to top, rgba(10,10,10,0.92), transparent 55%)" }}
+              style={{ background: "linear-gradient(to top, var(--surface) 0%, transparent 45%)" }}
             >
               <div>
                 <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-mono">
