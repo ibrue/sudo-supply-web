@@ -53,7 +53,7 @@ const hex = (h) => [
 
 // id → { caseColor, keycaps, hide } matching each surface's live config.
 const CONFIGS = [
-  { id: "macropad-white", caseColor: hex("#928E86"), keycaps: TRAFFIC, hide: null },
+  { id: "macropad-white", caseColor: hex("#AFAAA1"), keycaps: TRAFFIC, hide: null },
   { id: "macropad-black", caseColor: hex("#1A1A1A"), keycaps: TRAFFIC, hide: null },
   { id: "pcb", caseColor: null, keycaps: null, hide: "^(CASE|KEYCAP|SCREW)" },
   {

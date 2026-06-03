@@ -23,7 +23,7 @@ export function hexToRgb(hex: string): RGB {
 // material reads as a credible off-white instead of a blown-out slab.
 
 export const CASE_RENDER = {
-  white: "#928E86",
+  white: "#AFAAA1",
   black: "#1A1A1A",
 } as const;
 
@@ -36,7 +36,7 @@ export const CASE_SWATCH = {
 
 export const KEYCAP_RENDER = {
   black: "#1A1A1A",
-  white: "#928E86",
+  white: "#AFAAA1",
   // Traffic-light combo: dark / red / amber / green, ordered along the board.
   // Slightly desaturated and dimmed vs. neon so they read as physical PBT
   // dye-sub keycaps under PBR rather than solid CSS swatches.
