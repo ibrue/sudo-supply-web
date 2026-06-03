@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 
 const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
-const isClerkConfigured = clerkKey.startsWith("pk_") && !clerkKey.includes("placeholder");
+const isClerkConfigured = /^pk_(test|live)_/.test(clerkKey) && !clerkKey.includes("placeholder") && !clerkKey.includes("...") && clerkKey.length >= 24;
 
 // useAuth() throws when called outside <ClerkProvider/>. Isolate it in a
 // child that only renders when Clerk is configured, so the parent never

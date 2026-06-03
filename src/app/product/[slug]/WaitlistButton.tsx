@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 
 const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
-const isClerkConfigured = clerkKey.startsWith("pk_") && !clerkKey.includes("placeholder");
+const isClerkConfigured = /^pk_(test|live)_/.test(clerkKey) && !clerkKey.includes("placeholder") && !clerkKey.includes("...") && clerkKey.length >= 24;
 
 function useSignedInSafe(): boolean {
   // Only call useAuth when Clerk is configured. When it isn't, the provider

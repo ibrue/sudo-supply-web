@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "setup": "[ -f .env.local ] || cp \"$CONDUCTOR_ROOT_PATH/.env.local\" .env.local 2>/dev/null || cp .env.example .env.local 2>/dev/null || true; npm install",
+    "run": "npm run dev"
+  },
+  "runScriptMode": "concurrent"
+}

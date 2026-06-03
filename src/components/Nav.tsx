@@ -7,7 +7,7 @@ import { useAuth, UserButton } from "@clerk/nextjs";
 import { AdminLink } from "./AdminLink";
 
 const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
-const isClerkConfigured = clerkKey.startsWith("pk_") && !clerkKey.includes("placeholder");
+const isClerkConfigured = /^pk_(test|live)_/.test(clerkKey) && !clerkKey.includes("placeholder") && !clerkKey.includes("...") && clerkKey.length >= 24;
 
 function AuthSlot({ onNavigate }: { onNavigate?: () => void }) {
   const { isSignedIn } = useAuth();
@@ -44,6 +44,7 @@ export function Nav() {
 
   const navLinks = [
     { href: "/shop", label: "Shop" },
+    { href: "/try", label: "Try" },
     { href: "/download", label: "App" },
     { href: "/about", label: "About" },
     { href: "/bulk", label: "Bulk" },

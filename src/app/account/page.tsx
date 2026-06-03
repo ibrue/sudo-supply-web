@@ -8,7 +8,19 @@ export const metadata = {
   title: "account · sudo.supply",
 };
 
+const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
+const isClerkConfigured =
+  /^pk_(test|live)_/.test(clerkKey) &&
+  !clerkKey.includes("placeholder") &&
+  !clerkKey.includes("...") &&
+  clerkKey.length >= 24;
+
 export default async function AccountPage() {
+  // When auth isn't configured (e.g. scaffolded from .env.example), calling
+  // currentUser() throws because Clerk never initialised. Bounce to /sign-in,
+  // which shows the "set NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" notice.
+  if (!isClerkConfigured) redirect("/sign-in");
+
   const user = await currentUser();
   if (!user) redirect("/sign-in");
 
