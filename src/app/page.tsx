@@ -6,6 +6,7 @@ import { hexToRgb, type RGB, CASE_RENDER, KEYCAP_RENDER } from "@/lib/productCol
 import { ProductCard } from "@/components/ProductCard";
 import { ModelPreloader } from "@/components/ModelPreloader";
 import { HERO_TURNTABLE } from "@/lib/turntables";
+import { Gauntlet } from "@/app/try/Gauntlet";
 
 // Same per-product 3D config used on /shop so the homepage Pick-yours cards
 // match the shop cards (single GLB, per-product mesh hides).
@@ -153,6 +154,34 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Playable teaser → the permission gauntlet (growth toy) */}
+      <section className="max-w-[1400px] mx-auto px-4 sm:px-8 pt-4">
+        <Link
+          href="/try"
+          className="group block rounded-3xl border border-border bg-surface overflow-hidden hover:border-accent/40 transition-colors"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center gap-5 p-6 sm:p-8">
+            <div className="flex-1">
+              <p className="text-xs uppercase tracking-[0.3em] mb-2 text-accent font-mono">
+                $ sudo --game
+              </p>
+              <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                Could you survive 8 agent permission prompts?
+              </h3>
+              <p className="mt-2 text-text-muted max-w-xl">
+                <span className="font-mono text-white">rm -rf</span>,{" "}
+                <span className="font-mono text-white">git push --force</span>,{" "}
+                <span className="font-mono text-white">DROP TABLE users</span>. Approve, reject, or
+                make it better — before the timer runs out. Then share your score.
+              </p>
+            </div>
+            <span className="shrink-0 inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-full text-black bg-accent group-hover:brightness-110 transition">
+              Play the gauntlet →
+            </span>
+          </div>
+        </Link>
+      </section>
+
       {/* Bento capabilities */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-8 py-16">
         <div className="mb-10">
@@ -252,6 +281,33 @@ export default async function Home() {
                 <h3 className="text-xl font-bold">Pick a vibe.</h3>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Playable demo */}
+      <section className="max-w-[1400px] mx-auto px-4 sm:px-8 py-16">
+        <div className="grid grid-cols-12 gap-6 items-center">
+          <div className="col-span-12 lg:col-span-5">
+            <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">
+              Permission gauntlet
+            </p>
+            <h2 className="text-4xl sm:text-6xl font-extrabold tracking-[-0.04em] leading-[0.95]">
+              See if you can approve faster than the agent can ruin your day.
+            </h2>
+            <p className="mt-5 max-w-md text-text-muted leading-relaxed">
+              A tiny browser game for the exact moment [sudo] exists to make
+              physical: yes, no, make it better, or absolutely not.
+            </p>
+            <Link
+              href="/try"
+              className="inline-block mt-6 px-5 py-3 text-sm font-semibold rounded-full border border-border hover:bg-white/5 transition"
+            >
+              Open full screen
+            </Link>
+          </div>
+          <div className="col-span-12 lg:col-span-7">
+            <Gauntlet />
           </div>
         </div>
       </section>
