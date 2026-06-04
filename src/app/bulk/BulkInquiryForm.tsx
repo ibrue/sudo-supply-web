@@ -86,7 +86,7 @@ export function BulkInquiryForm({ products }: { products: Product[] }) {
   return (
     <form onSubmit={handleSubmit} className="rounded-3xl border border-border bg-surface p-6 sm:p-8 space-y-5">
       <div>
-        <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-pixel">
+        <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-mono">
           Request a quote
         </p>
         <h2 className="text-2xl font-bold">Tell us what you need.</h2>

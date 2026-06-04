@@ -71,7 +71,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
     <div className="pt-32 pb-16 max-w-[1280px] mx-auto px-4 sm:px-8">
       <ModelPreloader />
       {/* Breadcrumb */}
-      <p className="text-xs uppercase tracking-[0.2em] mb-6 text-text-muted font-pixel">
+      <p className="text-xs uppercase tracking-[0.2em] mb-6 text-text-muted font-mono">
         <Link href="/shop" className="hover:text-white">Shop</Link>
         <span className="mx-2">/</span>
         <span className="text-white">{product.name}</span>
@@ -91,7 +91,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
         {inBox[product.slug] && (
           <div className="rounded-2xl border border-border bg-surface p-5">
-            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-text-muted font-pixel">
+            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-text-muted font-mono">
               $ sudo unbox
             </p>
             <ul className="space-y-2 text-sm">
@@ -106,7 +106,7 @@ export default async function ProductPage({ params }: { params: { slug: string }
         )}
 
         <div className="rounded-2xl border border-border overflow-hidden">
-          <div className="px-5 py-3 border-b border-border text-text-muted text-xs uppercase tracking-[0.2em] font-pixel">
+          <div className="px-5 py-3 border-b border-border text-text-muted text-xs uppercase tracking-[0.2em] font-mono">
             Specifications
           </div>
           <table className="w-full text-sm">

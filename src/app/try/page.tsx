@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { IncidentMachine } from "./IncidentMachine";
+import { AppSwitcher } from "./AppSwitcher";
 
 export const metadata = {
-  title: "roll an incident · sudo.supply",
+  title: "one pad, every app · sudo.supply",
   description:
-    "One button generates a leaked SEV-1 postmortem of the thing your AI agent did while you weren't looking. From [sudo], the four-key macro pad for approving AI agents on purpose.",
+    "[sudo] auto-detects the app in front of you and remaps the four keys — Claude, Cursor, ChatGPT, the terminal, VS Code, Discord. Same buttons, the app decides what they do.",
 };
 
 export default function TryPage() {
@@ -12,25 +12,27 @@ export default function TryPage() {
     <div className="pt-28 pb-20">
       <section className="max-w-[760px] mx-auto px-4 sm:px-8">
         <div className="text-center mb-8">
-          <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-pixel">
-            $ sudo postmortem --roll
+          <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-mono">
+            $ sudo profiles --auto
           </p>
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-[-0.04em] leading-[0.95]">
-            What did your agent
+            One pad.
             <br />
-            do last night?
+            Every app.
           </h1>
           <p className="mt-5 max-w-md mx-auto text-text-muted leading-relaxed">
-            Press the button. It generates the incident report. It is, statistically, your fault.
+            The companion app sees which window is in front and remaps the four keys to match.
+            Switch apps below and watch the buttons follow.
           </p>
         </div>
 
-        <IncidentMachine />
+        <AppSwitcher />
 
         <p className="mt-6 text-center text-sm text-text-muted">
-          The fix is four physical buttons. The agent has to wait for you to press one.{" "}
-          <Link href="/product/sudo-macro-pad-v1" className="text-accent hover:underline">
-            That&apos;s the product →
+          It detects apps via the accessibility tree, OCR, or window title — and you can override
+          any mapping.{" "}
+          <Link href="/download" className="text-accent hover:underline">
+            See the app →
           </Link>
         </p>
       </section>

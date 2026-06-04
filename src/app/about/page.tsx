@@ -13,7 +13,7 @@ export default function AboutPage() {
     <div className="pt-32 pb-16 max-w-[1100px] mx-auto px-4 sm:px-8">
       {/* Header */}
       <div className="mb-16">
-        <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-pixel">
+        <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-mono">
           About · the studio
         </p>
         <h1 className="text-5xl sm:text-7xl font-extrabold tracking-[-0.04em] leading-[0.95]">
@@ -28,7 +28,7 @@ export default function AboutPage() {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-12">
         {/* The story */}
         <section className="md:col-span-7 rounded-3xl border border-border bg-surface p-8">
-          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">The story</p>
+          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">The story</p>
           <h2 className="text-2xl font-bold mb-4">Permission, with friction.</h2>
           <p className="text-text-muted leading-relaxed">
             sudo.supply was born from a simple frustration: AI agents asking for permission, and having no satisfying way to say yes. We build mechanical macro pads for developers who live in the terminal and work alongside AI every day. A tactile way to approve, reject, or override, because critical decisions shouldn&apos;t be buried in a terminal prompt.
@@ -37,7 +37,7 @@ export default function AboutPage() {
 
         {/* OSHW badge */}
         <section className="md:col-span-5 rounded-3xl border border-border bg-surface p-8 flex flex-col">
-          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">Open hardware</p>
+          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">Open hardware</p>
           <div className="flex items-center gap-4 mb-4">
             <Image
               src="/images/oshw-logo.svg"
@@ -55,7 +55,7 @@ export default function AboutPage() {
 
         {/* Ecosystem */}
         <section className="md:col-span-12 rounded-3xl border border-border bg-surface p-8">
-          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">The ecosystem</p>
+          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">The ecosystem</p>
           <h2 className="text-2xl font-bold mb-4">More than one button.</h2>
           <p className="text-text-muted leading-relaxed max-w-3xl">
             What started as a single approve button has grown into a full developer platform. The companion app detects AI apps automatically, finds buttons via accessibility tree + OCR + keyboard fallback, and supports macro sequences, per-app profiles, and quick presets for everything from Claude Code to Discord soundboards. A local developer API on port 7483 with webhooks, an MCP server mode for gating AI tool use behind physical approval, and a plugin system make it extensible. Anonymous telemetry feeds a public analytics dashboard, and OTA updates keep everything current.
@@ -65,7 +65,7 @@ export default function AboutPage() {
 
       {/* Contact card */}
       <section className="rounded-3xl border border-border bg-surface p-8 sm:p-12">
-        <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">Get in touch</p>
+        <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">Get in touch</p>
         <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-8">
           Email or fork. Both work.
         </h2>

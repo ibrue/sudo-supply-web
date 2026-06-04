@@ -6,7 +6,7 @@ import { hexToRgb, type RGB, CASE_RENDER, KEYCAP_RENDER } from "@/lib/productCol
 import { ProductCard } from "@/components/ProductCard";
 import { ModelPreloader } from "@/components/ModelPreloader";
 import { HERO_TURNTABLE } from "@/lib/turntables";
-import { IncidentMachine } from "@/app/try/IncidentMachine";
+import { AppSwitcher } from "@/app/try/AppSwitcher";
 
 // Same per-product 3D config used on /shop so the homepage Pick-yours cards
 // match the shop cards (single GLB, per-product mesh hides).
@@ -157,7 +157,7 @@ export default async function Home() {
       {/* Bento capabilities */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-8 py-16">
         <div className="mb-10">
-          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">
+          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">
             Capabilities
           </p>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] max-w-2xl">
@@ -169,7 +169,7 @@ export default async function Home() {
           {/* Open source */}
           <div className="col-span-12 md:col-span-7 rounded-3xl border border-border bg-surface p-8 relative overflow-hidden min-h-[320px]">
             <div className="relative z-10 max-w-sm">
-              <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">
+              <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">
                 Open hardware
               </p>
               <h3 className="text-2xl font-bold mb-3">Schematics, firmware, app. All on GitHub.</h3>
@@ -200,7 +200,7 @@ export default async function Home() {
 
           {/* Platform availability */}
           <div className="col-span-12 md:col-span-5 rounded-3xl border border-border bg-surface p-8">
-            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">
+            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">
               The companion app
             </p>
             <h3 className="text-2xl font-bold mb-3">macOS today.</h3>
@@ -247,7 +247,7 @@ export default async function Home() {
               style={{ background: "linear-gradient(to top, var(--surface) 0%, transparent 45%)" }}
             >
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-pixel">
+                <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-mono">
                   Mix &amp; match
                 </p>
                 <h3 className="text-xl font-bold">Pick a vibe.</h3>
@@ -257,19 +257,19 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Playable toy — the AI agent incident generator */}
+      {/* Interactive demo — per-app profile switching */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-8 py-16">
         <div className="grid grid-cols-12 gap-6 items-center">
           <div className="col-span-12 lg:col-span-5">
-            <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-pixel">
-              $ sudo postmortem --roll
+            <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">
+              $ sudo profiles --auto
             </p>
             <h2 className="text-4xl sm:text-6xl font-extrabold tracking-[-0.04em] leading-[0.95]">
-              What did your agent do last night?
+              One pad that knows what you&apos;re in.
             </h2>
             <p className="mt-5 max-w-md text-text-muted leading-relaxed">
-              One button generates a leaked SEV-1 postmortem of the thing your AI agent did while you
-              weren&apos;t looking. It is, statistically, your fault.
+              The app detects the window in front of you and remaps the four keys — Claude, Cursor,
+              the terminal, VS Code, Discord. Same buttons, different job. Switch apps and watch.
             </p>
             <Link
               href="/try"
@@ -279,7 +279,7 @@ export default async function Home() {
             </Link>
           </div>
           <div className="col-span-12 lg:col-span-7">
-            <IncidentMachine />
+            <AppSwitcher />
           </div>
         </div>
       </section>
@@ -309,7 +309,7 @@ export default async function Home() {
       <section className="max-w-[1400px] mx-auto px-4 sm:px-8 py-20">
         <div className="rounded-[2.5rem] p-8 sm:p-16 grid grid-cols-12 gap-8 items-center border border-border bg-surface">
           <div className="col-span-12 md:col-span-7">
-            <p className="text-xs uppercase tracking-[0.2em] mb-4 text-accent font-pixel">
+            <p className="text-xs uppercase tracking-[0.2em] mb-4 text-accent font-mono">
               The story
             </p>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">

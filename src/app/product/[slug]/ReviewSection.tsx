@@ -120,7 +120,7 @@ export function ReviewSection({ slug }: { slug: string }) {
       <AuthGate>
         {(isSignedIn) => isSignedIn && (
         <form onSubmit={handleSubmit} className="rounded-2xl border border-border bg-surface p-5 space-y-4">
-          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-pixel">
+          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-mono">
             Leave a review
           </p>
           <div className="flex items-center gap-3">

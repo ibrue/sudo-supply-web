@@ -26,7 +26,7 @@ export function BulkCalculator({ products, tiers }: { products: Product[]; tiers
 
   return (
     <div className="rounded-3xl border border-border bg-surface p-6 sm:p-8 mb-8">
-      <p className="text-xs uppercase tracking-[0.2em] mb-4 text-accent font-pixel">
+      <p className="text-xs uppercase tracking-[0.2em] mb-4 text-accent font-mono">
         Price calculator
       </p>
 
