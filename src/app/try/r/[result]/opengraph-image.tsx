@@ -1,10 +1,10 @@
 import { ImageResponse } from "next/og";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { decodeResult, HEADLINES } from "@/lib/gauntlet";
+import { decodeResult, headline, formatDamage, TITLES } from "@/lib/gauntlet";
 
 export const runtime = "nodejs";
-export const alt = "[sudo] permission gauntlet result";
+export const alt = "the sudo carnage report";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -12,19 +12,22 @@ interface Props {
   params: { result: string };
 }
 
-export default async function GauntletOgImage({ params }: Props) {
+export default async function CarnageOgImage({ params }: Props) {
   const pixelFont = await fs.readFile(
     path.join(process.cwd(), "src/app/fonts/PixelatedEleganceRegular-ovawB.ttf"),
   );
-  const result = decodeResult(params.result) ?? {
-    score: 0,
-    approve: 0,
-    reject: 0,
-    better: 0,
-    yolo: 0,
-    headline: 1,
-  };
-  const headline = HEADLINES[result.headline];
+  const r =
+    decodeResult(params.result) ??
+    { approved: 0, denied: 0, improved: 0, yolod: 0, damage: 0, title: 0 };
+  const h = headline(r);
+  const title = TITLES[r.title];
+
+  const stat = (label: string, value: string | number, color: string) => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+      <span style={{ fontSize: 22, color: "#8a8a8a" }}>{label}</span>
+      <span style={{ fontSize: 40, color, fontWeight: 800 }}>{value}</span>
+    </div>
+  );
 
   return new ImageResponse(
     (
@@ -37,7 +40,7 @@ export default async function GauntletOgImage({ params }: Props) {
           backgroundSize: "28px 28px",
           color: "#f2f2f2",
           display: "flex",
-          padding: 56,
+          padding: 52,
           fontFamily: "pixel",
         }}
       >
@@ -53,6 +56,7 @@ export default async function GauntletOgImage({ params }: Props) {
             overflow: "hidden",
           }}
         >
+          {/* terminal title bar */}
           <div
             style={{
               height: 56,
@@ -67,45 +71,33 @@ export default async function GauntletOgImage({ params }: Props) {
             <span style={{ width: 14, height: 14, borderRadius: 999, background: "#B58A17" }} />
             <span style={{ width: 14, height: 14, borderRadius: 999, background: "#2F7C53" }} />
             <span style={{ marginLeft: 12, color: "#8a8a8a", fontSize: 22 }}>
-              permission-gauntlet/results
+              ~/agent — the carnage report
             </span>
           </div>
-          <div style={{ flex: 1, display: "flex", padding: 42, gap: 44, alignItems: "center" }}>
-            <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-              <div style={{ color: "#2ea468", fontSize: 54, display: "flex" }}>[sudo]</div>
-              <div
-                style={{
-                  marginTop: 28,
-                  fontSize: 58,
-                  lineHeight: 1.18,
-                  letterSpacing: "-0.02em",
-                  fontWeight: 800,
-                  display: "flex",
-                }}
-              >
-                {headline}
-              </div>
-              <div style={{ marginTop: 28, color: "#8a8a8a", fontSize: 26, display: "flex" }}>
-                approve / reject / make it better / yolo
-              </div>
-            </div>
+
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", padding: 44, gap: 18 }}>
+            <div style={{ color: "#2ea468", fontSize: 40, display: "flex" }}>[sudo]</div>
             <div
               style={{
-                width: 270,
-                height: 270,
-                borderRadius: 32,
-                border: "1px solid #222",
-                background: "#0a0a0a",
+                fontSize: 56,
+                lineHeight: 1.16,
+                letterSpacing: "-0.02em",
+                fontWeight: 800,
                 display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
+                maxWidth: 1000,
               }}
             >
-              <div style={{ fontSize: 116, lineHeight: 1, fontWeight: 900, color: "#2ea468", display: "flex" }}>
-                {result.score}
-              </div>
-              <div style={{ fontSize: 28, color: "#8a8a8a", display: "flex" }}>/100</div>
+              {h}
+            </div>
+            <div style={{ fontSize: 28, color: "#8a8a8a", display: "flex" }}>
+              the agent is now {title}.
+            </div>
+
+            <div style={{ marginTop: "auto", display: "flex", gap: 56, alignItems: "flex-end" }}>
+              {stat("damage", formatDamage(r.damage), "#E0604F")}
+              {stat("approved", r.approved, "#3FA66F")}
+              {stat("rejected", r.denied, "#E0604F")}
+              {stat("yolo’d", r.yolod, "#f2f2f2")}
             </div>
           </div>
         </div>
@@ -113,9 +105,7 @@ export default async function GauntletOgImage({ params }: Props) {
     ),
     {
       ...size,
-      fonts: [
-        { name: "pixel", data: pixelFont, weight: 400, style: "normal" },
-      ],
+      fonts: [{ name: "pixel", data: pixelFont, weight: 400, style: "normal" }],
     },
   );
 }

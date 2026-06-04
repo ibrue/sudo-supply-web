@@ -166,13 +166,12 @@ export default async function Home() {
                 $ sudo --game
               </p>
               <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-                Could you survive 8 agent permission prompts?
+                Hand an AI agent the keys. Watch it spiral.
               </h3>
               <p className="mt-2 text-text-muted max-w-xl">
-                <span className="font-mono text-white">rm -rf</span>,{" "}
-                <span className="font-mono text-white">git push --force</span>,{" "}
-                <span className="font-mono text-white">DROP TABLE users</span>. Approve, reject, or
-                make it better — before the timer runs out. Then share your score.
+                It asks to <span className="font-mono text-white">read your .env</span>,{" "}
+                <span className="font-mono text-white">DROP TABLE users</span>, then run for office.
+                Approve, reject, or make it worse — and share the carnage report.
               </p>
             </div>
             <span className="shrink-0 inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold rounded-full text-black bg-accent group-hover:brightness-110 transition">

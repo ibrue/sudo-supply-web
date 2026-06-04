@@ -2,9 +2,9 @@ import Link from "next/link";
 import { Gauntlet } from "./Gauntlet";
 
 export const metadata = {
-  title: "permission gauntlet · sudo.supply",
+  title: "approve. or don't. · sudo.supply",
   description:
-    "A playable agent-permission simulator for [sudo], the four-key macro pad for approving AI agents on purpose.",
+    "Hand an AI agent the keys and watch it spiral. A comedy permission simulator for [sudo], the four-key macro pad for approving AI agents on purpose.",
 };
 
 export default function TryPage() {
@@ -17,11 +17,13 @@ export default function TryPage() {
               $ sudo gauntlet
             </p>
             <h1 className="text-5xl sm:text-7xl font-extrabold tracking-[-0.04em] leading-[0.92]">
-              Don&apos;t let the agent cook prod.
+              Approve.
+              <br />
+              Or don&apos;t.
             </h1>
             <p className="mt-6 text-text-muted leading-relaxed max-w-md">
-              Eight permission prompts. Four physical-button decisions. Score
-              your reflexes, then share the damage report.
+              Hand an AI agent the keys. It asks to do increasingly unhinged
+              things. Every button makes it worse. Share the carnage.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
