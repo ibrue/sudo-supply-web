@@ -129,7 +129,7 @@ export function ProductConfigurator({
 
       {/* Details + configurator + buy — right */}
       <div className="flex flex-col">
-        <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">
+        <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">
           {product.inStock
             ? `In stock · ships in ${shipEstimate}`
             : `Backorder · ships in ${shipEstimate}`}
@@ -151,7 +151,7 @@ export function ProductConfigurator({
         <div className="space-y-5 mb-6">
           {showCase && (
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-text-muted font-mono">
+            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-text-muted font-pixel">
               [ case ] · <span className="text-accent">{caseOption.label}</span>
             </p>
             <div className="flex gap-2">
@@ -182,7 +182,7 @@ export function ProductConfigurator({
 
           {showKeycaps && (
           <div>
-            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-text-muted font-mono">
+            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-text-muted font-pixel">
               [ keycaps ] · <span className="text-accent">{keycapOption.label}</span>
             </p>
             <div className="flex flex-wrap gap-2">

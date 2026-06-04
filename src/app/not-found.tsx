@@ -9,7 +9,7 @@ export default function NotFound() {
   return (
     <div className="pt-32 pb-16 px-4 sm:px-8 max-w-2xl mx-auto text-center min-h-[80vh] flex flex-col items-center justify-center">
       <p className="font-pixel text-accent text-6xl sm:text-8xl mb-4">[ :( ]</p>
-      <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">
+      <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-pixel">
         Error · 404
       </p>
       <h1 className="text-5xl sm:text-7xl font-extrabold tracking-[-0.04em] leading-[0.95] mb-6">

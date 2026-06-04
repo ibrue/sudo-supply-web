@@ -23,7 +23,7 @@ export default function ShopPage() {
       <ModelPreloader />
       <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">
+          <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-pixel">
             $ ls --everything
           </p>
           <h1 className="text-5xl sm:text-7xl font-extrabold tracking-[-0.04em] leading-[0.95]">

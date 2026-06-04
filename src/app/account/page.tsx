@@ -29,7 +29,7 @@ export default async function AccountPage() {
 
   return (
     <div className="pt-32 pb-16 max-w-[900px] mx-auto px-4 sm:px-8">
-      <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">Account</p>
+      <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-pixel">Account</p>
       <AccountWelcome name={name}>
         <AccountHeader name={name} email={email} imageUrl={user.imageUrl} />
         <OrderHistory userId={user.id} />

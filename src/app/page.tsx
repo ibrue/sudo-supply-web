@@ -162,7 +162,7 @@ export default async function Home() {
         >
           <div className="flex flex-col sm:flex-row sm:items-center gap-5 p-6 sm:p-8">
             <div className="flex-1">
-              <p className="text-xs uppercase tracking-[0.3em] mb-2 text-accent font-mono">
+              <p className="text-xs uppercase tracking-[0.3em] mb-2 text-accent font-pixel">
                 $ sudo --game
               </p>
               <h3 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
@@ -184,7 +184,7 @@ export default async function Home() {
       {/* Bento capabilities */}
       <section className="max-w-[1400px] mx-auto px-4 sm:px-8 py-16">
         <div className="mb-10">
-          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">
+          <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">
             Capabilities
           </p>
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-[-0.03em] max-w-2xl">
@@ -196,7 +196,7 @@ export default async function Home() {
           {/* Open source */}
           <div className="col-span-12 md:col-span-7 rounded-3xl border border-border bg-surface p-8 relative overflow-hidden min-h-[320px]">
             <div className="relative z-10 max-w-sm">
-              <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">
+              <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">
                 Open hardware
               </p>
               <h3 className="text-2xl font-bold mb-3">Schematics, firmware, app. All on GitHub.</h3>
@@ -227,7 +227,7 @@ export default async function Home() {
 
           {/* Platform availability */}
           <div className="col-span-12 md:col-span-5 rounded-3xl border border-border bg-surface p-8">
-            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-mono">
+            <p className="text-xs uppercase tracking-[0.2em] mb-3 text-accent font-pixel">
               The companion app
             </p>
             <h3 className="text-2xl font-bold mb-3">macOS today.</h3>
@@ -274,7 +274,7 @@ export default async function Home() {
               style={{ background: "linear-gradient(to top, var(--surface) 0%, transparent 45%)" }}
             >
               <div>
-                <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-mono">
+                <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-pixel">
                   Mix &amp; match
                 </p>
                 <h3 className="text-xl font-bold">Pick a vibe.</h3>
@@ -288,7 +288,7 @@ export default async function Home() {
       <section className="max-w-[1400px] mx-auto px-4 sm:px-8 py-16">
         <div className="grid grid-cols-12 gap-6 items-center">
           <div className="col-span-12 lg:col-span-5">
-            <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">
+            <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-pixel">
               Permission gauntlet
             </p>
             <h2 className="text-4xl sm:text-6xl font-extrabold tracking-[-0.04em] leading-[0.95]">
@@ -336,7 +336,7 @@ export default async function Home() {
       <section className="max-w-[1400px] mx-auto px-4 sm:px-8 py-20">
         <div className="rounded-[2.5rem] p-8 sm:p-16 grid grid-cols-12 gap-8 items-center border border-border bg-surface">
           <div className="col-span-12 md:col-span-7">
-            <p className="text-xs uppercase tracking-[0.2em] mb-4 text-accent font-mono">
+            <p className="text-xs uppercase tracking-[0.2em] mb-4 text-accent font-pixel">
               The story
             </p>
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">

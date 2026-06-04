@@ -7,7 +7,7 @@ export default function SignInPage() {
   return (
     <div className="pt-32 pb-16 px-4 sm:px-8 max-w-md mx-auto">
       <div className="mb-8 text-center">
-        <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">Sign in</p>
+        <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-pixel">Sign in</p>
         <h1 className="text-4xl font-extrabold tracking-[-0.04em]">Welcome back.</h1>
       </div>
       <div className="flex justify-center">

@@ -84,7 +84,7 @@ export default async function DownloadPage() {
     <div className="pt-32 pb-16 max-w-[1280px] mx-auto px-4 sm:px-8 space-y-16">
       {/* Hero */}
       <section className="text-center">
-        <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-mono">
+        <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-pixel">
           The companion app
         </p>
         <h1 className="font-pixel text-white text-5xl sm:text-7xl mb-6 tracking-tight">[sudo]</h1>
@@ -103,7 +103,7 @@ export default async function DownloadPage() {
 
       {/* Downloads */}
       <section>
-        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Get the app</p>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-pixel">Get the app</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {platforms.map((p) => (
             <div
@@ -146,7 +146,7 @@ export default async function DownloadPage() {
 
       {/* Install from source */}
       <section className="rounded-3xl border border-border bg-surface p-6">
-        <p className="text-xs uppercase tracking-[0.2em] mb-4 text-text-muted font-mono">Install from source</p>
+        <p className="text-xs uppercase tracking-[0.2em] mb-4 text-text-muted font-pixel">Install from source</p>
         <div className="font-mono text-sm space-y-1 text-text-muted">
           <p><span className="text-accent">$</span> git clone https://github.com/ibrue/sudo-app</p>
           <p><span className="text-accent">$</span> cd sudo-app</p>
@@ -156,7 +156,7 @@ export default async function DownloadPage() {
 
       {/* Button modes */}
       <section>
-        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Button modes</p>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-pixel">Button modes</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="rounded-3xl border border-border bg-surface p-6">
             <h3 className="text-xl font-bold text-accent mb-2">AI search mode</h3>
@@ -187,7 +187,7 @@ export default async function DownloadPage() {
 
       {/* Default button map */}
       <section className="flex flex-col items-center">
-        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono self-start">
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-pixel self-start">
           Default button map
         </p>
         <div className="w-full max-w-sm">
@@ -215,7 +215,7 @@ export default async function DownloadPage() {
 
       {/* Quick presets */}
       <section>
-        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Quick presets</p>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-pixel">Quick presets</p>
         <div className="rounded-3xl border border-border bg-surface overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -238,7 +238,7 @@ export default async function DownloadPage() {
 
       {/* Developer tools */}
       <section>
-        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Developer tools</p>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-pixel">Developer tools</p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="rounded-3xl border border-border bg-surface p-6">
             <h3 className="text-lg font-bold text-accent mb-2">Local API</h3>
@@ -273,7 +273,7 @@ export default async function DownloadPage() {
 
       {/* Detection stack */}
       <section>
-        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Detection stack</p>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-pixel">Detection stack</p>
         <div className="rounded-3xl border border-border bg-surface overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -300,7 +300,7 @@ export default async function DownloadPage() {
 
       {/* Firmware */}
       <section>
-        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Firmware (QMK / VIA / Vial)</p>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-pixel">Firmware (QMK / VIA / Vial)</p>
         <p className="text-text-muted text-sm mb-4 max-w-2xl">
           The sudo macro pad runs QMK firmware on an RP2040 chip. Three keymap options:
         </p>
@@ -346,7 +346,7 @@ export default async function DownloadPage() {
 
       {/* Supported apps */}
       <section>
-        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-mono">Supported apps</p>
+        <p className="text-xs uppercase tracking-[0.2em] mb-6 text-accent font-pixel">Supported apps</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <div className="rounded-3xl border border-border bg-surface p-6">
             <p className="font-mono text-xs text-text-muted uppercase mb-3">Native apps</p>

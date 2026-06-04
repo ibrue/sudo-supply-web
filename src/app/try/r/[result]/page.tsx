@@ -51,7 +51,7 @@ export default function ResultPage({ params }: Props) {
           </div>
 
           <div className="p-6 sm:p-10">
-            <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-mono">
+            <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-pixel">
               the carnage report
             </p>
             <h1 className="text-4xl sm:text-6xl font-extrabold tracking-[-0.04em] leading-[0.98]">

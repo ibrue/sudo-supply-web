@@ -167,7 +167,7 @@ export function QASection({ slug }: { slug: string }) {
 
       {isSignedIn && (
         <form onSubmit={handleAskQuestion} className="rounded-2xl border border-border bg-surface p-5 space-y-4">
-          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-mono">
+          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-pixel">
             Ask a question
           </p>
           <textarea

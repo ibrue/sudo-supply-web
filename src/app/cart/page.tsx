@@ -36,7 +36,7 @@ export default function CartPage() {
     <div className="pt-32 pb-16 max-w-[900px] mx-auto px-4 sm:px-8">
       <ModelPreloader />
       <div className="mb-10">
-        <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">Your bag</p>
+        <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-pixel">Your bag</p>
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-[-0.04em]">
           {items.length === 0 ? "Empty. For now." : "Almost yours."}
         </h1>

@@ -65,7 +65,7 @@ export default function AnalyticsPage() {
   return (
     <div className="pt-32 pb-16 max-w-[1100px] mx-auto px-4 sm:px-8">
       <div className="mb-10">
-        <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">Telemetry</p>
+        <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-pixel">Telemetry</p>
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-[-0.04em]">
           What everyone&apos;s pressing.
         </h1>
@@ -83,7 +83,7 @@ export default function AnalyticsPage() {
       {/* Counters */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
         <div className="rounded-3xl border border-border bg-surface p-6">
-          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-mono mb-2">
+          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-pixel mb-2">
             Total presses
           </p>
           <p className="text-4xl font-extrabold tabular-nums text-accent">
@@ -91,7 +91,7 @@ export default function AnalyticsPage() {
           </p>
         </div>
         <div className="rounded-3xl border border-border bg-surface p-6">
-          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-mono mb-2">
+          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-pixel mb-2">
             Active devices (7d)
           </p>
           <p className="text-4xl font-extrabold tabular-nums text-accent">
@@ -108,7 +108,7 @@ export default function AnalyticsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           {Object.keys(stats.actionCounts).length > 0 && (
             <div className="rounded-3xl border border-border bg-surface p-6">
-              <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-mono mb-4">
+              <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-pixel mb-4">
                 Actions breakdown
               </p>
               <div className="space-y-2">
@@ -126,7 +126,7 @@ export default function AnalyticsPage() {
 
           {stats.topApps.length > 0 && (
             <div className="rounded-3xl border border-border bg-surface p-6">
-              <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-mono mb-4">
+              <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-pixel mb-4">
                 Top apps
               </p>
               <div className="space-y-2">
@@ -144,7 +144,7 @@ export default function AnalyticsPage() {
 
       {stats && (
         <div className="rounded-3xl border border-border bg-surface p-6 mb-8">
-          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-mono mb-4">
+          <p className="text-xs uppercase tracking-[0.2em] text-text-muted font-pixel mb-4">
             Presses per day (30d)
           </p>
           <div className="space-y-0.5">
@@ -165,7 +165,7 @@ export default function AnalyticsPage() {
       {/* Bug report */}
       <div className="rounded-3xl border border-border bg-surface p-6 sm:p-8">
         <div className="mb-5">
-          <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-mono">
+          <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-pixel">
             Found a bug?
           </p>
           <h2 className="text-2xl font-bold">Tell us about it.</h2>

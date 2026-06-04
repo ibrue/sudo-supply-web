@@ -69,7 +69,7 @@ export function FAQ() {
   return (
     <section>
       <div className="mb-6">
-        <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-mono">
+        <p className="text-xs uppercase tracking-[0.2em] mb-2 text-accent font-pixel">
           $ sudo --help
         </p>
         <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight">

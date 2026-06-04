@@ -13,7 +13,7 @@ export default function TryPage() {
       <section className="max-w-[1180px] mx-auto px-4 sm:px-8">
         <div className="grid grid-cols-12 gap-8 items-center">
           <div className="col-span-12 lg:col-span-5">
-            <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-mono">
+            <p className="text-xs uppercase tracking-[0.3em] mb-4 text-accent font-pixel">
               $ sudo gauntlet
             </p>
             <h1 className="text-5xl sm:text-7xl font-extrabold tracking-[-0.04em] leading-[0.92]">

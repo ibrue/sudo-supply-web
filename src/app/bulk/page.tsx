@@ -35,7 +35,7 @@ export default async function BulkPage() {
     <div className="pt-32 pb-16 max-w-[1100px] mx-auto px-4 sm:px-8">
       {/* Intro */}
       <div className="mb-12">
-        <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-mono">
+        <p className="text-xs uppercase tracking-[0.3em] mb-3 text-accent font-pixel">
           Bulk · for teams
         </p>
         <h1 className="text-5xl sm:text-7xl font-extrabold tracking-[-0.04em] leading-[0.95]">
@@ -50,7 +50,7 @@ export default async function BulkPage() {
 
       {/* Pricing tiers */}
       <div className="rounded-3xl border border-border bg-surface p-6 sm:p-8 mb-8">
-        <p className="text-xs uppercase tracking-[0.2em] mb-4 text-accent font-mono">
+        <p className="text-xs uppercase tracking-[0.2em] mb-4 text-accent font-pixel">
           Pricing tiers
         </p>
         <div className="overflow-x-auto">
