@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: "sudo.supply \u2014 open-source macro pads for AI agents",
   description:
-    "Open-source macro pads with cross-platform companion app. Approve, reject, and control AI agents across Claude, ChatGPT, and Grok on macOS, Windows, and Linux.",
+    "Open-source macro pads with a companion app for macOS (Windows coming soon). Approve, reject, and control AI agents across Claude, ChatGPT, and Grok. The pad is plain USB-HID and works anywhere.",
   icons: {
     icon: "/favicon.svg",
   },
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     siteName: "sudo.supply",
     title: "sudo.supply \u2014 open-source macro pads for AI agents",
     description:
-      "Open hardware, hand-assembled. Press buttons on purpose. Macro pads + cross-platform companion app for Claude, ChatGPT, and Grok.",
+      "Open hardware, hand-assembled. Press buttons on purpose. Macro pads + a macOS companion app (Windows coming soon) for Claude, ChatGPT, and Grok.",
     // No explicit image URL \u2014 Next picks up the conventional
     // src/app/opengraph-image.tsx automatically.
   },

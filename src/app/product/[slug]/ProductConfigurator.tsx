@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Product } from "@/lib/products";
 import { useCart } from "@/context/CartContext";
@@ -74,6 +74,13 @@ export function ProductConfigurator({
   const [keycapId, setKeycapId] = useState<KeycapId>("rasta");
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
+  const addedTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (addedTimer.current) clearTimeout(addedTimer.current);
+    };
+  }, []);
 
   const caseOption = CASE_OPTIONS.find((c) => c.id === caseId)!;
   const keycapOption = KEYCAP_OPTIONS.find((k) => k.id === keycapId)!;
@@ -110,7 +117,8 @@ export function ProductConfigurator({
       : product;
     addItem(configured, quantity);
     setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+    if (addedTimer.current) clearTimeout(addedTimer.current);
+    addedTimer.current = setTimeout(() => setAdded(false), 1500);
   };
 
   return (

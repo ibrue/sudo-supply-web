@@ -40,7 +40,7 @@ export function Footer() {
           </div>
           {sections.map((s) => (
             <div key={s.title} className="col-span-6 md:col-span-2">
-              <p className="text-xs tracking-[0.15em] text-text-muted mb-3 font-mono">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-text-muted mb-3 font-mono">
                 [ {s.title.toLowerCase()} ]
               </p>
               <ul className="space-y-2 text-sm">

@@ -9,6 +9,7 @@ export function AppSwitcher() {
   const [active, setActive] = useState(0);
   const [auto, setAuto] = useState(true);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+  const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Auto-cycle through apps so the pad visibly remaps on its own; pauses for a
   // beat after a manual pick.
@@ -20,11 +21,19 @@ export function AppSwitcher() {
     };
   }, [auto]);
 
+  // Clear any pending "resume auto-cycle" timeout on unmount so it can't fire
+  // after the component is gone.
+  useEffect(() => {
+    return () => {
+      if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    };
+  }, []);
+
   function pick(i: number) {
     setActive(i);
     setAuto(false);
-    // resume auto-cycle after a short idle
-    window.setTimeout(() => setAuto(true), 6000);
+    if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    resumeTimer.current = setTimeout(() => setAuto(true), 6000);
   }
 
   const p = PROFILES[active];
@@ -47,11 +56,14 @@ export function AppSwitcher() {
 
       <div className="p-5 sm:p-7">
         {/* App switcher tabs */}
-        <div className="flex flex-wrap gap-2 mb-5">
+        <div className="flex flex-wrap gap-2 mb-5" role="tablist" aria-label="Choose an app to preview its key mapping">
           {PROFILES.map((prof, i) => (
             <button
               key={prof.id}
               onClick={() => pick(i)}
+              role="tab"
+              aria-selected={i === active}
+              aria-label={`Show ${prof.name} key mapping`}
               className={`px-3 py-1.5 rounded-full border text-xs font-mono transition-colors ${
                 i === active
                   ? "border-accent bg-accent/10 text-accent"

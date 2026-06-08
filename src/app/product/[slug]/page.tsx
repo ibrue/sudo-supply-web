@@ -109,18 +109,20 @@ export default async function ProductPage({ params }: { params: { slug: string }
           <div className="px-5 py-3 border-b border-border text-text-muted text-xs uppercase tracking-[0.2em] font-mono">
             Specifications
           </div>
-          <table className="w-full text-sm">
-            <tbody>
-              {Object.entries(product.specs).map(([key, value]) => (
-                <tr key={key} className="border-b border-border last:border-0">
-                  <td className="px-5 py-3 text-text-muted whitespace-nowrap capitalize">
-                    {key.replace(/_/g, " ")}
-                  </td>
-                  <td className="px-5 py-3 text-right font-mono text-white">{value}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <tbody>
+                {Object.entries(product.specs).map(([key, value]) => (
+                  <tr key={key} className="border-b border-border last:border-0">
+                    <td className="px-5 py-3 text-text-muted whitespace-nowrap capitalize">
+                      {key.replace(/_/g, " ")}
+                    </td>
+                    <td className="px-5 py-3 text-right font-mono text-white">{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 

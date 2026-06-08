@@ -90,7 +90,7 @@ export default function CartPage() {
                       <div className="flex items-center gap-1 rounded-full border border-border px-1.5 py-1">
                         <button
                           onClick={() => updateQuantity(item.product.slug, item.quantity - 1)}
-                          className="w-9 h-9 sm:w-7 sm:h-7 rounded-full hover:bg-white/10 text-text-muted hover:text-white text-lg sm:text-base leading-none"
+                          className="w-11 h-11 sm:w-7 sm:h-7 rounded-full hover:bg-white/10 text-text-muted hover:text-white text-lg sm:text-base leading-none"
                           aria-label="decrease quantity"
                         >
                           −
@@ -98,7 +98,7 @@ export default function CartPage() {
                         <span className="font-mono text-sm tabular-nums w-5 text-center">{item.quantity}</span>
                         <button
                           onClick={() => updateQuantity(item.product.slug, item.quantity + 1)}
-                          className="w-9 h-9 sm:w-7 sm:h-7 rounded-full hover:bg-white/10 text-text-muted hover:text-white text-lg sm:text-base leading-none"
+                          className="w-11 h-11 sm:w-7 sm:h-7 rounded-full hover:bg-white/10 text-text-muted hover:text-white text-lg sm:text-base leading-none"
                           aria-label="increase quantity"
                         >
                           +

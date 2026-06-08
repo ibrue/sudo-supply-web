@@ -57,19 +57,19 @@ export default async function BulkPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border text-text-muted text-xs uppercase tracking-wider">
-                <th className="text-left py-3 font-mono font-normal">Quantity</th>
-                <th className="text-right py-3 font-mono font-normal">Discount</th>
-                <th className="text-right py-3 font-mono font-normal">Per unit (pad)</th>
+                <th className="text-left py-3 pr-4 font-mono font-normal whitespace-nowrap">Quantity</th>
+                <th className="text-right py-3 px-4 font-mono font-normal whitespace-nowrap">Discount</th>
+                <th className="text-right py-3 pl-4 font-mono font-normal whitespace-nowrap">Per unit (pad)</th>
               </tr>
             </thead>
             <tbody>
               {tiers.map((tier) => (
                 <tr key={tier.label} className="border-b border-border last:border-0">
-                  <td className="py-3">{tier.label}</td>
-                  <td className="py-3 text-right text-accent font-mono">
+                  <td className="py-3 pr-4 whitespace-nowrap">{tier.label}</td>
+                  <td className="py-3 px-4 text-right text-accent font-mono whitespace-nowrap">
                     {tier.discountPercent > 0 ? `${tier.discountPercent}% off` : "custom"}
                   </td>
-                  <td className="py-3 text-right tabular-nums font-mono">
+                  <td className="py-3 pl-4 text-right tabular-nums font-mono whitespace-nowrap">
                     {tier.discountPercent > 0
                       ? `$${(40.0 * (1 - tier.discountPercent / 100)).toFixed(2)}`
                       : "contact us"}

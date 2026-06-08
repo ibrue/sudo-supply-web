@@ -4,6 +4,7 @@ import { AdminNav } from "./AdminNav";
 
 export const metadata = {
   title: "admin · sudo.supply",
+  robots: { index: false, follow: false },
 };
 
 export default async function AdminLayout({

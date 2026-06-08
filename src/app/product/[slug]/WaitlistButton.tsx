@@ -4,22 +4,16 @@ import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 
 const clerkKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
-const isClerkConfigured = /^pk_(test|live)_/.test(clerkKey) && !clerkKey.includes("placeholder") && !clerkKey.includes("...") && clerkKey.length >= 24;
+const isClerkConfigured =
+  /^pk_(test|live)_/.test(clerkKey) &&
+  !clerkKey.includes("placeholder") &&
+  !clerkKey.includes("...") &&
+  clerkKey.length >= 24;
 
-function useSignedInSafe(): boolean {
-  // Only call useAuth when Clerk is configured. When it isn't, the provider
-  // isn't mounted and useAuth() throws. This branch is stable for the
-  // component lifetime (env-driven), so it's safe vs. rules-of-hooks.
-  if (!isClerkConfigured) return false;
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  return !!useAuth().isSignedIn;
-}
-
-export function WaitlistButton({ productSlug }: { productSlug: string }) {
+function WaitlistForm({ productSlug, isSignedIn }: { productSlug: string; isSignedIn: boolean }) {
   const [email, setEmail] = useState("");
   const [joined, setJoined] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const isSignedIn = useSignedInSafe();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -60,5 +54,21 @@ export function WaitlistButton({ productSlug }: { productSlug: string }) {
         {submitting ? "Joining…" : "Notify me"}
       </button>
     </form>
+  );
+}
+
+// useAuth() lives here and is called UNCONDITIONALLY — this component is only
+// mounted when Clerk is configured, so hook order is stable (rules-of-hooks
+// safe). Mirrors the ReviewSection/QASection pattern.
+function WaitlistFormWithAuth({ productSlug }: { productSlug: string }) {
+  const { isSignedIn } = useAuth();
+  return <WaitlistForm productSlug={productSlug} isSignedIn={!!isSignedIn} />;
+}
+
+export function WaitlistButton({ productSlug }: { productSlug: string }) {
+  return isClerkConfigured ? (
+    <WaitlistFormWithAuth productSlug={productSlug} />
+  ) : (
+    <WaitlistForm productSlug={productSlug} isSignedIn={false} />
   );
 }

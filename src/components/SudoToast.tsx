@@ -65,7 +65,7 @@ export function SudoToast() {
   if (toasts.length === 0) return null;
 
   return (
-    <div className="fixed bottom-2 right-2 sm:bottom-4 sm:right-4 z-50 flex flex-col gap-2 pointer-events-none w-[calc(100vw-1rem)] sm:w-80">
+    <div className="fixed bottom-2 right-2 sm:bottom-4 sm:right-4 z-50 flex flex-col gap-2 pointer-events-none max-w-[calc(100vw-1rem)] w-[calc(100vw-1rem)] sm:w-80">
       {toasts.map((toast) => (
         <div
           key={toast.id}

@@ -39,9 +39,9 @@ const items: FaqItem[] = [
     q: "What OS support is there?",
     a: (
       <>
-        macOS 13+ (Apple Silicon native), Windows 10/11 (x64, .NET 8), and Linux (X11 or Wayland,
-        GTK3). The macropad itself is plain USB-HID, and works as a keyboard on anything with a USB
-        port even without the app.
+        The companion app is macOS 13+ today (Apple Silicon native). Windows support is coming soon.
+        The macropad itself is plain USB-HID, so it works as a keyboard on any machine with a USB
+        port (macOS, Windows, or Linux) even without the app.
       </>
     ),
   },

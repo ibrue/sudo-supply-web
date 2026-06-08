@@ -92,7 +92,8 @@ export function ProductGallery({
                 setActive(i);
                 setShowModel(false);
               }}
-              aria-label={`View image ${i + 1}`}
+              aria-label={`View ${alt}, photo ${i + 1} of ${Math.min(images.length, 6)}`}
+              aria-current={i === active && !showModel}
               className={`relative aspect-square rounded-xl overflow-hidden border bg-surface p-2 transition-colors ${
                 i === active && !showModel
                   ? "border-accent"
